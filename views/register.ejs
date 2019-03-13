@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Register</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <script src = '/javascripts/register.js'></script>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form id = 'registerForm' onsubmit = 'onSubmit()'>
+        <p>
+            <label for = 'userName'>User Name:</label>
+            <input type = 'text' name = 'userName' id = 'userName' maxlength = 15>
+            <label id = 'userNameTip'></label>
+        </p>
+        <p>
+            <label for = 'password'>Password:</label>
+            <input type = 'password' name = 'password' id = 'password' maxlength = 15>
+            <label id = 'passwordTip'></label>
+        </p>
+        <p>
+            <input type = 'submit' name = 'registerSubmit' id = 'registerSubmit' value = 'Submit'>
+        </p>
+    </form>
+    <div id = 'registerInfo' style = 'margin-top:30px'></div>
+  </body>
+</html>
