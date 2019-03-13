@@ -9,11 +9,11 @@ var register = require('../controllers/account/register');
 // login interface
 router.post("/api/login", login.login);
 // login page
-//router.get("/login", login.loginPage);
+router.get("/login", login.loginPage);
 // register interface
 router.post("/api/register", register.register);
 // register page
-// router.get("/register", register.registerPage);
+router.get("/register", register.registerPage);
 // logout interface
 // router.get("/api/quitLogin", auth.login, login.quitLogin);
 

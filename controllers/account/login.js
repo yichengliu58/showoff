@@ -7,3 +7,7 @@ var resp_status_creator = require('../../utils/respStatusCreator.js');
 exports.login = function (req, res) {
     return res.json(resp_status_creator.create("STATUS_OK"));
 };
+
+exports.loginPage = function (req, res) {
+    return res.render('login');
+};

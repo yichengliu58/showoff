@@ -6,3 +6,7 @@ var resp_status_creator = require('../../utils/respStatusCreator.js');
 exports.register = function (req, res) {
     return res.json(resp_status_creator.create("STATUS_OK"));
 };
+
+exports.registerPage = function (req, res) {
+    return res.render('register');
+};
