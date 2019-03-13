@@ -1,3 +1,29 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>login</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+      <script src='javascripts/login.js'></script>
+
+  </head>
+  <body>
+
+    <h1>Please log in</h1>
+
+    <form id="loginForm" onsubmit="onSubmit()">
+        <p><label for='username'>Username:</label>
+                <input type="text" name="username" id="username">
+                <label id = "name-tip"></label>
+        </p>
+
+        <p><label for='password'>Password:</label>
+                <input type="password" name="password" id="password">
+                <label id = "password-tip"></label>
+        </p>
+        <p><input type="submit" value="Log in" name="login" id="login"></p>
+    </form>
+  <div id="results" style="margin-top:30px"></div>
+
+  </body>
+</html>
