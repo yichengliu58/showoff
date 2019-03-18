@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <title>login</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/login.css' />
       <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
       <script src='javascripts/login.js'></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
   </head>
   <body>
 
-    <h1>Please log in</h1>
-
+    <div id="login_frame">
     <form id="loginForm" onsubmit="onSubmit()">
-        <p><label for='username'>Username:</label>
-                <input type="text" name="username" id="username">
-                <label id = "name-tip"></label>
+    <h1>Please log in</h1>
+        <p><label for='username' class="label_input">Username:</label>
+           <input type="text" name="username" id="username" class="text_field">
         </p>
+        <p><label id = "name-tip"></label></p>
 
-        <p><label for='password'>Password:</label>
-                <input type="password" name="password" id="password">
-                <label id = "password-tip"></label>
+        <p><label for='password' class="label_input">Password:</label>
+           <input type="password" name="password" id="password" class="text_field">
         </p>
+        <p><label id = "password-tip"></label></p>
+
+        <div id="login_control">
         <p><input type="submit" value="Log in" name="login" id="login"></p>
+        <p>Or no account?</p>
+        <p><input type="button" value="Sign up" name="register" id="register" class="label" onclick="window.location.href='/register'"></p>
+        </div>
+
     </form>
-  <div id="results" style="margin-top:30px"></div>
+    </div>
 
   </body>
 </html>

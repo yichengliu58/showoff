@@ -8,19 +8,29 @@ function sendAjaxQuery(url, data) {
             var ret = dataR;
             var userName = document.getElementById('userName').value;
             var password = document.getElementById('password').value;
-            if(userName == ''){
-                document.getElementById('userNameTip').innerText = 'user name can not be null';
-                document.getElementById('userNameTip').style.color = 'red';
-                ret.code = 1;
+            var nameTip = document.getElementById('userNameTip');
+            var passwordTip = document.getElementById('passwordTip');
+            if (userName == '' && password == ''){
+                nameTip.innerText = "A username is required";
+                nameTip.style.color = "red";
+                passwordTip.innerText = "A password is required";
+                passwordTip.style.color = "red";
             }
-            if(password == ''){
-                document.getElementById('passwordTip').innerText = 'user name can not be null';
-                document.getElementById('passwordTip').style.color = 'red';
-                ret.code = 1;
+            else if (userName != '' && password == ''){
+                nameTip.innerText ='';
+                passwordTip.innerText = "A password is required";
+                passwordTip.style.color = "red";
             }
-            if(JSON.stringify(ret.code)==0){
+            else if (userName == '' && password != ''){
+                passwordTip.innerText = '';
+                nameTip.innerText = "A username is required";
+                nameTip.style.color = "red";
+            }
+            else if(JSON.stringify(ret.code)==0){
+                nameTip.innerText ='';
+                passwordTip.innerText = '';
                 alert('Register Successfully');
-                window.location.href = '/index';
+                window.location.href = '/login';
             }
             else{
                 alert('Register failed');

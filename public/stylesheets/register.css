@@ -1,0 +1,82 @@
+body {
+  background-image: url("../images/music-festival-6.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  font: normal 100% "Comic Sans MS", cursive, sans-serif;
+}
+
+@media only screen and (max-width: 500px) {
+  body {
+    background-image: url("../images/music-festival-mobile-2.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+#register_frame{
+
+  width: auto;
+  height: 300px;
+  padding: 13px;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -155px;
+  margin-top: -180px;
+
+  background-color: rgba(240, 255, 255, 0.5);
+
+  border-radius: 10px;
+  text-align: center;
+
+}
+
+form p > *{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.label-input{
+
+  font-size: 1.5em;
+  width: auto;
+  height: auto;
+  line-height: 28px;
+  text-align: center;
+
+  color: white;
+  background-color: #3CD8FF;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 0;
+
+}
+
+.text_field{
+  width: auto;
+  height: auto;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+}
+
+#registerSubmit{
+
+  font-size: 1.5em;
+  width: auto;
+  height: auto;
+  line-height: 28px;
+  text-align: center;
+
+  color: white;
+  background-color: blue;
+  border-radius: 6px;
+  border: 0;
+
+  float: bottom;
+}
+
+#register_control{
+  padding: 0 auto;
+}

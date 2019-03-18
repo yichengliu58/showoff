@@ -2,27 +2,36 @@
 <html>
   <head>
     <title>Register</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/register.css' />
         <script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src = '/javascripts/register.js'></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   </head>
   <body>
-    <h1>Register</h1>
+
+  <div id="register_frame">
+    <h1>Please Register</h1>
     <form id = 'registerForm' onsubmit = 'onSubmit()'>
         <p>
-            <label for = 'userName'>User Name:</label>
-            <input type = 'text' name = 'userName' id = 'userName' maxlength = 15>
-            <label id = 'userNameTip'></label>
+            <label for = 'userName' class="label-input">Username:</label>
+            <input type = 'text' name = 'userName' id = 'userName' class="text_field" maxlength = 15>
         </p>
+        <p><label id = 'userNameTip'></label></p>
+
         <p>
-            <label for = 'password'>Password:</label>
-            <input type = 'password' name = 'password' id = 'password' maxlength = 15>
-            <label id = 'passwordTip'></label>
+            <label for = 'password' class="label-input">Password:</label>
+            <input type = 'password' name = 'password' id = 'password' class="text_field" maxlength = 15>
         </p>
+        <p><label id = 'passwordTip'></label></p>
+
+        <div id="register_control">
         <p>
             <input type = 'submit' name = 'registerSubmit' id = 'registerSubmit' value = 'Submit'>
         </p>
+        </div>
+
     </form>
-    <div id = 'registerInfo' style = 'margin-top:30px'></div>
+    </div>
+
   </body>
 </html>

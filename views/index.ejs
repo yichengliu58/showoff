@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <title>index</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <script src='javascripts/login.js'></script>
         <script src='javascripts/index.js'></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
 
   </head>
   <body>
-    <h1>Show Yourself Off!</h1>
-    <p>Welcome to Show-off</p>
-        <p><input type="button" value="Log in" name="login" id="login" onclick="window.location.href='/login'">
-        Or no account?
-        <input type="button" value="Sign up" name="register" id="register" onclick="window.location.href='/register'"></p>
 
+    <div id="index_frame">
+    <form id="welcome" onsubmit="OnSubmit()">
+    <h1>SHOW Yourself OFF</h1>
+    <p>Welcome to Show-off</p>
+    </form>
+    </div>
 
   </body>
 </html>
