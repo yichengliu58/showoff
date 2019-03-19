@@ -15,6 +15,6 @@ router.post("/api/register", register.register);
 // register page
 router.get("/register", register.registerPage);
 // logout interface
-// router.get("/api/quitLogin", auth.login, login.quitLogin);
+router.get("/api/logout", login.logout);
 
 module.exports = router;
