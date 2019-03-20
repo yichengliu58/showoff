@@ -7,7 +7,7 @@
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src='javascripts/login.js'></script>
         <script src='javascripts/index.js'></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 
   </head>
   <body>
@@ -16,7 +16,15 @@
     <form id="welcome" onsubmit="OnSubmit()">
     <h1>SHOW Yourself OFF</h1>
     <p>Welcome to Show-off</p>
+    <p><input type="button" value="post" id="post" name="postStory" class="buttons" onclick="openPostWindow()">
+       <input type="button" value="search" id="search" name="searchStory" class="buttons" onclick="openSearchWindow()">
+       <input type="button" value="log out" id="logout_small" name="logout1" class="buttons"></P>
     </form>
+    </div>
+    <p><input type="button" value="log out" id="logout_big" name="logout2" class="buttons" ></P>
+
+    <div id="story_frame">
+
     </div>
 
   </body>

@@ -53,22 +53,6 @@ form p > *{
 
 }
 
-.label{
-
-  font-size: 1.5em;
-  width: auto;
-  height: auto;
-  line-height: 28px;
-  text-align: center;
-
-  color: white;
-  background-color: #3CD8FF;
-  border-top-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border: 0;
-
-}
-
 .text_field{
   width: auto;
   height: auto;

@@ -23,7 +23,7 @@ body {
   left: 50%;
   top: 50%;
   margin-left: -172px;
-  margin-top: -180px;
+  margin-top: -280px;
 
   background-color: rgba(240, 255, 255, 0.5);
 
@@ -31,6 +31,49 @@ body {
   text-align: center;
 
 }
+
+.buttons{
+
+  font-size: 1.5em;
+  width: auto;
+  height: auto;
+  line-height: 28px;
+  text-align: center;
+
+  color: white;
+  background-color: blue;
+  border-radius: 6px;
+  border: 0;
+
+  float: bottom;
+}
+
+#logout_big{
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 1130px;
+}
+
+#logout_small{
+    position: absolute;
+    margin-top: -210px;
+    margin-left: 230px;
+}
+@media all and (min-width: 500px) and (max-width: 2048px) {
+    #logout_small{
+        display: none;
+    }
+}
+@media only screen and (max-width: 500px) {
+    #logout_big {
+        display: none;
+    }
+
+    #logout_small{
+        display: block;
+    }
+}
+
 
 form p > *{
   display: inline-block;
