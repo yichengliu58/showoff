@@ -7,6 +7,8 @@
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src='javascripts/login.js'></script>
         <script src='javascripts/index.js'></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 
   </head>
@@ -16,7 +18,7 @@
     <form id="welcome" onsubmit="OnSubmit()">
     <h1>SHOW Yourself OFF</h1>
     <p>Welcome to Show-off</p>
-    <p><input type="button" value="post" id="post" name="postStory" class="buttons" onclick="openPostWindow()">
+    <p><input type="button" value="post" id="post" name="postStory" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
        <input type="button" value="search" id="search" name="searchStory" class="buttons" onclick="openSearchWindow()">
        <input type="button" value="log out" id="logout_small" name="logout1" class="buttons"></P>
     </form>
@@ -27,5 +29,54 @@
     <p></p>
     </div>
 
+   <!-- START POST MODAL -->
+   <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+        <form id="postForm" onsubmit="PostSubmit()">
+               <div class="modal-dialog">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h9 class="modal-title" id="postModalTitle">Post Your Story</h9>
+                       </div>
+                       <div class="modal-body">
+                            <table id="postTable">
+                                <tr>
+                                    <td>Event Name:</td>
+                                    <td>
+                                        <input type="text" id="eventNameType" name="eventNameType">
+                                    </td>
+                                    <td>
+                                        <select id="eventNameSelect" name="eventNameSelect">
+                                            <option value='0'>AAAAAA</option>
+                                            <option value='1'>BBBBBB</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Story:</td>
+                                    <td>
+                                        <textarea id="storyText" name="storyText" rows="5"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="uploadImgBtn" id="uploadImgBtn">
+                                            <input class="uploadImg" type="file" name="file" multiple id="file">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mui-card-media" id="showImg"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-primary">Submit</button>
+                           <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+                       </div>
+                   </div>
+               </div>
+        </form>
+   </div>
+   <!-- END POST MODAL -->
   </body>
 </html>
