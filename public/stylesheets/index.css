@@ -1,15 +1,17 @@
 body {
   background-image: url("../images/music-festival-7.jpg");
   background-size: 100%;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font: normal 100% "Comic Sans MS", cursive, sans-serif;
+  text-align: center;
 }
 
 @media only screen and (max-width: 500px) {
   body {
     background-image: url("../images/music-festival-mobile-6.jpg");
     background-size: 100%;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
+    text-align: center;
   }
 }
 
@@ -19,17 +21,114 @@ body {
   height: 150px;
   padding: 13px;
 
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -172px;
-  margin-top: -280px;
+  margin: 15px auto;
 
   background-color: rgba(240, 255, 255, 0.5);
 
   border-radius: 10px;
   text-align: center;
 
+}
+
+@media only screen and (max-width: 500px) {
+    #index_frame {
+        display: none;
+    }
+}
+
+#phone_frame{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 0 auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+@media only screen and (max-width: 500px) {
+    #phone_frame {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    #phone_frame {
+        display: none;
+    }
+}
+
+#story_frame{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 40px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+@media only screen and (max-width: 500px) {
+    #story_frame {
+        display: none;
+    }
+}
+
+#story_text{
+    background-color: #3CD8FF;
+    color: white;
+    border-radius: 10px;
+
+}
+
+#story_frame_phone {
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 40px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+#story_text_phone{
+
+    background-color: #3CD8FF;
+    color: white;
+    border-radius: 10px;
+
+}
+
+@media only screen and (max-width: 500px) {
+    #story_frame_phone {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    #story_frame_phone {
+        display: none;
+    }
+}
+
+.modal-body{
+    background-image: url("../images/music-festival-8.jpg");
+    background-repeat: repeat;
 }
 
 .buttons{
@@ -46,34 +145,24 @@ body {
   border: 0;
 
   float: bottom;
+
 }
 
-#logout_big{
-    position: absolute;
-    margin-top: 15px;
-    margin-left: 1130px;
-}
+.label_input{
 
-#logout_small{
-    position: absolute;
-    margin-top: -210px;
-    margin-left: 230px;
-}
-@media all and (min-width: 500px) and (max-width: 2048px) {
-    #logout_small{
-        display: none;
-    }
-}
-@media only screen and (max-width: 500px) {
-    #logout_big {
-        display: none;
-    }
+    font-size: 1.5em;
+    width: auto;
+    height: auto;
+    line-height: 28px;
+    text-align: center;
 
-    #logout_small{
-        display: block;
-    }
-}
+    color: white;
+    background-color: #3CD8FF;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 0;
 
+}
 
 form p > *{
   display: inline-block;

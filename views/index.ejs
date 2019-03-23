@@ -14,20 +14,80 @@
   </head>
   <body>
 
+    <!-- Title for PC -->
     <div id="index_frame">
     <form id="welcome" onsubmit="OnSubmit()">
     <h1>SHOW Yourself OFF</h1>
     <p>Welcome to Show-off</p>
-    <p><input type="button" value="post" id="post" name="postStory" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
-       <input type="button" value="search" id="search" name="searchStory" class="buttons" onclick="openSearchWindow()">
-       <input type="button" value="log out" id="logout_small" name="logout1" class="buttons"></P>
+    <p><input type="button" value="post" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
+       <input type="button" value="search" id="search" name="searchStory1" class="buttons" onclick="openSearchWindow()">
+       <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="window.location.href='/login'"></P>
     </form>
     </div>
-    <p><input type="button" value="log out" id="logout_big" name="logout2" class="buttons" ></P>
+    <!-- End of PC title -->
 
-    <div id="story_frame">
-    <p></p>
+    <!-- Title for phone -->
+    <div id="phone_frame">
+    <h1>SHOW OFF</h1>
+    <p>
+        <input type="button" value="post" id="post_phone" name="postStory2" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
+        <input type="button" value="search" id="search_phone" name="searchStory2" class="buttons" onclick="openSearchWindow()">
+        <input type="button" value="log out" id="logout_phone" name="logout2" class="buttons" onclick="window.location.href='/login'">
+    </p>
     </div>
+    <!-- End of phone title -->
+
+    <!-- Main for PC -->
+    <div id="story_frame">
+        <table id="story" align="center">
+            <tr><h1>Enjoy the MUSIC</h1></tr>
+            <tr><td><label for='username' id="username" class="label_input" style="float:left">Username</label>
+                <label for='date' id="date" class="label_input" style="float:left">Date</label>
+                </td>
+            </tr>
+            <tr><td><label for='Event' id="event" class="label_input" style="float:left">Event</label></td></tr>
+
+            <tr><td><textarea rows="2" cols="65" id="story_text" ></textarea></td></tr>
+
+            <tr>
+                <td>
+                <img src="images/music-festival-2.jpg" width="150" height="150" alt="a" style="float: left"/>
+                <img src="images/music-festival-3.jpg" width="150" height="150" alt="b" style="float: left"/>
+                <img src="images/music-festival-4.jpg" width="150" height="150" alt="c" style="float: left"/>
+                </td>
+            </tr>
+
+            <tr><td><label for='Location' id="location" class="label_input" style="float:left">Location</label></td></tr>
+
+        </table>
+    </div>
+    <!-- End of PC Main -->
+
+    <!-- Main for phone -->
+    <div id="story_frame_phone">
+        <table id="story" align="center">
+            <tr><h2>Enjoy the MUSIC</h2></tr>
+            <tr><td><label for='username' id="username_phone" class="label_input" style="float:left">Username</label>
+                    <label for='date' id="date_phone" class="label_input" style="float:left">Date</label>
+                </td>
+            </tr>
+            <tr><td><label for='Event' id="event_phone" class="label_input" style="float:left">Event</label></td></tr>
+
+            <tr><td><textarea rows="2" cols="40" id="story_text_phone" style="float:left;"></textarea></td></tr>
+
+            <tr>
+                <td>
+                    <img src="images/music-festival-2.jpg" width="150" height="150" alt="a" style="float: left"/>
+                    <img src="images/music-festival-3.jpg" width="150" height="150" alt="b" style="float: left"/>
+                    <img src="images/music-festival-4.jpg" width="150" height="150" alt="c" style="float: left"/>
+                </td>
+            </tr>
+
+            <tr><td><label for='Location' id="location_phone" class="label_input" style="float:left">Location</label></td></tr>
+
+        </table>
+    </div>
+    <!-- End of phone main -->
 
    <!-- START POST MODAL -->
    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
