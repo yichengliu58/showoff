@@ -1,6 +1,6 @@
 function sendAjaxQuery(url, data) {
     $.ajax({
-        url: url ,
+        url: url,
         data: data,
         dataType: 'json',
         type: 'POST',
@@ -28,13 +28,13 @@ function sendAjaxQuery(url, data) {
                 nameTip.innerText = "The username is required";
                 nameTip.style.color = "red";
             }
-            else if (JSON.stringify(ret.code) == 0){
+            else if (ret.code == 0){
                 nameTip.innerText ='';
                 passwordTip.innerText = '';
                 alert(userName + ", welcome to Show-Off~");
                 window.location.href = '/index';
             }
-            else if(JSON.stringify(ret.code) == 1){
+            else if(ret.code == 1){
                 nameTip.innerText ='';
                 passwordTip.innerText = '';
                 alert("login failed, wrong password");

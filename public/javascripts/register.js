@@ -26,7 +26,7 @@ function sendAjaxQuery(url, data) {
                 nameTip.innerText = "A username is required";
                 nameTip.style.color = "red";
             }
-            else if(JSON.stringify(ret.code)==0){
+            else if(ret.code ==0){
                 nameTip.innerText ='';
                 passwordTip.innerText = '';
                 alert('Register Successfully');

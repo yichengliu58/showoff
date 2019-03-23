@@ -1,29 +1,27 @@
 body {
   background-image: url("../images/music-festival-6.jpg");
   background-size: 100%;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font: normal 100% "Comic Sans MS", cursive, sans-serif;
+  text-align: center;
 }
 
 @media only screen and (max-width: 500px) {
   body {
     background-image: url("../images/music-festival-mobile-2.jpg");
     background-size: 100%;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
+    text-align: center;
   }
 }
 
 #register_frame{
 
   width: auto;
-  height: 300px;
+  height: auto;
   padding: 13px;
 
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -155px;
-  margin-top: -180px;
+  margin: 100px auto;
 
   background-color: rgba(240, 255, 255, 0.5);
 

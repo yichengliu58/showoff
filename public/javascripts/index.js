@@ -62,5 +62,29 @@ $(document).ready(function(){
 
 })
 
+function sendAjaxQuery(url, data) {
+
+    $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dataR) {
+            if(dataR.code == 0){
+                alert("log out successfully!");
+                window.location.href = '/index';
+            }
+        }
+        }
+    )
+}
+
+function OnclickLogout() {
+    sendAjaxQuery('/api/logout');
+    event.preventDefault();
+}
+
+
+
 
 

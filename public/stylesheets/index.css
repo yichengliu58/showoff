@@ -127,8 +127,55 @@ body {
 }
 
 .modal-body{
-    background-image: url("../images/music-festival-8.jpg");
-    background-repeat: repeat;
+    background-color: #3CD8FF;
+    font: normal 100% "Comic Sans MS", cursive, sans-serif;
+    color: white;
+}
+
+.modal-header{
+    background-color: #3CD8FF;
+    font: normal 100% "Comic Sans MS", cursive, sans-serif;
+    color: white;
+}
+
+.modal-footer{
+    background-color: #3CD8FF;
+    font: normal 100% "Comic Sans MS", cursive, sans-serif;
+    color: white;
+}
+
+#post_submit{
+
+    font-size: 1.5em;
+    width: auto;
+    height: auto;
+    line-height: 28px;
+    text-align: center;
+
+    color: white;
+    background-color: blue;
+    border-radius: 6px;
+    border: 0;
+
+    float: bottom;
+
+}
+
+#post_cancel{
+
+    font-size: 1.5em;
+    width: auto;
+    height: auto;
+    line-height: 28px;
+    text-align: center;
+
+    color: white;
+    background-color: blue;
+    border-radius: 6px;
+    border: 0;
+
+    float: bottom;
+
 }
 
 .buttons{
