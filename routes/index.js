@@ -20,16 +20,23 @@ router.get('/homepage', function(req, res, next) {
 });
 
 // event operations
-router.get('/api/getEvents', event.getEvents);
-router.post("/api/putEvent", event.putEvent);
-router.get('/test', event.test);
+router.get('/chat', event.chatPage);
 
 router.io = function(io) {
     io.on('connection', function (socket) {
-        console.log("a user connected");
-        socket.on('chat message', function (msg) {
-            console.log(msg);
-        });
+        //console.log("a user connected");
+        event.setIO(io);
+        event.setSocket(socket);
+
+        // function definition
+        socket.on('put story', event.putStory);
+        socket.on('put event', event.putEvent);
+        socket.on('get story by id', event.getStoryById);
+        socket.on('get story randomly', event.getStoryRandomly);
+        socket.on('get events', event.getEvents);
+        socket.on('get events by id', event.getEventsById);
+        socket.on('get events by location', event.getEventsByLocation);
+        socket.on('chat', event.chat);
     });
     return io;
 };
