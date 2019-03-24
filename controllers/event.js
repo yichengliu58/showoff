@@ -14,11 +14,11 @@ exports.setSocket = function(sock) {
 };
 
 exports.putStory = function(msg) {
-    socket.emit(JSON.stringify(respBuilder.create("STATUS_OK")));
+    io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
 exports.putEvent = function(msg) {
-    socket.emit(JSON.stringify(respBuilder.create("STATUS_OK")));
+    io.emit('put event', JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
 exports.getStoryById = function(msg) {
