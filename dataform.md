@@ -2,7 +2,6 @@ data form for each kind of data transformed:
 
 ``
 event: {
-    id: xxxxx,
     name: xxxx,
     location: {
         lo: 1,
@@ -26,7 +25,7 @@ story: {
         lo: 1,
         la: 2
     },
-    eid: xxxxx
+    ename: xxxxx
 }
 ``
 

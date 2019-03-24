@@ -1,5 +1,6 @@
 // event management
 jsonParser = require('../utils/jsonParser');
+respBuilder = require('../utils/respStatusCreator');
 
 var io;
 var socket;
@@ -13,11 +14,11 @@ exports.setSocket = function(sock) {
 };
 
 exports.putStory = function(msg) {
-
+    socket.emit(JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
 exports.putEvent = function(msg) {
-
+    socket.emit(JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
 exports.getStoryById = function(msg) {
