@@ -106,6 +106,53 @@ body {
 
 }
 
+
+#search_frame{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    pmargin: 40px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-radius: 10px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+    #search_frame {
+        display: none;
+    }
+}
+#search_frame_phone {
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 40px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+@media only screen and (max-width: 500px) {
+    #search_frame_phone {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    #search_frame_phone {
+        display: none;
+    }
+}
+
 #story_text_phone{
 
     background-color: #3CD8FF;

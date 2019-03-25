@@ -5,11 +5,13 @@
     <title>index</title>
     <link rel='stylesheet' href='/stylesheets/index.css' />
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+      <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <script src='javascripts/login.js'></script>
         <script src='javascripts/index.js'></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+        <script src="/socket.io/socket.io.js"></script>
 
   </head>
   <body>
@@ -103,9 +105,86 @@
     </div>
     <!-- End of phone main -->
 
+    <!-- Begin of search frame -->
+    <div id="search_frame" style="display:None">
+        <form id="searchFrame" >
+            <table id="searchTable" align="center">
+                <tr>
+                    <td>Keyword:</td>
+                    <td>
+                        <input type="text" id=="keywordSearch" name="keywordSearch">
+                    </td>
+                    <td>Date:</td>
+                    <td>
+                        <input type="date" id="dateSearch" name="dateSearch">
+                    </td>
+                    <td>Location:</td>
+                    <td>
+                        <select id="locationSelect" name="locationSelect">
+                            <option value='0'>AA</option>
+                            <option value='1'>BB</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn">
+                    </td>
+                    <td>
+                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!-- End of search frame -->
+
+    <!-- Begin of search phone frame -->
+    <div id="search_frame_phone"  style="visibility: hidden">
+        <form id="searchFrame" >
+            <table id="searchTable" align="center">
+                <tr>
+                    <td>Keyword:</td>
+                    <td>
+                        <input type="text" id=="keywordSearch" name="keywordSearch" style="float:left">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td>
+                        <input type="date" id="dateSearch" name="dateSearch" style="float:left">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Location:</td>
+                    <td>
+                        <select id="locationSelect" name="locationSelect" style="float:left">
+                            <option value='0'>A</option>
+                            <option value='1'>B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                   <td></td>
+                   <td>
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn">
+                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()">
+                   </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!-- End of search phone frame -->
+
+
+
    <!-- START POST MODAL -->
    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
-        <form id="postForm" onsubmit="PostSubmit()">
+        <form id="postForm">
                <div class="modal-dialog">
                    <div class="modal-content">
                        <div class="modal-header">
@@ -117,11 +196,10 @@
                                     <td>Event Name:</td>
                                     <td>
                                         <input type="text" id="eventNameType" name="eventNameType">
-                                    </td>
-                                    <td>
                                         <select id="eventNameSelect" name="eventNameSelect">
-                                            <option value='0'>AAAAAA</option>
-                                            <option value='1'>BBBBBB</option>
+                                            <option value='0'>please select</option>
+                                            <option value='1'>AAAAAA</option>
+                                            <option value='2'>BBBBBB</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -144,7 +222,7 @@
                             </table>
                        </div>
                        <div class="modal-footer">
-                           <button type="button" id="post_submit" class="btn btn-primary">Submit</button>
+                           <button type="button" id="post_submit" class="btn btn-primary" onclick="PostSubmit()">Submit</button>
                            <button type="button" id="post_cancel" class="btn btn-default" data-dismiss="modal" >Cancel</button>
                        </div>
                    </div>
