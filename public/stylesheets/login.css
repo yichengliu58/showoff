@@ -10,7 +10,8 @@ body {
   body {
     background-image: url("../images/music-festival-mobile-3.jpg");
     background-size: 100%;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
+    font: normal 100% "Comic Sans MS", cursive, sans-serif;
     text-align: center;
   }
 }

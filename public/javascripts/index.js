@@ -167,8 +167,62 @@ function PostSubmit() {
         socket.on('put story', function(msg){
             if(msg = "{\"err\":\"\",\"code\":0}"){
                 $('#postModal').modal('hide');
+                location.reload();
             }
 
         });
     }
+}
+
+function showStory() {
+    var socket = io();
+    socket.emit('get story randomly', "*");
+    socket.on('get story randomly', function (msg) {
+        var story = JSON.parse(msg);
+        var username = story.uid;
+        var date = story.datetime;
+        var event = story.ename;
+        var location = story.location;
+        var text = story.text;
+        var image1 = story.imgs.i1;
+        var image2 = story.imgs.i2;
+        var image3 = story.imgs.i3;
+
+        var uname = document.getElementById("username");
+        var eventDate = document.getElementById("date");
+        var eventName = document.getElementById("event");
+        var eventLocation = document.getElementById("location");
+        var storyText = document.getElementById("story_text");
+        var img1 = document.getElementById("img1");
+        var img2 = document.getElementById("img2");
+        var img3 = document.getElementById("img3");
+
+        var uname_phone = document.getElementById("username_phone");
+        var eventDate_phone = document.getElementById("date_phone");
+        var eventName_phone = document.getElementById("event_phone");
+        var eventLocation_phone = document.getElementById("location_phone");
+        var storyText_phone = document.getElementById("story_text_phone");
+        var img1_phone = document.getElementById("img1_phone");
+        var img2_phone = document.getElementById("img2_phone");
+        var img3_phone = document.getElementById("img3_phone");
+
+        uname.innerText = username;
+        eventDate.innerText = date;
+        eventName.innerText = event;
+        eventLocation.innerText = location;
+        storyText.innerText = text;
+        img1.setAttribute("src", image1);
+        img2.setAttribute("src", image2);
+        img3.setAttribute("src", image3);
+        
+        uname_phone.innerText = username;
+        eventDate_phone.innerText = date;
+        eventName_phone.innerText = event;
+        eventLocation_phone.innerText = location;
+        storyText_phone.innerText = text;
+        img1_phone.setAttribute("src", image1);
+        img2_phone.setAttribute("src", image2);
+        img3_phone.setAttribute("src", image3);
+    })
+
 }

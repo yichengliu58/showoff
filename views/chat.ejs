@@ -22,13 +22,19 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
+
+    // 与server建立连接
     var socket = io();
     $('form').submit(function(){
+        // 发送数据 参数：1. 发送针对某一事件 2. 数据值
         socket.emit('chat', $('#m').val());
         $('#m').val('');
         return false;
     });
+    // 接收数据
+    // 参数1： 指定事件 参数2. 函数（参数是接受的数据），接收到数据之后的操作
     socket.on('chat', function(msg){
+        // 拆开json格式的数据，然后显示
         $('#messages').append($('<li>').text(msg));
     });
 </script>

@@ -8,13 +8,15 @@
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <script src='javascripts/login.js'></script>
         <script src='javascripts/index.js'></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
         <script src="/socket.io/socket.io.js"></script>
 
   </head>
-  <body>
+  <body onload="showStory()">
 
     <!-- Title for PC -->
     <div id="index_frame">
@@ -23,7 +25,9 @@
     <p>Welcome to Show-off</p>
     <p><input type="button" value="post" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
        <input type="button" value="search" id="search" name="searchStory1" class="buttons" onclick="openSearchWindow()">
-       <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()"></P>
+       <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()">
+
+    </P>
     </form>
     </div>
     <!-- End of PC title -->
@@ -43,19 +47,20 @@
     <div id="story_frame">
         <table id="story" align="center">
             <tr><h1>Enjoy the MUSIC</h1></tr>
-            <tr><td><label for='username' id="username" class="label_input" style="float:left">Username</label>
+            <tr><td>
+                <label for='username' id="username" class="label_input" style="float:left"></label>
                 <label for='date' id="date" class="label_input" style="float:left">Date</label>
                 </td>
             </tr>
             <tr><td><label for='Event' id="event" class="label_input" style="float:left">Event</label></td></tr>
 
-            <tr><td><textarea rows="2" cols="65" id="story_text" ></textarea></td></tr>
+            <tr><td><textarea rows="2" cols="65" id="story_text" style="float:left;"> </textarea></td></tr>
 
             <tr>
                 <td>
-                    <img src="images/music-festival-2.jpg" width="150" height="150" alt="a" style="float: left"/>
-                    <img src="images/music-festival-3.jpg" width="150" height="150" alt="b" style="float: left"/>
-                    <img src="images/music-festival-4.jpg" width="150" height="150" alt="c" style="float: left"/>
+                    <img id="img1" src="" width="150" height="150" />
+                    <img id="img2" src="" width="150" height="150" />
+                    <img id="img3" src="" width="150" height="150" />
                 </td>
             </tr>
 
@@ -76,7 +81,8 @@
     <div id="story_frame_phone">
         <table id="story" align="center">
             <tr><h2>Enjoy the MUSIC</h2></tr>
-            <tr><td><label for='username' id="username_phone" class="label_input" style="float:left">Username</label>
+            <tr><td>
+                    <label for='username' id="username_phone" class="label_input" style="float:left">Username</label>
                     <label for='date' id="date_phone" class="label_input" style="float:left">Date</label>
                 </td>
             </tr>
@@ -86,9 +92,9 @@
 
             <tr>
                 <td>
-                    <img src="images/music-festival-2.jpg" width="150" height="150" alt="a" style="float: left"/>
-                    <img src="images/music-festival-3.jpg" width="150" height="150" alt="b" style="float: left"/>
-                    <img src="images/music-festival-4.jpg" width="150" height="150" alt="c" style="float: left"/>
+                    <img id="img1_phone" src="" width="150" height="150" />
+                    <img id="img2_phone" src="" width="150" height="150" />
+                    <img id="img3_phone" src="" width="150" height="150" />
                 </td>
             </tr>
 
@@ -112,15 +118,15 @@
                 <tr>
                     <td>Keyword:</td>
                     <td>
-                        <input type="text" id=="keywordSearch" name="keywordSearch">
+                        <input type="text" id=="keywordSearch" name="keywordSearch" class="text_field">
                     </td>
                     <td>Date:</td>
                     <td>
-                        <input type="date" id="dateSearch" name="dateSearch">
+                        <input type="date" id="dateSearch" name="dateSearch" class="text_field">
                     </td>
                     <td>Location:</td>
                     <td>
-                        <select id="locationSelect" name="locationSelect">
+                        <select id="locationSelect" name="locationSelect" class="text_field">
                             <option value='0'>AA</option>
                             <option value='1'>BB</option>
                         </select>
@@ -132,10 +138,10 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn">
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons">
                     </td>
                     <td>
-                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()">
+                        <input type="button" value="Close" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
                     </td>
                 </tr>
             </table>
@@ -150,19 +156,19 @@
                 <tr>
                     <td>Keyword:</td>
                     <td>
-                        <input type="text" id=="keywordSearch" name="keywordSearch" style="float:left">
+                        <input type="text" id=="keywordSearch" name="keywordSearch" style="float:left" class="text_field">
                     </td>
                 </tr>
                 <tr>
                     <td>Date:</td>
                     <td>
-                        <input type="date" id="dateSearch" name="dateSearch" style="float:left">
+                        <input type="date" id="dateSearch" name="dateSearch" style="float:left" class="text_field">
                     </td>
                 </tr>
                 <tr>
                     <td>Location:</td>
                     <td>
-                        <select id="locationSelect" name="locationSelect" style="float:left">
+                        <select id="locationSelect" name="locationSelect" style="float:left" class="text_field">
                             <option value='0'>A</option>
                             <option value='1'>B</option>
                         </select>
@@ -171,8 +177,8 @@
                 <tr>
                    <td></td>
                    <td>
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn">
-                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()">
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons">
+                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()" class="buttons">
                    </td>
                 </tr>
             </table>
@@ -195,8 +201,8 @@
                                 <tr>
                                     <td>Event Name:</td>
                                     <td>
-                                        <input type="text" id="eventNameType" name="eventNameType">
-                                        <select id="eventNameSelect" name="eventNameSelect">
+                                        <input type="text" id="eventNameType" name="eventNameType" class="text_field">
+                                        <select id="eventNameSelect" name="eventNameSelect" class="text_field">
                                             <option value='0'>please select</option>
                                             <option value='1'>AAAAAA</option>
                                             <option value='2'>BBBBBB</option>
@@ -206,7 +212,7 @@
                                 <tr>
                                     <td>Story:</td>
                                     <td>
-                                        <textarea id="storyText" name="storyText" rows="5"></textarea>
+                                        <textarea id="storyText" name="storyText" rows="5" class="text_field"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -222,7 +228,7 @@
                             </table>
                        </div>
                        <div class="modal-footer">
-                           <button type="button" id="post_submit" class="btn btn-primary" onclick="PostSubmit()">Submit</button>
+                           <button type="button" id="post_submit" class="btn btn-primary" onclick="PostSubmit()" >Submit</button>
                            <button type="button" id="post_cancel" class="btn btn-default" data-dismiss="modal" >Cancel</button>
                        </div>
                    </div>

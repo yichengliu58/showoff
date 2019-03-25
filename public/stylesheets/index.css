@@ -106,7 +106,6 @@ body {
 
 }
 
-
 #search_frame{
 
     width: auto;
@@ -126,6 +125,7 @@ body {
         display: none;
     }
 }
+
 #search_frame_phone {
 
     width: auto;
@@ -258,11 +258,13 @@ body {
 
 }
 
-form p > *{
-  display: inline-block;
-  vertical-align: middle;
-}
+.text_field{
+    width: auto;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 
+}
 
 .uploadImgBtn {
 
@@ -291,5 +293,10 @@ form p > *{
 .pic img {
     width: 100%;
     height: 100%;
+}
+
+form p > *{
+    display: inline-block;
+    vertical-align: middle;
 }
 
