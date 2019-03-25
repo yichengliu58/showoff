@@ -33,7 +33,7 @@ exports.getStoryRandomly = function (msg) {
         lines.push('{"uid": 1, "text": "default test", "imgs": {' +
             '"i1": "", "i2": "", "i3": "" },' +
             '"datetime": "2019-03-25T17:36:54.809Z", "location": {' +
-            '"lo": 1, "la": 2 }, "ename": "xxx"');
+            '"lo": 1, "la": 2 }, "ename": "xxx"}');
     } else if(lines.length > 1) {
         lines.shift();
     }

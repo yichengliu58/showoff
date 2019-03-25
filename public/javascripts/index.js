@@ -205,7 +205,6 @@ function showStory() {
         var img1_phone = document.getElementById("img1_phone");
         var img2_phone = document.getElementById("img2_phone");
         var img3_phone = document.getElementById("img3_phone");
-
         uname.innerText = username;
         eventDate.innerText = date;
         eventName.innerText = event;
@@ -225,4 +224,12 @@ function showStory() {
         img3_phone.setAttribute("src", image3);
     })
 
+}
+
+function nextStory() {
+    location.reload();
+}
+
+function previousStory(){
+    location.reload();
 }

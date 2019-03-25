@@ -274,6 +274,7 @@ body {
     position: relative;
     background: url("../images/file-upload-btn.png") no-repeat;
     background-size: cover;
+
 }
 
 .uploadImgBtn .uploadImg {
