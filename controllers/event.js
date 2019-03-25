@@ -2,13 +2,9 @@
 jsonParser = require('../utils/jsonParser');
 respBuilder = require('../utils/respStatusCreator');
 
-// test code, may be deleted
-fs = require('fs');
-// end of test code
-
 var io;
 var socket;
-var lines = null;
+var lines = [];
 
 exports.setIO = function(IO) {
     io = IO;
@@ -19,12 +15,11 @@ exports.setSocket = function(sock) {
 };
 
 exports.putStory = function(msg) {
-    fs.appendFile('story.txt', msg + '\n', function (err) {  });
+    lines.push(msg + '\n');
     io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
 exports.putEvent = function(msg) {
-    fs.appendFile('event.txt', msg + '\n', function (err) {  });
     io.emit('put event', JSON.stringify(respBuilder.create("STATUS_OK")));
 };
 
@@ -33,13 +28,20 @@ exports.getStoryById = function(msg) {
 };
 
 exports.getStoryRandomly = function (msg) {
-    if(lines == null) {
-        var data = fs.readFileSync('story.txt');
-        lines = data.toString().split('\n');
+    // these are just for test
+    if(lines.length == 0) {
+        lines.push('{"uid": 1, "text": "default test", "imgs": {' +
+            '"i1": "", "i2": "", "i3": "" },' +
+            '"datetime": "2019-03-25T17:36:54.809Z", "location": {' +
+            '"lo": 1, "la": 2 }, "ename": "xxx"');
+    } else if(lines.length > 1) {
+        lines.shift();
     }
 
     line = Math.floor(Math.random()*lines.length);
     io.emit('get story randomly', lines[line]);
+
+    // end of test code
 };
 
 exports.getEvents = function(msg) {
