@@ -34,13 +34,8 @@ exports.getStoryById = function(msg) {
 
 exports.getStoryRandomly = function (msg) {
     if(lines == null) {
-        fs.readFile('story.txt', function (err, data) {
-            if(err) {
-                lines = null;
-            } else {
-                lines = data.toString().split('\n');
-            }
-        });
+        var data = fs.readFileSync('story.txt');
+        lines = data.toString().split('\n');
     }
 
     line = Math.floor(Math.random()*lines.length);
