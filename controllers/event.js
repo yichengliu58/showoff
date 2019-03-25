@@ -8,6 +8,7 @@ fs = require('fs');
 
 var io;
 var socket;
+var lines = null;
 
 exports.setIO = function(IO) {
     io = IO;
@@ -32,15 +33,18 @@ exports.getStoryById = function(msg) {
 };
 
 exports.getStoryRandomly = function (msg) {
-    console.log('get story randomly: ' + msg);
-    fs.readFile('story.txt', function (err, data) {
-        if(err) {
-            console.log("failed to read file ", err);
-        } else {
-            var lines = data.split('\n');
-            io.emit('get story randomly', lines[0]);
-        }
-    })
+    if(lines == null) {
+        fs.readFile('story.txt', function (err, data) {
+            if(err) {
+                lines = null;
+            } else {
+                lines = data.toString().split('\n');
+            }
+        });
+    }
+
+    line = Math.floor(Math.random()*lines.length);
+    io.emit('get story randomly', lines[line]);
 };
 
 exports.getEvents = function(msg) {
