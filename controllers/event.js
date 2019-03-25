@@ -17,6 +17,7 @@ exports.setSocket = function(sock) {
 exports.putStory = function(msg) {
     lines.push(msg + '\n');
     io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
+    console.log(msg);
 };
 
 exports.putEvent = function(msg) {

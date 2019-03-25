@@ -20,21 +20,6 @@ if ('serviceWorker' in navigator) {
             });
     });}
 
-/* when the worker receives a fetch request */
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-// it checks if the requested page is among the cached ones
-        caches.match(event.request)
-            .then(function(response) {
-// Cache hit - return the cache response (the cached page)
-                if (response) {
-                    return response;
-                } //cache does not have the page — go to the server
-                return fetch(event.request);
-            })
-    )})
-
-
 /* open post modal */
 function  openPostWindow() {
     totalLength = 0;
@@ -137,12 +122,16 @@ function  closeSearchFrame() {
     document.getElementById("story_frame_phone").style.display="";
 }
 
+/* click post button in post modal */
 function PostSubmit() {
     if(document.getElementById('eventNameType').value != '' && document.getElementById('eventNameSelect').value != '0'){
         alert("can't create event and select existed event at the same time");
     }
     else if(document.getElementById('eventNameType').value == '' && document.getElementById('eventNameSelect').value == '0'){
         alert("please input event name");
+    }
+    else if(document.getElementById('storyText').value == '' && document.getElementById('showImg').childElementCount == 0){
+        alert("please at least input text or upload picture");
     }
     else{
         var img = new Object();
