@@ -24,7 +24,7 @@ router.get('/chat', event.chatPage);
 
 router.io = function(io) {
     io.on('connection', function (socket) {
-        //console.log("a user connected");
+        console.log("a user connected");
         event.setIO(io);
         event.setSocket(socket);
 
