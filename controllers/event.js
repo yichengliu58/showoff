@@ -7,6 +7,9 @@ var socket;
 var stories = [];
 var events = [];
 
+// test code
+var idCount = 0;
+
 exports.setIO = function(IO) {
     io = IO;
 };
@@ -25,7 +28,8 @@ exports.putStory = function(msg) {
         if(story.newevent == true) {
             events.push(story.ename + "\n");
         }
-        stories.push(msg + "\n");
+        story.sid = idCount++;
+        stories.push(JSON.stringify(story) + "\n");
         io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
     }
 };
@@ -33,18 +37,23 @@ exports.putStory = function(msg) {
 exports.getStoryByUser = function(msg) {
 };
 
-exports.getStoryRandomly = function (msg) {
+exports.getNextStory = function (msg) {
     // these are just for test
     if(stories.length == 0) {
-        stories.push('{"uid": 1, "text": "default test", "imgs": {' +
+        stories.push('{"sid": 0, "uid": 1, "text": "default test", "imgs": {' +
             '"i1": "", "i2": "", "i3": "" },' +
             '"datetime": "2019-03-25T17:36:54.809Z", "location": {' +
             '"lo": 1, "la": 2 }, "ename": "xxx", "newevent": true}');
     }
 
-    line = Math.floor(Math.random()*stories.length);
-    io.emit('get story randomly', stories[line]);
+    var line = parseInt(msg);
+    if(line == NaN || line == -1) {
+        line = 0;
+    } else {
+        line += 1;
+    }
 
+    io.emit('get next story', stories[line]);
     // end of test code
 };
 
