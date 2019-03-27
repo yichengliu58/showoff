@@ -30,9 +30,9 @@ router.io = function(io) {
 
         // function definition
         socket.on('put story', event.putStory);
-        socket.on('get story by user', event.getStoryById);
+        socket.on('get story by user', event.getStoryByUser);
         socket.on('get story randomly', event.getStoryRandomly);
-        socket.on('get all events', event.getEvents);
+        socket.on('get all events', event.getAllEvents);
         socket.on('get events by location', event.getEventsByLocation);
         socket.on('chat', event.chat);
     });

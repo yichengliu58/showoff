@@ -20,6 +20,47 @@ if ('serviceWorker' in navigator) {
             });
     });}
 
+// open database
+var request = window.indexedDB.open('localDb',1);
+
+/* error */
+request.onerror = function (event) {
+    console.log('open failed');
+}
+
+/* success */
+var db;
+request.onsuccess = function (event) {
+    db = request.result;
+    console.log('open successfully');
+}
+
+/* upgradeneeded */
+request.onupgradeneeded = function (event) {
+    db = event.target.result;
+    var objectStore;
+    // create table story
+    if(!db.objectStoreNames.contains('story')){
+        objectStore = db.createObjectStore('story', {autoIncrement: true});
+        objectStore.createIndex('uid', 'uid', {unique: false});
+        objectStore.createIndex('datetime', 'datetime', {unique: false});
+        objectStore.createIndex('location', 'location', {unique: false});
+    }
+}
+
+/* insert data */
+function insert(userId, storyContent, img, currentTime, currentLocation) {
+    var request = db.transaction(['story'], 'readwrite')
+        .objectStore('story')
+        .add({uid: userId, text: storyContent, imgs: img, datetime: currentTime, location: currentLocation});
+    request.onsuccess = function (event) {
+        console.log('insert data successfully');
+    };
+    request.onerror = function (event) {
+        console.log('insert data failed');
+    }
+}
+
 /* open post modal */
 function  openPostWindow() {
     totalLength = 0;
@@ -124,29 +165,49 @@ function  closeSearchFrame() {
 
 /* click post button in post modal */
 function PostSubmit() {
+    var approve = 0;
     if(document.getElementById('eventNameType').value != '' && document.getElementById('eventNameSelect').value != '0'){
         alert("can't create event and select existed event at the same time");
+        approve = 1;
     }
-    else if(document.getElementById('eventNameType').value == '' && document.getElementById('eventNameSelect').value == '0'){
+    if(document.getElementById('eventNameType').value == '' && document.getElementById('eventNameSelect').value == '0'){
         alert("please input event name");
+        approve = 1;
     }
-    else if(document.getElementById('storyText').value == '' && document.getElementById('showImg').childElementCount == 0){
+    if(document.getElementById('storyText').value == '' && document.getElementById('showImg').childElementCount == 0){
         alert("please at least input text or upload picture");
+        approve = 1
     }
-    else{
+    var obj = document.getElementById('eventNameSelect')
+    for(var i=0; i<obj.options.length; i++){
+        if(document.getElementById('eventNameType').value == obj.options[i].value){
+            alert('event name has already exist');
+            approve = 1;
+        }
+    }
+    if(approve == 0){
         var img = new Object();
         for (var i=1; i<srcs.length+1; i++){
 
             img["i"+i] = srcs[i-1];
         }
-
+        var newEvent;
+        if(document.getElementById('eventNameType').value != ''){
+            newEvent = true;
+        }
+        else{
+            newEvent = false;
+        }
+        var currentTime = new Date();
         var postMsg = {
+            sid : 0,
             uid : "1",
             text : document.getElementById('storyText').value,
             imgs : img,
-            datetime :  new Date(),
+            datetime :  currentTime,
             location : "A",
-            ename : document.getElementById('eventNameType').value
+            ename : document.getElementById('eventNameType').value,
+            newevent: newEvent,
         };
 
         var s = JSON.stringify(postMsg);
@@ -154,12 +215,14 @@ function PostSubmit() {
         socket.emit('put story', s);
 
         socket.on('put story', function(msg){
-            if(msg = "{\"err\":\"\",\"code\":0}"){
+             s = JSON.parse(msg);
+             if(s.code == 0){
                 $('#postModal').modal('hide');
                 location.reload();
-            }
-
+             }
         });
+
+        insert('1',document.getElementById('storyText').value, img, currentTime, 'A')
     }
 }
 
