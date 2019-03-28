@@ -8,7 +8,7 @@ var stories = [];
 var events = [];
 
 // test code
-var idCount = 0;
+var idCount = 1;
 
 exports.setIO = function(IO) {
     io = IO;
@@ -26,10 +26,10 @@ exports.putStory = function(msg) {
     } else {
         // this should be db operation finally
         if(story.newevent == true) {
-            events.push(story.ename + "\n");
+            events.push(story.ename);
         }
         story.sid = idCount++;
-        stories.push(JSON.stringify(story) + "\n");
+        stories.push(JSON.stringify(story));
         io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
     }
 };
@@ -49,12 +49,25 @@ exports.getNextStory = function (msg) {
     var line = parseInt(msg);
     if(line == NaN || line == -1) {
         line = 0;
+    } else if(line == stories.length - 1) {
+        io.emit('get next story', JSON.stringify(respBuilder.create("STATUS_NO_STORY")));
+        return;
     } else {
         line += 1;
     }
 
     io.emit('get next story', stories[line]);
     // end of test code
+};
+
+exports.getPreviousStory = function(msg) {
+    var line = parseInt(msg);
+    if(line == NaN || line < 0 || line >= stories.length) {
+        io.emit('get previous story', JSON.stringify(respBuilder.create("STATUS_NO_STORY")));
+        return;
+    }
+
+    io.emit('get previous story', stories[line]);
 };
 
 exports.getAllEvents = function(msg) {

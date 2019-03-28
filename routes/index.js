@@ -32,6 +32,7 @@ router.io = function(io) {
         socket.on('put story', event.putStory);
         socket.on('get story by user', event.getStoryByUser);
         socket.on('get next story', event.getNextStory);
+        socket.on('get previous story', event.getPreviousStory);
         socket.on('get all events', event.getAllEvents);
         socket.on('get events by location', event.getEventsByLocation);
         socket.on('chat', event.chat);

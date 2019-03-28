@@ -49,7 +49,11 @@ socket event definition:
     * data downloaded: one json string that contains multiple `story` field
 * 'get next story': get next one story
     * data uploaded: a story id, if -1, then return the first story
-    * data downloaded: one json string contains one `story`
+    * data downloaded: one json string contains next one `story` OR `resp_status` if no more story
+* 'get previous story': get previous one story
+    * data uploaded: must give a story id
+    * data downloaded: one json string contains previous one `story` OR `resp_status` if no more 
+    story
 * 'get all events': get all events
     * data uploaded: doesn't matter, maybe a "*"
     * data downloaded: one json string that contains an array of event names,
