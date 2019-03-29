@@ -231,6 +231,7 @@ function PostSubmit() {
              s = JSON.parse(msg);
              if(s.code == 0){
                 $('#postModal').modal('hide');
+                srcs = [];
                 // location.reload();
              }
         });
