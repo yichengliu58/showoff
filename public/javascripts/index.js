@@ -73,6 +73,19 @@ $(document).ready(function(){
         var elem = document.getElementById("showImg");
         elem.innerHTML = "";
     });
+
+    $('#postModal').on('show.bs.modal', function (){
+        var obj = document.getElementById('eventNameSelect')
+        var socket = io();
+        socket.emit('get all events', '*');
+        socket.on('get all events', function(msg){
+            s = JSON.parse(msg);
+            for (var i = 0; i < s.length; i++){
+                obj.options[i+1] = new Option(s[i],s[i]);
+            }
+        });
+    });
+
     /* click upload file button*/
     $("#uploadImgBtn").click(function(){
         var $input = $("#file");
