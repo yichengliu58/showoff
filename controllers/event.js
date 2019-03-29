@@ -62,11 +62,11 @@ exports.getNextStory = function (msg) {
 
 exports.getPreviousStory = function(msg) {
     var line = parseInt(msg);
-    if(line == NaN || line < 0 || line >= stories.length) {
+    if(line == NaN || line <= 0 || line >= stories.length) {
         io.emit('get previous story', JSON.stringify(respBuilder.create("STATUS_NO_STORY")));
         return;
     }
-
+    line -= 1;
     io.emit('get previous story', stories[line]);
 };
 

@@ -218,7 +218,7 @@ function PostSubmit() {
              s = JSON.parse(msg);
              if(s.code == 0){
                 $('#postModal').modal('hide');
-                location.reload();
+                // location.reload();
              }
         });
 
@@ -226,11 +226,27 @@ function PostSubmit() {
     }
 }
 
-function showStory() {
-    var socket = io();
-    socket.emit('get story randomly', "*");
-    socket.on('get story randomly', function (msg) {
+
+var socket;
+function getNextStory(sid) {
+    socket.emit('get next story', sid);
+}
+
+function getPreviousStory(sid) {
+    socket.emit('get previous story', sid);
+}
+
+function socketOn() {
+
+    socket = io();
+    socket.on('get next story', function (msg) {
         var story = JSON.parse(msg);
+        if (story.hasOwnProperty("err")){
+            alert("This is the last story!");
+            return;
+        }
+
+        var storyid = story.sid;
         var username = story.uid;
         var date = story.datetime;
         var event = story.ename;
@@ -240,6 +256,7 @@ function showStory() {
         var image2 = story.imgs.i2;
         var image3 = story.imgs.i3;
 
+        var storyId = document.getElementById("story-id");
         var uname = document.getElementById("username");
         var eventDate = document.getElementById("date");
         var eventName = document.getElementById("event");
@@ -249,6 +266,7 @@ function showStory() {
         var img2 = document.getElementById("img2");
         var img3 = document.getElementById("img3");
 
+        var storyId_phone = document.getElementById("story-id_phone");
         var uname_phone = document.getElementById("username_phone");
         var eventDate_phone = document.getElementById("date_phone");
         var eventName_phone = document.getElementById("event_phone");
@@ -257,6 +275,8 @@ function showStory() {
         var img1_phone = document.getElementById("img1_phone");
         var img2_phone = document.getElementById("img2_phone");
         var img3_phone = document.getElementById("img3_phone");
+
+        storyId.innerText = storyid;
         uname.innerText = username;
         eventDate.innerText = date;
         eventName.innerText = event;
@@ -265,7 +285,8 @@ function showStory() {
         img1.setAttribute("src", image1);
         img2.setAttribute("src", image2);
         img3.setAttribute("src", image3);
-        
+
+        storyId_phone.innerText = storyid;
         uname_phone.innerText = username;
         eventDate_phone.innerText = date;
         eventName_phone.innerText = event;
@@ -274,14 +295,137 @@ function showStory() {
         img1_phone.setAttribute("src", image1);
         img2_phone.setAttribute("src", image2);
         img3_phone.setAttribute("src", image3);
+
     })
 
+    socket.on('get previous story', function (msg) {
+
+        var story = JSON.parse(msg);
+        if (story.hasOwnProperty("err")){
+            alert("This is the first story!");
+            return;
+        }
+
+        var storyid = story.sid;
+        var username = story.uid;
+        var date = story.datetime;
+        var event = story.ename;
+        var location = story.location;
+        var text = story.text;
+        var image1 = story.imgs.i1;
+        var image2 = story.imgs.i2;
+        var image3 = story.imgs.i3;
+
+        var storyId = document.getElementById("story-id");
+        var uname = document.getElementById("username");
+        var eventDate = document.getElementById("date");
+        var eventName = document.getElementById("event");
+        var eventLocation = document.getElementById("location");
+        var storyText = document.getElementById("story_text");
+        var img1 = document.getElementById("img1");
+        var img2 = document.getElementById("img2");
+        var img3 = document.getElementById("img3");
+
+        var storyId_phone = document.getElementById("story-id_phone");
+        var uname_phone = document.getElementById("username_phone");
+        var eventDate_phone = document.getElementById("date_phone");
+        var eventName_phone = document.getElementById("event_phone");
+        var eventLocation_phone = document.getElementById("location_phone");
+        var storyText_phone = document.getElementById("story_text_phone");
+        var img1_phone = document.getElementById("img1_phone");
+        var img2_phone = document.getElementById("img2_phone");
+        var img3_phone = document.getElementById("img3_phone");
+
+        storyId.innerText = storyid;
+        uname.innerText = username;
+        eventDate.innerText = date;
+        eventName.innerText = event;
+        eventLocation.innerText = location;
+        storyText.innerText = text;
+        img1.setAttribute("src", image1);
+        img2.setAttribute("src", image2);
+        img3.setAttribute("src", image3);
+
+        storyId_phone.innerText = storyid;
+        uname_phone.innerText = username;
+        eventDate_phone.innerText = date;
+        eventName_phone.innerText = event;
+        eventLocation_phone.innerText = location;
+        storyText_phone.innerText = text;
+        img1_phone.setAttribute("src", image1);
+        img2_phone.setAttribute("src", image2);
+        img3_phone.setAttribute("src", image3);
+
+    })
+
+    showFirstStory();
+}
+
+function showFirstStory(){
+    getNextStory(-1);
+    document.getElementById("story-id").style.display = "none";
 }
 
 function nextStory() {
-    location.reload();
+    var storyid_emit = document.getElementById("story-id").innerText;
+    getNextStory(storyid_emit);
+    console.log(storyid_emit);
 }
 
 function previousStory(){
-    location.reload();
+    var storyid_emit = document.getElementById("story-id").innerText;
+    getPreviousStory(storyid_emit);
+    console.log(storyid_emit);
+}
+
+function init() {
+    console.log("entering the init() method");
+    if (navigator.geolocation) {
+
+        console.log(' Browser support geolocation ');
+        navigator.geolocation.getCurrentPosition(show_map,handle_error ,null);
+    } else {
+        console.log(' Browser does not support geolocation ');
+    }
+
+}
+
+function show_map(position) {
+
+    var coords = position.coords;
+    var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+    var myOptions = {
+
+        zoom : 14,
+
+        center : latlng,
+
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+
+    var map1;
+    map1 = new google.maps.Map(document.getElementById("map"), myOptions);
+
+    var marker = new google.maps.Marker({
+
+        position : latlng,
+
+        map : map1
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+        content : "This is your location"
+    });
+
+    infowindow.open(map1, marker);
+
+}
+
+function handle_error(error){
+    var errorTypes={
+        1:'The location service has been blocked',
+        2:'Can not get location information',
+        3:'Get information overtime'
+    };
+    console.log(errorTypes[error.code] + ":,Can not get your location");
 }

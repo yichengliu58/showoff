@@ -4,17 +4,18 @@
 
     <title>index</title>
     <link rel='stylesheet' href='/stylesheets/index.css' />
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-      <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-        <script src='javascripts/login.js'></script>
-        <script src='javascripts/index.js'></script>
-        <link rel="stylesheet" href="bootstrap-4.3.1-dist/css//bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js" ></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src='javascripts/login.js'></script>
+    <script src='javascripts/index.js'></script>
+    <link rel="stylesheet" href="bootstrap-4.3.1-dist/css//bootstrap.min.css">
+    <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&sensor=true"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 
   </head>
-  <body onload="showStory()">
+  <body onload="socketOn()">
 
     <!-- Title for PC -->
     <div id="index_frame">
@@ -46,7 +47,8 @@
         <table id="story" align="center">
             <tr><h1>Enjoy the MUSIC</h1></tr>
             <tr><td>
-                <label for='username' id="username" class="label_input" style="float:left"></label>
+                <label for="story-id" id="story-id" class="label_input" style="float: left">StoryID</label>
+                <label for='username' id="username" class="label_input" style="float:left">Username</label>
                 <label for='date' id="date" class="label_input" style="float:left">Date</label>
                 </td>
             </tr>
@@ -80,6 +82,7 @@
         <table id="story" align="center">
             <tr><h2>Enjoy the MUSIC</h2></tr>
             <tr><td>
+                    <label for="story-id" id="story-id_phone" class="label_input" style="float: left">StoryID</label>
                     <label for='username' id="username_phone" class="label_input" style="float:left">Username</label>
                     <label for='date' id="date_phone" class="label_input" style="float:left">Date</label>
                 </td>
@@ -113,6 +116,15 @@
     <div id="search_frame" style="display:None">
         <form id="searchFrame" >
             <table id="searchTable" align="center">
+                <tr>
+                    <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div id="map" style="width: 400px; height: 400px" align="center"></div>
+                    </td>
+                </tr>
                 <tr>
                     <td>Keyword:</td>
                     <td>
