@@ -42,13 +42,16 @@ The server is a little bit simple for implementing a product-level website. It l
 # Conclusion 
 # Division of work
 All the members of the group contributed equally to the assignment solution. The solution was designed jointly and then each member lead the implementation of one specific part of the code, its associated documentation and contributed to the writing of the final report. In particular:
-* Yicheng Liu is in charge of the development of Nodejs server and back-end logic
-* Mali Jin is responsible for apply PWA and IndexedDB in to front-end logic
-* Hao Qian is responsible for design and implement web pages and front-end logic
-_The final document was jointly edited._
+	* Yicheng Liu is in charge of the development of Nodejs server and back-end logic
+	* Mali Jin is responsible for apply PWA and IndexedDB in to front-end logic
+	* Hao Qian is responsible for design and implement web pages and front-end logic
+/The final document was jointly edited./
 
 # Extra Information
+A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
+
 # Bibliography
+
 
 
 
