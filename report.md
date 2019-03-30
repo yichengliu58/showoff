@@ -2,6 +2,7 @@
 The name of our project is “showoff”, it’s a web aplication for sharing texts and pictures online. The whole app is divided into 3 parts, database, back-end logic and front-end logic. Front-end code is made up by a combination of javascript, html and css codes. A local indexed database is used to cache data returned from the server, PWA techniques such as service worker are used to make sure the app more reliable. Back-end logic is built up by Node.js, and Mongodb is used as permanent data storage (not implemented yet). Data transferred between client and server is in Json form, client uses Ajax to implement login/register logic, and socket.io for other functions.
 
 # Diagram
+![diagram](./report_diagram.png)
 
 # Tasks
 ## Interface to insert and search data via forms
@@ -36,10 +37,23 @@ The server receives and returns data to clients, it also operate with database.
 The server is a little bit simple for implementing a product-level website. It lacks some functions that might be useful in a real product environment, such as verifying a user’s email and help a user to find password. The server is also insufficient in performance, there should be some cache layer between back-end logic code and database, such as redis, to increase the response speed for requests.
 
 ## MongoDB
+not implemented yet.
 
 ## Quality of Web solution
+### Challenges
+As mentioned above, the project is divided into 2 main parts: server side and client side. The biggest challenge of server side is the scalability and performance, which influence the quality of the whole website. The server should be able to handle thousands of concurrent requests, each upload of stories and events must be valid. On the other hand, the biggest challenge of client side is to combine multiple front-end techniques to build a user-friendly interface. How to organise the layout of each page and use suitable (Ajax, socket.io, etc) technique to transfer data inside it it not so easy.
+### Solution
+As mentioned above, we have different solutions for different scenarios:
+	* we divide data (messages) transferred inside the system into 2 main kinds: account management messages (login/register logics) and application messages (stories and events data). We use Ajax to transfer account data, and socket.io for other application data. Ajax requires developers to write redundant codes, and lacks flexibility, on the other hand socket.io is much more easy to use, takes less code, so is suitable to deal large amount data.
+	* due to event based model of Nodejs, all the callback functions are written in event based model. That means each asynchronous operation is called using events as notifications.
+	* // others in indexed db….
+### Requirements
+Basic requirement is to achieve a high-performance and user-friendly website.
+### Limitations
+Mentioned above 
 
 # Conclusion 
+// … 
 # Division of work
 All the members of the group contributed equally to the assignment solution. The solution was designed jointly and then each member lead the implementation of one specific part of the code, its associated documentation and contributed to the writing of the final report. In particular:
 	* Yicheng Liu is in charge of the development of Nodejs server and back-end logic
@@ -48,9 +62,16 @@ All the members of the group contributed equally to the assignment solution. The
 /The final document was jointly edited./
 
 # Extra Information
-A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
+	* A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
+	* Because Mongodb has not been implemented and deployed yet, so for now (temporally) data uploaded will be stored in server’s memory. Codes are well structured to leave some interfaces for later modification of database. 
 
 # Bibliography
+	* Nodejs doc: [Node.js](https://nodejs.org/en/)
+	* Bootstrap doc
+	* Indexed DB doc
+	* JS doc
+	* Ajax doc
+
 
 
 
