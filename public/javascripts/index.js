@@ -240,7 +240,6 @@ function PostSubmit() {
     }
 }
 
-
 var socket;
 function getNextStory(sid) {
     socket.emit('get next story', sid);
@@ -266,9 +265,9 @@ function socketOn() {
         var event = story.ename;
         var location = story.location;
         var text = story.text;
-        var image1 = story.imgs.i1;
-        var image2 = story.imgs.i2;
-        var image3 = story.imgs.i3;
+        var image1;
+        var image2;
+        var image3;
 
         var storyId = document.getElementById("story-id");
         var uname = document.getElementById("username");
@@ -296,9 +295,44 @@ function socketOn() {
         eventName.innerText = event;
         eventLocation.innerText = location;
         storyText.innerText = text;
-        img1.setAttribute("src", image1);
-        img2.setAttribute("src", image2);
-        img3.setAttribute("src", image3);
+
+        if (story.imgs == null){
+            img1.style.display = "none";
+            img2.style.display = "none";
+            img3.style.display = "none";
+        }
+        else if (story.imgs != null){
+            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                img1.style.display = "";
+                img2.style.display = "none";
+                img3.style.display = "none";
+                img1.setAttribute("src", image1);
+            }
+
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                img1.style.display = "";
+                img2.style.display = "";
+                img3.style.display = "none";
+                img1.setAttribute("src", image1);
+                img2.setAttribute("src", image2);
+            }
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                image3 = story.imgs.i3;
+                img1.style.display = "";
+                img2.style.display = "";
+                img3.style.display = "";
+                img1.setAttribute("src", image1);
+                img2.setAttribute("src", image2);
+                img3.setAttribute("src", image3);
+            }
+
+        }
+
 
         storyId_phone.innerText = storyid;
         uname_phone.innerText = username;
@@ -306,9 +340,44 @@ function socketOn() {
         eventName_phone.innerText = event;
         eventLocation_phone.innerText = location;
         storyText_phone.innerText = text;
-        img1_phone.setAttribute("src", image1);
-        img2_phone.setAttribute("src", image2);
-        img3_phone.setAttribute("src", image3);
+
+        if (story.imgs == null){
+            img1_phone.style.display = "none";
+            img2_phone.style.display = "none";
+            img3_phone.style.display = "none";
+        }
+
+        else if (story.imgs != null){
+            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "none";
+                img3_phone.style.display = "none";
+                img1_phone.setAttribute("src", image1);
+            }
+
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "";
+                img3_phone.style.display = "none";
+                img1_phone.setAttribute("src", image1);
+                img2_phone.setAttribute("src", image2);
+            }
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                image3 = story.imgs.i3;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "";
+                img3_phone.style.display = "";
+                img1_phone.setAttribute("src", image1);
+                img2_phone.setAttribute("src", image2);
+                img3_phone.setAttribute("src", image3);
+            }
+
+        }
 
     })
 
@@ -326,9 +395,9 @@ function socketOn() {
         var event = story.ename;
         var location = story.location;
         var text = story.text;
-        var image1 = story.imgs.i1;
-        var image2 = story.imgs.i2;
-        var image3 = story.imgs.i3;
+        var image1;
+        var image2;
+        var image3;
 
         var storyId = document.getElementById("story-id");
         var uname = document.getElementById("username");
@@ -356,9 +425,44 @@ function socketOn() {
         eventName.innerText = event;
         eventLocation.innerText = location;
         storyText.innerText = text;
-        img1.setAttribute("src", image1);
-        img2.setAttribute("src", image2);
-        img3.setAttribute("src", image3);
+
+        if (story.imgs == null){
+            img1.style.display = "none";
+            img2.style.display = "none";
+            img3.style.display = "none";
+        }
+
+        else if (story.imgs != null){
+            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                img1.style.display = "";
+                img2.style.display = "none";
+                img3.style.display = "none";
+                img1.setAttribute("src", image1);
+            }
+
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                img1.style.display = "";
+                img2.style.display = "";
+                img3.style.display = "none";
+                img1.setAttribute("src", image1);
+                img2.setAttribute("src", image2);
+            }
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                image3 = story.imgs.i3;
+                img1.style.display = "";
+                img2.style.display = "";
+                img3.style.display = "";
+                img1.setAttribute("src", image1);
+                img2.setAttribute("src", image2);
+                img3.setAttribute("src", image3);
+            }
+
+        }
 
         storyId_phone.innerText = storyid;
         uname_phone.innerText = username;
@@ -369,6 +473,44 @@ function socketOn() {
         img1_phone.setAttribute("src", image1);
         img2_phone.setAttribute("src", image2);
         img3_phone.setAttribute("src", image3);
+
+        if (story.imgs == null){
+            img1_phone.style.display = "none";
+            img2_phone.style.display = "none";
+            img3_phone.style.display = "none";
+        }
+
+        else if (story.imgs != null){
+            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "none";
+                img3_phone.style.display = "none";
+                img1_phone.setAttribute("src", image1);
+            }
+
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "";
+                img3_phone.style.display = "none";
+                img1_phone.setAttribute("src", image1);
+                img2_phone.setAttribute("src", image2);
+            }
+            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+                image1 = story.imgs.i1;
+                image2 = story.imgs.i2;
+                image3 = story.imgs.i3;
+                img1_phone.style.display = "";
+                img2_phone.style.display = "";
+                img3_phone.style.display = "";
+                img1_phone.setAttribute("src", image1);
+                img2_phone.setAttribute("src", image2);
+                img3_phone.setAttribute("src", image3);
+            }
+
+        }
 
     })
 
@@ -383,19 +525,16 @@ function showFirstStory(){
 function nextStory() {
     var storyid_emit = document.getElementById("story-id").innerText;
     getNextStory(storyid_emit);
-    console.log(storyid_emit);
 }
 
 function previousStory(){
     var storyid_emit = document.getElementById("story-id").innerText;
     getPreviousStory(storyid_emit);
-    console.log(storyid_emit);
 }
 
 function init() {
     console.log("entering the init() method");
     if (navigator.geolocation) {
-
         console.log(' Browser support geolocation ');
         navigator.geolocation.getCurrentPosition(show_map,handle_error ,null);
     } else {
@@ -404,34 +543,77 @@ function init() {
 
 }
 
-function show_map(position) {
+var map1;
+var map2;
+var marker1;
+var marker2;
+var infowindow1;
+var infowindow2;
+var latitude1;
+var longitude1;
+var latitude2;
+var longitude2;
 
+function show_map(position) {
     var coords = position.coords;
     var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+
     var myOptions = {
 
-        zoom : 14,
+        zoom : 16,
 
         center : latlng,
 
-        mapTypeId : google.maps.MapTypeId.ROADMAP
+        mapTypeId : google.maps.MapTypeId.ROADMAP,
+
+        mapTypeControl: false,
+
+        draggable: true,
+
+        animation: google.maps.Animation.DROP
+
     };
 
-    var map1;
     map1 = new google.maps.Map(document.getElementById("map"), myOptions);
+    map2 = new google.maps.Map(document.getElementById("map_phone"), myOptions);
 
-    var marker = new google.maps.Marker({
+    marker1 = new google.maps.Marker({
 
         position : latlng,
 
         map : map1
     });
 
-    var infowindow = new google.maps.InfoWindow({
-        content : "This is your location"
+    marker2 = new google.maps.Marker({
+
+        position: latlng,
+
+        map: map2
+    })
+
+    infowindow1 = new google.maps.InfoWindow({
+        content : "You are here."
     });
 
-    infowindow.open(map1, marker);
+    infowindow2 = new google.maps.InfoWindow({
+        content : "You are here."
+    });
+
+    infowindow1.open(map1, marker1);
+    infowindow2.open(map2, marker2);
+
+    google.maps.event.addListener(map1, 'click', function(event) {
+        latitude1 = event.latLng.lat().toFixed(14);
+        longitude1 = event.latLng.lng().toFixed(14);
+        placeMarker(event.latLng);
+    });
+
+    google.maps.event.addListener(map2, 'click', function(event) {
+        latitude2 = event.latLng.lat().toFixed(14);
+        longitude2 = event.latLng.lng().toFixed(14);
+        placeMarker(event.latLng);
+    });
+
 
 }
 
@@ -441,5 +623,77 @@ function handle_error(error){
         2:'Can not get location information',
         3:'Get information overtime'
     };
+
     console.log(errorTypes[error.code] + ":,Can not get your location");
+}
+
+function placeMarker(location) {
+
+    var marker3 = new google.maps.Marker({
+        position: location,
+        map: map1,
+    });
+
+    var marker4 = new google.maps.Marker({
+        position: location,
+        map: map2,
+    });
+
+    var infowindow3 = new google.maps.InfoWindow({
+        content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
+                + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn" onclick="getCoordinate1()">'
+    });
+
+    var infowindow4 = new google.maps.InfoWindow({
+        content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
+            + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn_phone" onclick="getCoordinate2()">'
+    });
+
+    infowindow3.open(map1, marker3);
+    infowindow4.open(map2, marker4);
+
+}
+
+function getCoordinate1() {
+    var latitudeValue1 = document.getElementById("latitude");
+    var longitudeValue1 = document.getElementById("longitude");
+    latitudeValue1.innerText = latitude1;
+    longitudeValue1.innerText = longitude1;
+}
+
+function getCoordinate2() {
+    var latitudeValue2 = document.getElementById("latitude_phone");
+    var longitudeValue2 = document.getElementById("longitude_phone");
+    latitudeValue2.innerText = latitude2;
+    longitudeValue2.innerText = longitude2;
+}
+
+function SearchStory(){
+
+    var keyword = document.getElementById("keywordSearch").value;
+    var date = document.getElementById("dateSearch").value;
+    var lat = document.getElementById("latitude").innerText;
+    var lng = document.getElementById("longitude").innerText;
+
+    if (keyword == "" && date == "" && lat == "" && lng == "") {
+        alert("At least fill one field!");
+        return;
+    }
+
+    var event = {
+        "name": keyword,
+        "datetime": date,
+        "location": {
+            "la": lat,
+            "lo": lng
+        }
+    }
+
+    var event_emit = JSON.stringify(event);
+
+    var socket = io();
+    socket.emit('search event', event_emit);
+    socket.on('search event', function (msg) {
+        var event_on = JSON.parse(msg);
+    })
 }

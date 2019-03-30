@@ -40,8 +40,7 @@ exports.getStoryByUser = function(msg) {
 exports.getNextStory = function (msg) {
     // these are just for test
     if(stories.length == 0) {
-        stories.push('{"sid": 0, "uid": 1, "text": "default test", "imgs": {' +
-            '"i1": "", "i2": "", "i3": "" },' +
+        stories.push('{"sid": 0, "uid": 1, "text": "default test", "imgs": null,' +
             '"datetime": "2019-03-25T17:36:54.809Z", "location": {' +
             '"lo": 1, "la": 2 }, "ename": "xxx", "newevent": true}');
     }

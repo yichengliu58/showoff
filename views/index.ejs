@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="bootstrap-4.3.1-dist/css//bootstrap.min.css">
     <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&sensor=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmLG_UuFMteDLB4pVVO7yR7CCAb6pTGjc"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 
   </head>
@@ -58,9 +58,9 @@
 
             <tr>
                 <td>
-                    <img id="img1" src="" width="150" height="150" />
-                    <img id="img2" src="" width="150" height="150" />
-                    <img id="img3" src="" width="150" height="150" />
+                    <img id="img1" src="" width="300" height="300" />
+                    <img id="img2" src="" width="300" height="300" />
+                    <img id="img3" src="" width="300" height="300" />
                 </td>
             </tr>
 
@@ -116,39 +116,33 @@
     <div id="search_frame" style="display:None">
         <form id="searchFrame" >
             <table id="searchTable" align="center">
-                <tr>
-                    <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <div id="map" style="width: 400px; height: 400px" align="center"></div>
-                    </td>
-                </tr>
+
                 <tr>
                     <td>Keyword:</td>
                     <td>
-                        <input type="text" id=="keywordSearch" name="keywordSearch" class="text_field">
+                        <input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
                     </td>
                     <td>Date:</td>
                     <td>
                         <input type="date" id="dateSearch" name="dateSearch" class="text_field">
                     </td>
-                    <td>Location:</td>
+                    <td></td>
                     <td>
-                        <select id="locationSelect" name="locationSelect" class="text_field">
-                            <option value='0'>AA</option>
-                            <option value='1'>BB</option>
-                        </select>
+                        <label for='location' id="latitude" class="label_input" style="display: none"></label>
+                        <label for='location' id="longitude" class="label_input" style="display: none"></label>
+                    </td>
+                    <td>
+                        <div id="map" style="width: 400px; height: 400px" align="center"></div>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
                     <td>
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons">
+                        <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
+                    </td>
+                    <td>
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStory()">
                     </td>
                     <td>
                         <input type="button" value="Close" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
@@ -164,6 +158,9 @@
         <form id="searchFrame" >
             <table id="searchTable" align="center">
                 <tr>
+                    <div id="map_phone" style="width: 300px; height: 200px" align="center"></div>
+                </tr>
+                <tr>
                     <td>Keyword:</td>
                     <td>
                         <input type="text" id=="keywordSearch" name="keywordSearch" style="float:left" class="text_field">
@@ -176,17 +173,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Location:</td>
+                    <td></td>
                     <td>
-                        <select id="locationSelect" name="locationSelect" style="float:left" class="text_field">
-                            <option value='0'>A</option>
-                            <option value='1'>B</option>
-                        </select>
+                    <td>
+                        <label for='location' id="latitude_phone" class="label_input" >latitude</label>
+                        <label for='location' id="longitude_phone" class="label_input" >longitude</label>
+                    </td>
                     </td>
                 </tr>
                 <tr>
                    <td></td>
                    <td>
+                        <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
                         <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons">
                         <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()" class="buttons">
                    </td>
