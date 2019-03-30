@@ -1,6 +1,6 @@
-var totalLength;
-var srcs = new Array();
-
+var totalLength; // amount of pictures user choose to upload
+var srcs = new Array(); // src of upload pictures
+/* global variables to store values which will be insert into tables */
 var storyidG;
 var usernameG;
 var dateG;
@@ -51,13 +51,17 @@ request.onupgradeneeded = function (event) {
     var objectStore;
     // create table story
     if(!db.objectStoreNames.contains('story')){
+        // set story id as key
         objectStore = db.createObjectStore('story',{keyPath:'sid'});
+        // set story id, time and location as index
         objectStore.createIndex('sidIndex', 'sid', {unique: true});
          objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
          objectStore.createIndex('locationIndex', 'location', {unique: false});
     }
     if(!db.objectStoreNames.contains('event')){
+        // set event name as key
         objectStore = db.createObjectStore('event', {keyPath:'ename'});
+        // set event name, time and location as index
         objectStore.createIndex('enameIndex', 'ename', {unique: true});
         objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
         objectStore.createIndex('locationIndex', 'location', {unique: false});
@@ -96,14 +100,13 @@ function  openPostWindow() {
 }
 
 $(document).ready(function(){
-//    insertStory(storyid,username,text,image,date,location);
     /* reset post modal when close */
     $('#postModal').on('hidden.bs.modal', function (){
         document.getElementById("postForm").reset();
         var elem = document.getElementById("showImg");
         elem.innerHTML = "";
     });
-
+    /* initialize dropdown list when open the post modal */
     $('#postModal').on('show.bs.modal', function (){
         var obj = document.getElementById('eventNameSelect')
         var socket = io();
@@ -116,10 +119,11 @@ $(document).ready(function(){
         });
     });
 
-    /* click upload file button*/
+    /* click upload file button */
     $("#uploadImgBtn").click(function(){
         var $input = $("#file");
 
+        /* show chosen pictures on screen */
         $input.on("change" , function(){
             var files = this.files;
             var length = files.length;
@@ -151,7 +155,7 @@ $(document).ready(function(){
             }
 
         })
-        /* click upload file button more than once*/
+        /* click upload file button more than once to add pictures */
         if(totalLength < 3){
             $input.removeAttr("id");
             var newInput = '<input class="uploadImg test" type="file" name="file" multiple id="file">';
@@ -187,8 +191,6 @@ function OnclickLogout() {
     sendAjaxQuery('/api/logout');
     event.preventDefault();
 }
-
-
 
 /* click search button */
 function  openSearchWindow() {
@@ -228,20 +230,22 @@ function PostSubmit() {
             approve = 1;
         }
     }
+    /* post successfully */
     if(approve == 0){
         var img = new Object();
         for (var i=1; i<srcs.length+1; i++){
 
             img["i"+i] = srcs[i-1];
         }
-        var newEvent;
+        var newEvent; // boolean, true means it is a new event, false means the event has already existed
         if(document.getElementById('eventNameType').value != ''){
             newEvent = true;
         }
         else{
             newEvent = false;
         }
-        var currentTime = new Date();
+        var currentTime = new Date(); // get the current time
+        /* data form which will be sent to server */
         var postMsg = {
             sid : 0,
             uid : "1",
@@ -260,8 +264,8 @@ function PostSubmit() {
         socket.on('put story', function(msg){
              s = JSON.parse(msg);
              if(s.code == 0){
-                $('#postModal').modal('hide');
-                srcs = [];
+                $('#postModal').modal('hide'); // close the modal when post successfully
+                srcs = []; // clear the array
                 // location.reload();
              }
         });
@@ -299,6 +303,7 @@ function socketOn() {
         var image3 = story.imgs.i3;
         image = story.imgs;
 
+        /* assign data value to global variables which get from server */
         storyidG = story.sid;
         usernameG = story.uid;
         dateG = story.datetime;
@@ -421,8 +426,8 @@ function showFirstStory(){
 function nextStory() {
     var storyid_emit = document.getElementById("story-id").innerText;
     getNextStory(storyid_emit);
-    insertStory(storyidG,usernameG,textG,imageG,dateG,locationG);
-    insertEvent(eventG,dateG,locationG);
+    insertStory(storyidG,usernameG,textG,imageG,dateG,locationG); // insert data into story table
+    insertEvent(eventG,dateG,locationG); // insert data into event table
 }
 
 function previousStory(){
