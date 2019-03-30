@@ -1,6 +1,15 @@
 var totalLength;
 var srcs = new Array();
 
+var storyidG;
+var usernameG;
+var dateG;
+var eventG;
+var locationG;
+var textG;
+var imageG;
+var eventG;
+
 /* register service worker */
 if ('serviceWorker' in navigator) {
 // run this code at loading time
@@ -26,14 +35,15 @@ var request = window.indexedDB.open('localDb',1);
 /* error */
 request.onerror = function (event) {
     console.log('open failed');
-}
+};
 
 /* success */
 var db;
 request.onsuccess = function (event) {
     db = request.result;
     console.log('open successfully');
-}
+
+};
 
 /* upgradeneeded */
 request.onupgradeneeded = function (event) {
@@ -41,18 +51,37 @@ request.onupgradeneeded = function (event) {
     var objectStore;
     // create table story
     if(!db.objectStoreNames.contains('story')){
-        objectStore = db.createObjectStore('story', {autoIncrement: true});
-        objectStore.createIndex('uid', 'uid', {unique: false});
-        objectStore.createIndex('datetime', 'datetime', {unique: false});
-        objectStore.createIndex('location', 'location', {unique: false});
+        objectStore = db.createObjectStore('story',{keyPath:'sid'});
+        objectStore.createIndex('sidIndex', 'sid', {unique: true});
+         objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
+         objectStore.createIndex('locationIndex', 'location', {unique: false});
+    }
+    if(!db.objectStoreNames.contains('event')){
+        objectStore = db.createObjectStore('event', {keyPath:'ename'});
+        objectStore.createIndex('enameIndex', 'ename', {unique: true});
+        objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
+        objectStore.createIndex('locationIndex', 'location', {unique: false});
+    }
+};
+
+/* insert data in story table */
+function insertStory(storyId, userId, storyContent, img, currentTime, currentLocation) {
+    var request = db.transaction(['story'], 'readwrite')
+        .objectStore('story')
+        .add({sid: storyId, uid: userId, text: storyContent, imgs: img, datetime: currentTime, location: currentLocation});
+    request.onsuccess = function (event) {
+        console.log('insert data successfully');
+    };
+    request.onerror = function (event) {
+        console.log('insert data failed');
     }
 }
 
-/* insert data */
-function insert(userId, storyContent, img, currentTime, currentLocation) {
-    var request = db.transaction(['story'], 'readwrite')
-        .objectStore('story')
-        .add({uid: userId, text: storyContent, imgs: img, datetime: currentTime, location: currentLocation});
+/* insert data in event table */
+function insertEvent(eventName, eventTime, eventLocation) {
+    var request = db.transaction(['event'], 'readwrite')
+        .objectStore('event')
+        .add({ename: eventName, datetime: eventTime, location: eventLocation});
     request.onsuccess = function (event) {
         console.log('insert data successfully');
     };
@@ -67,6 +96,7 @@ function  openPostWindow() {
 }
 
 $(document).ready(function(){
+//    insertStory(storyid,username,text,image,date,location);
     /* reset post modal when close */
     $('#postModal').on('hidden.bs.modal', function (){
         document.getElementById("postForm").reset();
@@ -235,8 +265,6 @@ function PostSubmit() {
                 // location.reload();
              }
         });
-
-        insert('1',document.getElementById('storyText').value, img, currentTime, 'A')
     }
 }
 
@@ -269,6 +297,16 @@ function socketOn() {
         var image1 = story.imgs.i1;
         var image2 = story.imgs.i2;
         var image3 = story.imgs.i3;
+        image = story.imgs;
+
+        storyidG = story.sid;
+        usernameG = story.uid;
+        dateG = story.datetime;
+        eventG = story.ename;
+        locationG = story.location;
+        textG = story.text;
+        imageG = story.imgs;
+        eventG = story.ename;
 
         var storyId = document.getElementById("story-id");
         var uname = document.getElementById("username");
@@ -383,7 +421,8 @@ function showFirstStory(){
 function nextStory() {
     var storyid_emit = document.getElementById("story-id").innerText;
     getNextStory(storyid_emit);
-    console.log(storyid_emit);
+    insertStory(storyidG,usernameG,textG,imageG,dateG,locationG);
+    insertEvent(eventG,dateG,locationG);
 }
 
 function previousStory(){
