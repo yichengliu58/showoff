@@ -735,7 +735,6 @@ function SearchStory(){
     }
 
     var event_emit = JSON.stringify(event);
-
     var socket = io();
     socket.emit('search event', event_emit);
     socket.on('search event', function (msg) {
