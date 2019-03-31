@@ -24,7 +24,6 @@ router.get('/chat', event.chatPage);
 
 router.io = function(io) {
     io.on('connection', function (socket) {
-        console.log("a user connected");
         event.setIO(io);
         event.setSocket(socket);
 
@@ -34,7 +33,7 @@ router.io = function(io) {
         socket.on('get next story', event.getNextStory);
         socket.on('get previous story', event.getPreviousStory);
         socket.on('get all events', event.getAllEvents);
-        socket.on('get events by location', event.getEventsByLocation);
+        socket.on('search event', event.searchEvents);
         socket.on('chat', event.chat);
     });
     return io;

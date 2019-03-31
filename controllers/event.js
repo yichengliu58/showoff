@@ -10,6 +10,20 @@ var events = [];
 // test code
 var idCount = 1;
 
+function toRad(d) {  return d * Math.PI / 180; }
+
+function getDisance(lat1, lng1, lat2, lng2) {
+    var radLat1 = toRad(lat1);
+    var radLat2 = toRad(lat2);
+    var deltaLat = radLat1 - radLat2;
+    var deltaLng = toRad(lng1) - toRad(lng2);
+
+    var dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(deltaLat / 2), 2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(deltaLng / 2), 2)));
+
+    return dis * 6378137;
+}
+
 exports.setIO = function(IO) {
     io = IO;
 };
@@ -26,7 +40,15 @@ exports.putStory = function(msg) {
     } else {
         // this should be db operation finally
         if(story.newevent == true) {
-            events.push(story.ename);
+            var event = {
+                "name": story.ename,
+                "datetime": story.datetime,
+                "location": {
+                    "la": story.location.la,
+                    "lo": story.location.lo
+                }
+            };
+            events.push(JSON.stringify(event));
         }
         story.sid = idCount++;
         stories.push(JSON.stringify(story));
@@ -73,12 +95,49 @@ exports.getAllEvents = function(msg) {
     io.emit('get all events', JSON.stringify(events));
 };
 
-exports.getEventsById = function(msg) {
+exports.searchEvents = function(msg) {
+    var cor = JSON.parse(msg);
+    // database op needed
+    var index = [];
+    var dindex = [];
+    for(i = 0; i < events.length; i++) {
+        var parsed_event = JSON.parse(events[i]);
+        var la = parsed_event.location.la;
+        var lo = parsed_event.location.lo;
+        var ename = parsed_event.name;
+        var datetime = parsed_event.datetime;
+        var dis = getDisance(la, lo, cor.location.la, cor.location.lo);
 
-};
+        if(ename === cor.name) {
+            index.push(i);
+            dindex.push(dis);
+            continue;
+        }
 
-exports.getEventsByLocation = function(msg) {
+        if(Math.abs(Date.parse(datetime) - Date.parse(cor.datetime)) < 24*60*60*1000) {
+            index.push(i);
+            dindex.push(dis);
+            continue;
+        }
 
+        if(dis <= 1000) {
+            index.push(i);
+            dindex.push(dis);
+            continue;
+        }
+    }
+
+    jsonIndex = [];
+    for(i = 0; i < index.length; i++) {
+        var oe = JSON.parse(events[index[i]]);
+        var e = {
+            "name": oe.name,
+            "datetime": oe.datetime,
+            "distance": dindex[i]
+        };
+        jsonIndex.push(e);
+    }
+    io.emit('search events', JSON.stringify(jsonIndex));
 };
 
 exports.chat = function(msg) {
