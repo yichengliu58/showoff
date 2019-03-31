@@ -13,8 +13,7 @@ var idCount = 1;
 function toRad(d) {  return d * Math.PI / 180; }
 
 function getDisance(lat1, lng1, lat2, lng2) {
-    if(lat1 === null || lng1 === null || lat2 === null || lng2 === null ||
-        lat1 < 0 || lng1 < 0 || lat2 < 0 || lng2 < 0) {
+    if(lat1 === "" || lng1 === "" || lat2 === "" || lng2 === "") {
         return 0;
     }
 
@@ -142,7 +141,7 @@ exports.searchEvents = function(msg) {
         };
         jsonIndex.push(e);
     }
-    io.emit('search events', JSON.stringify(jsonIndex));
+    io.emit('search event', JSON.stringify(jsonIndex));
 };
 
 exports.chat = function(msg) {

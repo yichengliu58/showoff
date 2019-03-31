@@ -64,7 +64,7 @@
                 </td>
             </tr>
 
-            <tr><td><label for='Location' id="location" class="label_input" style="float:left">Location</label></td></tr>
+            <tr><td><label for='Location' id="location" class="label_input" style="float:left; display: none">Location</label></td></tr>
 
             <tr>
                 <td>
@@ -99,7 +99,7 @@
                 </td>
             </tr>
 
-            <tr><td><label for='Location' id="location_phone" class="label_input" style="float:left">Location</label></td></tr>
+            <tr><td><label for='Location' id="location_phone" class="label_input" style="float:left; display: none">Location</label></td></tr>
 
             <tr>
                 <td>
@@ -118,7 +118,7 @@
             <table id="searchTable" align="center">
 
                 <tr>
-                    <td>Keyword:</td>
+                    <td>Name:</td>
                     <td>
                         <input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
                     </td>
@@ -133,6 +133,14 @@
                     </td>
                     <td>
                         <div id="map" style="width: 400px; height: 400px" align="center"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <textarea for='searchResult' id="result" class="text_field" readonly rows="5" cols="40" style="visibility: hidden"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -161,23 +169,23 @@
                     <div id="map_phone" style="width: 300px; height: 200px" align="center"></div>
                 </tr>
                 <tr>
-                    <td>Keyword:</td>
+                    <td>Name:</td>
                     <td>
-                        <input type="text" id=="keywordSearch" name="keywordSearch" style="float:left" class="text_field">
+                        <input type="text" id="keywordSearch_phone" name="keywordSearch" style="float:left" class="text_field">
                     </td>
                 </tr>
                 <tr>
                     <td>Date:</td>
                     <td>
-                        <input type="date" id="dateSearch" name="dateSearch" style="float:left" class="text_field">
+                        <input type="date" id="dateSearch_phone" name="dateSearch" style="float:left" class="text_field">
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                     <td>
-                        <label for='location' id="latitude_phone" class="label_input" >latitude</label>
-                        <label for='location' id="longitude_phone" class="label_input" >longitude</label>
+                        <label for='location' id="latitude_phone" class="label_input" style="display:none;"></label>
+                        <label for='location' id="longitude_phone" class="label_input" style="display:none;"></label>
                     </td>
                     </td>
                 </tr>
@@ -185,9 +193,15 @@
                    <td></td>
                    <td>
                         <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons">
+                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStoryPhone()">
                         <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()" class="buttons">
                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <textarea for='searchResult' id="result_phone" class="text_field" readonly rows="2" cols="20" style="float: left; visibility: hidden"></textarea>
+                    </td>
                 </tr>
             </table>
         </form>

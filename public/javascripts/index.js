@@ -108,13 +108,14 @@ $(document).ready(function(){
     });
     /* initialize dropdown list when open the post modal */
     $('#postModal').on('show.bs.modal', function (){
-        var obj = document.getElementById('eventNameSelect')
+        var obj = document.getElementById('eventNameSelect');
         var socket = io();
         socket.emit('get all events', '*');
         socket.on('get all events', function(msg){
             s = JSON.parse(msg);
             for (var i = 0; i < s.length; i++){
-                obj.options[i+1] = new Option(s[i],s[i]);
+                var a = JSON.parse(s[i]);
+                obj.options[i+1] = new Option(a.name, a.name);
             }
         });
     });
@@ -316,6 +317,8 @@ function socketOn() {
         var date = story.datetime;
         var event = story.ename;
         var location = story.location;
+        var lng = location.lo;
+        var lat = location.la;
         var text = story.text;
         var image1;
         var image2;
@@ -356,7 +359,7 @@ function socketOn() {
         uname.innerText = username;
         eventDate.innerText = date;
         eventName.innerText = event;
-        eventLocation.innerText = location;
+        eventLocation.innerText = lat + lng;
         storyText.innerText = text;
 
         if (story.imgs == null){
@@ -366,6 +369,7 @@ function socketOn() {
         }
         else if (story.imgs != null){
             if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+                console.log("4");
                 image1 = story.imgs.i1;
                 img1.style.display = "";
                 img2.style.display = "none";
@@ -382,6 +386,7 @@ function socketOn() {
                 img1.setAttribute("src", image1);
                 img2.setAttribute("src", image2);
             }
+
             else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
                 image1 = story.imgs.i1;
                 image2 = story.imgs.i2;
@@ -724,6 +729,7 @@ function getCoordinate1() {
     var longitudeValue1 = document.getElementById("longitude");
     latitudeValue1.innerText = latitude1;
     longitudeValue1.innerText = longitude1;
+    alert('You have selected a location. Click "Go" to search.');
 }
 
 function getCoordinate2() {
@@ -731,6 +737,7 @@ function getCoordinate2() {
     var longitudeValue2 = document.getElementById("longitude_phone");
     latitudeValue2.innerText = latitude2;
     longitudeValue2.innerText = longitude2;
+    alert('You have selected a location. Click "Go" to search.');
 }
 
 function SearchStory(){
@@ -759,5 +766,56 @@ function SearchStory(){
     socket.emit('search event', event_emit);
     socket.on('search event', function (msg) {
         var event_on = JSON.parse(msg);
+        var name;
+        var date;
+        var distance;
+        var result = document.getElementById("result");
+        for (var i = 0; i < event_on.length; i++){
+            name = event_on[i].name;
+            date = event_on[i].datetime;
+            distance = event_on[i].distance;
+            result.style.visibility = "visible";
+            result.innerText = "Event name: " + name + " date: " + date + " distance from here: " + distance + " meters";
+        }
+    })
+}
+
+function SearchStoryPhone(){
+
+    var keyword = document.getElementById("keywordSearch_phone").value;
+    var date = document.getElementById("dateSearch_phone").value;
+    var lat = document.getElementById("latitude_phone").innerText;
+    var lng = document.getElementById("longitude_phone").innerText;
+
+    if (keyword == "" && date == "" && lat == "" && lng == "") {
+        alert("At least fill one field!");
+        return;
+    }
+
+    var event = {
+        "name": keyword,
+        "datetime": date,
+        "location": {
+            "la": lat,
+            "lo": lng
+        }
+    }
+
+    var event_emit = JSON.stringify(event);
+    var socket = io();
+    socket.emit('search event', event_emit);
+    socket.on('search event', function (msg) {
+        var event_on = JSON.parse(msg);
+        var name;
+        var date;
+        var distance;
+        var result_phone = document.getElementById("result_phone");
+        for (var i = 0; i < event_on.length; i++){
+            name = event_on[i].name;
+            date = event_on[i].datetime;
+            distance = event_on[i].distance;
+            result_phone.style.visibility = "visible";
+            result_phone.innerText = "Event name: " + name + " date: " + date + " distance from here: " + distance + " meters";
+        }
     })
 }

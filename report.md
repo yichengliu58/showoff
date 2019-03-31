@@ -19,6 +19,7 @@ The design might not be suitable for large scale websites, as its performance is
 ### Challenges
 The biggest challenge is how to use Google map’s API. There should be a map on the web page for user to select a position, and the coordinate of the location should be uploaded to the server.
 ### Solution
+
 ### Requirements
 ### Limitations
 
