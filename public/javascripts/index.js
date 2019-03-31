@@ -245,30 +245,50 @@ function PostSubmit() {
             newEvent = false;
         }
         var currentTime = new Date(); // get the current time
-        /* data form which will be sent to server */
-        var postMsg = {
-            sid : 0,
-            uid : "1",
-            text : document.getElementById('storyText').value,
-            imgs : img,
-            datetime :  currentTime,
-            location : "A",
-            ename : document.getElementById('eventNameType').value,
-            newevent: newEvent,
-        };
 
-        var s = JSON.stringify(postMsg);
-        var socket = io();
-        socket.emit('put story', s);
+        /* get location */
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var latitudePost = position.coords.latitude;
+                    var longitudePost = position.coords.longitude;
 
-        socket.on('put story', function(msg){
-             s = JSON.parse(msg);
-             if(s.code == 0){
-                $('#postModal').modal('hide'); // close the modal when post successfully
-                srcs = []; // clear the array
-                // location.reload();
-             }
-        });
+                    /* data form which will be sent to server */
+                    var postMsg = {
+                        sid : 0,
+                        uid : "1",
+                        text : document.getElementById('storyText').value,
+                        imgs : img,
+                        datetime :  currentTime,
+                        location : {
+                            lo : longitudePost,
+                            la : latitudePost
+                        },
+                        ename : document.getElementById('eventNameType').value,
+                        newevent: newEvent,
+                    };
+
+                    var s = JSON.stringify(postMsg);
+                    var socket = io();
+                    socket.emit('put story', s);
+
+                    socket.on('put story', function(msg){
+                        s = JSON.parse(msg);
+                        if(s.code == 0){
+                            $('#postModal').modal('hide'); // close the modal when post successfully
+                            srcs = []; // clear the array
+                            // location.reload();
+                        }
+                    });
+                },
+                function (error) {
+                    var msg = error.code + '\n' + error.message;
+                }
+            );
+        }
+        else {
+            alert('get location failed');
+        }
     }
 }
 
