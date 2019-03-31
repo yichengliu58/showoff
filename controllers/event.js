@@ -13,6 +13,11 @@ var idCount = 1;
 function toRad(d) {  return d * Math.PI / 180; }
 
 function getDisance(lat1, lng1, lat2, lng2) {
+    if(lat1 === null || lng1 === null || lat2 === null || lng2 === null ||
+        lat1 < 0 || lng1 < 0 || lat2 < 0 || lng2 < 0) {
+        return 0;
+    }
+
     var radLat1 = toRad(lat1);
     var radLat2 = toRad(lat2);
     var deltaLat = radLat1 - radLat2;
