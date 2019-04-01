@@ -61,14 +61,14 @@ As mentioned above, the project is divided into 2 main parts: server side and cl
 As mentioned above, there are different solutions for different scenarios:
 	* Data (messages) transferred inside the system is divided into 2 main kinds: account management messages (login/register logics) and application messages (stories and events data). Ajax is used to transfer account data, and socket.io for other application data. Ajax requires developers to write redundant codes, and lacks flexibility. On the other hand, socket.io is much easier to use and it needs less code. So it is more suitable to deal with large amount of data.
 	* Due to event based model of Nodejs, all the callback functions are written in event based model. That means each asynchronous operation which is called uses events as notifications.
-	* // Others in indexed db….
+	* we only put data that is received from server into local IndexedDB, that guarantees local database is consistent with server’s, so data shown on the page is always the correct one
 ### Requirements
 Basic requirement is to achieve a high-performance and user-friendly website.
 ### Limitations
 Mentioned above 
 
 # Conclusion 
-// … 
+Progressive website techniques are useful, with the power to continue working when offline, it will provide a more user-friendly web services for users. It’s also a trend that more and more people like using light-weighted programming language as Nodejs to develop web service, which consumes less time and provide hight performance.
 # Division of work
 All the members of the group contributed equally to the assignment solution. The solution was designed jointly and then each member lead the implementation of one specific part of the code, its associated documentation and contributed to the writing of the final report. In particular:
 	* Yicheng Liu is in charge of the development of Nodejs server and back-end logic
@@ -79,13 +79,10 @@ All the members of the group contributed equally to the assignment solution. The
 # Extra Information
 	* A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
 	* Because Mongodb has not been implemented and deployed yet, so for now (temporally) data uploaded will be stored in server’s memory. Codes are well structured to leave some interfaces for later modification of database. 
+	* Locations will be required when users use the map to find an event, there will be a notification from the browser to ask users’ permission.
 
 # Bibliography
-	* Nodejs doc: [Node.js](https://nodejs.org/en/)
-	* Bootstrap doc
-	* Indexed DB doc
-	* JS doc
-	* Ajax doc
+
 
 
 
