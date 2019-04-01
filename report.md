@@ -19,9 +19,11 @@ The design might not be suitable for large scale websites, as its performance is
 ### Challenges
 The biggest challenge is how to use Google map’s API. There should be a map on the web page for user to select a position, and the coordinate of the location should be uploaded to the server.
 ### Solution
-
+We have applied for an api key of Google map api so that we can use google map on our website. With this key, we embedded a google map into the search window of our website. 
 ### Requirements
+With the support of google map, when users post their stories, this function is able to record the locations of users' stories. Besides, it allows the website to record the coordinates when users select a location on the map. With this solution, we can compute the distance between the user and the selected location , so we can provide the relevant events when a user search events near some certain locations.
 ### Limitations
+So far, this function must run online. Therefore, only those users who connect into internet can use the google map on our website. Besides, due to the unimplemented database, we can not show any events or stories on the map, which is not user friendly enough.  
 
 ## PWA - web worker
 ### Challenges
