@@ -171,6 +171,7 @@ $(document).ready(function(){
 
 })
 
+// send logout request on Ajax form
 function sendAjaxQuery(url, data) {
 
     $.ajax({
@@ -188,6 +189,7 @@ function sendAjaxQuery(url, data) {
     )
 }
 
+// the eventListener of logout button
 function OnclickLogout() {
     sendAjaxQuery('/api/logout');
     event.preventDefault();
@@ -293,25 +295,30 @@ function PostSubmit() {
     }
 }
 
+// send socket io request on 'next story' event to server
 var socket;
 function getNextStory(sid) {
     socket.emit('get next story', sid);
 }
 
+// send socket io request on 'previous story' event to server
 function getPreviousStory(sid) {
     socket.emit('get previous story', sid);
 }
 
+//receive socket io data from the server
 function socketOn() {
 
     socket = io();
     socket.on('get next story', function (msg) {
+        // parse the JSON data
         var story = JSON.parse(msg);
         if (story.hasOwnProperty("err")){
             alert("This is the last story!");
             return;
         }
 
+        // assgin data
         var storyid = story.sid;
         var username = story.uid;
         var date = story.datetime;
@@ -355,6 +362,7 @@ function socketOn() {
         var img2_phone = document.getElementById("img2_phone");
         var img3_phone = document.getElementById("img3_phone");
 
+        // set relevant labels and images
         storyId.innerText = storyid;
         uname.innerText = username;
         eventDate.innerText = date;
@@ -401,7 +409,7 @@ function socketOn() {
 
         }
 
-
+        // set relevant labels and images for phone frame
         storyId_phone.innerText = storyid;
         uname_phone.innerText = username;
         eventDate_phone.innerText = date;
@@ -451,12 +459,15 @@ function socketOn() {
 
     socket.on('get previous story', function (msg) {
 
+        // parse JSON data
         var story = JSON.parse(msg);
+
         if (story.hasOwnProperty("err")){
             alert("This is the first story!");
             return;
         }
 
+        // assign data
         var storyid = story.sid;
         var username = story.uid;
         var date = story.datetime;
@@ -487,6 +498,7 @@ function socketOn() {
         var img2_phone = document.getElementById("img2_phone");
         var img3_phone = document.getElementById("img3_phone");
 
+        // set relevant labels and images
         storyId.innerText = storyid;
         uname.innerText = username;
         eventDate.innerText = date;
@@ -532,6 +544,7 @@ function socketOn() {
 
         }
 
+        // set relevant labels and images for phone frame
         storyId_phone.innerText = storyid;
         uname_phone.innerText = username;
         eventDate_phone.innerText = date;
@@ -585,11 +598,13 @@ function socketOn() {
     showFirstStory();
 }
 
+// display the first story
 function showFirstStory(){
     getNextStory(-1);
     document.getElementById("story-id").style.display = "none";
 }
 
+// display next story
 function nextStory() {
     var storyid_emit = document.getElementById("story-id").innerText;
     getNextStory(storyid_emit);
@@ -597,11 +612,13 @@ function nextStory() {
     insertEvent(eventG,dateG,locationG); // insert data into event table
 }
 
+// display previous story
 function previousStory(){
     var storyid_emit = document.getElementById("story-id").innerText;
     getPreviousStory(storyid_emit);
 }
 
+// initialize the google map
 function init() {
     console.log("entering the init() method");
     if (navigator.geolocation) {
@@ -613,6 +630,7 @@ function init() {
 
 }
 
+// initialize the global variables
 var map1;
 var map2;
 var marker1;
@@ -624,10 +642,14 @@ var longitude1;
 var latitude2;
 var longitude2;
 
+// set the properties of google map
 function show_map(position) {
+
+    // get the current location
     var coords = position.coords;
     var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
 
+    // basis options of the map
     var myOptions = {
 
         zoom : 16,
@@ -644,6 +666,7 @@ function show_map(position) {
 
     };
 
+    // display on relevant widgets
     map1 = new google.maps.Map(document.getElementById("map"), myOptions);
     map2 = new google.maps.Map(document.getElementById("map_phone"), myOptions);
 
@@ -672,6 +695,7 @@ function show_map(position) {
     infowindow1.open(map1, marker1);
     infowindow2.open(map2, marker2);
 
+    // add eventListener for clicking any locations on the map
     google.maps.event.addListener(map1, 'click', function(event) {
         latitude1 = event.latLng.lat().toFixed(14);
         longitude1 = event.latLng.lng().toFixed(14);
@@ -684,9 +708,9 @@ function show_map(position) {
         placeMarker(event.latLng);
     });
 
-
 }
 
+// error handler
 function handle_error(error){
     var errorTypes={
         1:'The location service has been blocked',
@@ -697,6 +721,7 @@ function handle_error(error){
     console.log(errorTypes[error.code] + ":,Can not get your location");
 }
 
+// initialize markers on the map
 function placeMarker(location) {
 
     var marker3 = new google.maps.Marker({
@@ -724,6 +749,7 @@ function placeMarker(location) {
 
 }
 
+// get the relevant coordinates
 function getCoordinate1() {
     var latitudeValue1 = document.getElementById("latitude");
     var longitudeValue1 = document.getElementById("longitude");
@@ -732,6 +758,7 @@ function getCoordinate1() {
     alert('You have selected a location. Click "Go" to search.');
 }
 
+// get the relevant coordinates on the phone map
 function getCoordinate2() {
     var latitudeValue2 = document.getElementById("latitude_phone");
     var longitudeValue2 = document.getElementById("longitude_phone");
@@ -740,6 +767,8 @@ function getCoordinate2() {
     alert('You have selected a location. Click "Go" to search.');
 }
 
+// search relevant events
+// eventListener of 'search' button
 function SearchStory(){
 
     var keyword = document.getElementById("keywordSearch").value;
@@ -752,6 +781,7 @@ function SearchStory(){
         return;
     }
 
+    // compose a JSON data
     var event = {
         "name": keyword,
         "datetime": date,
@@ -761,6 +791,8 @@ function SearchStory(){
         }
     }
 
+    // send socket io request to server
+    // receive socket io data from server
     var event_emit = JSON.stringify(event);
     var socket = io();
     socket.emit('search event', event_emit);
@@ -780,6 +812,7 @@ function SearchStory(){
     })
 }
 
+// eventListener of phone 'search' button
 function SearchStoryPhone(){
 
     var keyword = document.getElementById("keywordSearch_phone").value;

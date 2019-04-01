@@ -1,3 +1,4 @@
+// send Ajax request to server
 function sendAjaxQuery(url, data) {
     $.ajax({
         url: url,
@@ -47,6 +48,7 @@ function sendAjaxQuery(url, data) {
 
 }
 
+// eventListener of 'login' button
 function onSubmit() {
 
     var formArray= $("form").serializeArray();
