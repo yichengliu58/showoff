@@ -1,13 +1,12 @@
 // event management
 jsonParser = require('../utils/jsonParser');
 respBuilder = require('../utils/respStatusCreator');
+db = require("../model/db");
 
 var io;
 var socket;
-var stories = [];
-var events = [];
 
-// test code
+// will not be used, not concurrently safe
 var idCount = 1;
 
 function toRad(d) {  return d * Math.PI / 180; }
@@ -52,11 +51,16 @@ exports.putStory = function(msg) {
                     "lo": story.location.lo
                 }
             };
-            events.push(JSON.stringify(event));
+            db.insert("events", event, null);
         }
         story.sid = idCount++;
-        stories.push(JSON.stringify(story));
-        io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
+        db.insert("stories", story, function (err, res) {
+            if(err) {
+                io.emit('put story', JSON.stringify(respBuilder.create("STATUS_DB_ERR")));
+            } else {
+                io.emit('put story', JSON.stringify(respBuilder.create("STATUS_OK")));
+            }
+        });
     }
 };
 
@@ -64,84 +68,67 @@ exports.getStoryByUser = function(msg) {
 };
 
 exports.getNextStory = function (msg) {
-    // these are just for test
-    if(stories.length == 0) {
-        stories.push('{"sid": 0, "uid": 1, "text": "default test", "imgs": null,' +
-            '"datetime": "2019-03-25T17:36:54.809Z", "location": {' +
-            '"lo": 1, "la": 2 }, "ename": "xxx", "newevent": true}');
-    }
-
-    var line = parseInt(msg);
-    if(line == NaN || line == -1) {
-        line = 0;
-    } else if(line == stories.length - 1) {
-        io.emit('get next story', JSON.stringify(respBuilder.create("STATUS_NO_STORY")));
-        return;
-    } else {
-        line += 1;
-    }
-
-    io.emit('get next story', stories[line]);
-    // end of test code
+    // will produce random one
+    db.randomSearchOne("stories", function (err, res) {
+        if(err) {
+            io.emit('get next story', JSON.stringify(""));
+        } else {
+            io.emit('get next story', JSON.stringify(res));
+        }
+    });
 };
 
 exports.getPreviousStory = function(msg) {
-    var line = parseInt(msg);
-    if(line == NaN || line <= 0 || line >= stories.length) {
-        io.emit('get previous story', JSON.stringify(respBuilder.create("STATUS_NO_STORY")));
-        return;
-    }
-    line -= 1;
-    io.emit('get previous story', stories[line]);
+    // will produce random one
+    db.randomSearchOne("stories", function (err, res) {
+        if(err) {
+            io.emit('get next story', JSON.stringify(""));
+        } else {
+            io.emit('get next story', JSON.stringify(res));
+        }
+    });
 };
 
 exports.getAllEvents = function(msg) {
-    io.emit('get all events', JSON.stringify(events));
+    db.search("events", null, function (err, res) {
+        if(err || res.length == 0) {
+            io.emit('get all events', JSON.stringify(""));
+        } else {
+            io.emit('get all events', JSON.stringify(res));
+        }
+    });
 };
 
 exports.searchEvents = function(msg) {
-    var cor = JSON.parse(msg);
-    // database op needed
-    var index = [];
-    var dindex = [];
-    for(i = 0; i < events.length; i++) {
-        var parsed_event = JSON.parse(events[i]);
-        var la = parsed_event.location.la;
-        var lo = parsed_event.location.lo;
-        var ename = parsed_event.name;
-        var datetime = parsed_event.datetime;
-        var dis = getDisance(la, lo, cor.location.la, cor.location.lo);
+    var arg = JSON.parse(msg);
 
-        if(ename === cor.name) {
-            index.push(i);
-            dindex.push(dis);
-            continue;
-        }
-
-        if(Math.abs(Date.parse(datetime) - Date.parse(cor.datetime)) < 24*60*60*1000) {
-            index.push(i);
-            dindex.push(dis);
-            continue;
-        }
-
-        if(dis <= 1000) {
-            index.push(i);
-            dindex.push(dis);
-            continue;
-        }
+    if(arg.name != null && arg.name.length != 0) {
+        db.search("events", {name: arg.name}, function (err, res) {
+            if(err) {
+                io.emit('search event', JSON.stringify(""));
+            } else {
+                io.emit('search event', JSON.stringify(res));
+            }
+        });
+    } else if(arg.datetime != null) {
+        d = Date.parse(arg.datetime);
+        ds = d.Foramt("yyyy-MM-dd");
+        db.search("events", {datetime: "/"+"ds"+"/"}, function (err, res) {
+            if(err) {
+                io.emit('search event', JSON.stringify(""));
+            } else {
+                io.emit('search event', JSON.stringify(res));
+            }
+        });
+    } else {
+        db.randomSearchOne("events", function (err, res) {
+            if(err) {
+                io.emit('search event', JSON.stringify(""));
+            } else {
+                io.emit('search event', JSON.stringify(res));
+            }
+        })
     }
-
-    jsonIndex = [];
-    for(i = 0; i < index.length; i++) {
-        var oe = JSON.parse(events[index[i]]);
-        var e = {
-            "name": oe.name,
-            "datetime": oe.datetime,
-            "distance": dindex[i]
-        };
-        jsonIndex.push(e);
-    }
-    io.emit('search event', JSON.stringify(jsonIndex));
 };
 
 exports.chat = function(msg) {
