@@ -7,22 +7,22 @@ function sendAjaxQuery(url, data) {
         type: 'POST',
         success: function (dataR){
             var ret = dataR;
-            var userName = document.getElementById('userName').value;
+            var username = document.getElementById('userName').value;
             var password = document.getElementById('password').value;
             var nameTip = document.getElementById('userNameTip');
             var passwordTip = document.getElementById('passwordTip');
-            if (userName == '' && password == ''){
+            if (username == '' && password == ''){
                 nameTip.innerText = "A username is required";
                 nameTip.style.color = "red";
                 passwordTip.innerText = "A password is required";
                 passwordTip.style.color = "red";
             }
-            else if (userName != '' && password == ''){
+            else if (username != '' && password == ''){
                 nameTip.innerText ='';
                 passwordTip.innerText = "A password is required";
                 passwordTip.style.color = "red";
             }
-            else if (userName == '' && password != ''){
+            else if (username == '' && password != ''){
                 passwordTip.innerText = '';
                 nameTip.innerText = "A username is required";
                 nameTip.style.color = "red";

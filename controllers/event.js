@@ -64,7 +64,14 @@ exports.putStory = function(msg) {
     }
 };
 
-exports.getStoryByUser = function(msg) {
+exports.getStoryByUser = function(username) {
+    db.search("stories", {uid: username}, function (err, res) {
+        if(err || res.length == 0) {
+            io.emit('get story by user', JSON.stringify(respBuilder.create("STATUS_DB_ERR")));
+        } else {
+            io.emit('get story by user', res);
+        }
+    });
 };
 
 exports.getNextStory = function (msg) {
@@ -73,7 +80,7 @@ exports.getNextStory = function (msg) {
         if(err) {
             io.emit('get next story', JSON.stringify(""));
         } else {
-            io.emit('get next story', JSON.stringify(res));
+            io.emit('get next story', res);
         }
     });
 };
@@ -84,7 +91,7 @@ exports.getPreviousStory = function(msg) {
         if(err) {
             io.emit('get next story', JSON.stringify(""));
         } else {
-            io.emit('get next story', JSON.stringify(res));
+            io.emit('get next story', res);
         }
     });
 };
@@ -94,7 +101,7 @@ exports.getAllEvents = function(msg) {
         if(err || res.length == 0) {
             io.emit('get all events', JSON.stringify(""));
         } else {
-            io.emit('get all events', JSON.stringify(res));
+            io.emit('get all events', res);
         }
     });
 };
@@ -103,31 +110,31 @@ exports.searchEvents = function(msg) {
     var arg = JSON.parse(msg);
 
     if(arg.name != null && arg.name.length != 0) {
-        db.search("events", {name: arg.name}, function (err, res) {
+        db.search("events", {name: {$regex:arg.name}}, function (err, res) {
             if(err) {
                 io.emit('search event', JSON.stringify(""));
             } else {
-                io.emit('search event', JSON.stringify(res));
+                io.emit('search event', res);
             }
         });
     } else if(arg.datetime != null) {
-        d = Date.parse(arg.datetime);
-        ds = d.Foramt("yyyy-MM-dd");
-        db.search("events", {datetime: "/"+"ds"+"/"}, function (err, res) {
+        db.search("events", {datetime: {$regex:arg.datetime}}, function (err, res) {
             if(err) {
                 io.emit('search event', JSON.stringify(""));
             } else {
-                io.emit('search event', JSON.stringify(res));
+                io.emit('search event', res);
             }
         });
     } else {
-        db.randomSearchOne("events", function (err, res) {
+        var cond = {$and: [{$where: '(this.location.la - '+arg.location.la+' <= 1000)'},
+                            {$where: '(this.location.lo - '+arg.location.lo+' <= 1000)'}]};
+        db.search("events", cond, function (err, res) {
             if(err) {
                 io.emit('search event', JSON.stringify(""));
             } else {
-                io.emit('search event', JSON.stringify(res));
+                io.emit('search event', res);
             }
-        })
+        });
     }
 };
 
