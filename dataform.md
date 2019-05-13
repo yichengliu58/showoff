@@ -73,6 +73,9 @@ socket event definition:
     * data uploaded: must give a story id
     * data downloaded: one json string contains previous one `story` OR `resp_status` if no more 
     story
+* 'get all stories': get all stories, with an array returned
+    * data uploaded: none
+    * data downloaded: an array containing all stories
 * 'get all events': get all events
     * data uploaded: doesn't matter, maybe a "*"
     * data downloaded: `returned_event` json string

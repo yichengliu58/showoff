@@ -17,6 +17,8 @@
     "jquery": "*",
     "morgan": "~1.9.0",
     "popper.js": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "mongodb": "*",
+    "mongoose": "*"
   }
 }

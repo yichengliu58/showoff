@@ -145,9 +145,10 @@ $(document).ready(function(){
         var socket = io();
         socket.emit('get all events', '*');
         socket.on('get all events', function(msg){
-            s = JSON.parse(msg);
+            //s = JSON.parse(msg);
+            s = msg;
             for (var i = 0; i < s.length; i++){
-                var a = JSON.parse(s[i]);
+                var a = s[i];
                 obj.options[i+1] = new Option(a.name, a.name);
             }
         });
@@ -736,7 +737,7 @@ function SearchStory(){
     var socket = io();
     socket.emit('search event', event_emit);
     socket.on('search event', function (msg) {
-        var event_on = JSON.parse(msg);
+        var event_on = msg;
         var name;
         var date;
         var distance;
