@@ -16,5 +16,6 @@ router.post("/api/register", register.register);
 router.get("/register", register.registerPage);
 // logout interface
 router.get("/api/logout", login.logout);
+router.get("/api/getUser", login.getUser);
 
 module.exports = router;

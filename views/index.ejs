@@ -21,10 +21,11 @@
     <div id="index_frame">
     <form id="welcome" onsubmit="OnSubmit()">
     <h1>SHOW Yourself OFF</h1>
-    <p>Welcome to Show-off</p>
+    <p><label for="userId" id="userId" class="label_input" style="float: contour"></label>, welcome to Show-off</p>
     <p><input type="button" value="post" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
        <input type="button" value="search" id="search" name="searchStory1" class="buttons" onclick="openSearchWindow()">
-       <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()">
+        <input type="button" value="my stories" id="myStories" name="myStories1" class="buttons" onclick="openMyStoriesWindow()">
+        <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()">
 
     </P>
     </form>
@@ -34,9 +35,11 @@
     <!-- Title for phone -->
     <div id="phone_frame">
     <h1>SHOW OFF</h1>
+        <p><label for="userId" id="userId" class="label_input" style="float: contour"></label>, welcome to Show-off</p>
     <p>
         <input type="button" value="post" id="post_phone" name="postStory2" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
         <input type="button" value="search" id="search_phone" name="searchStory2" class="buttons" onclick="openSearchWindow()">
+        <input type="button" value="my stories" id="myStories_phone" name="myStories2" class="buttons" onclick="openMyStoriesWindow()">
         <input type="button" value="log out" id="logout_phone" name="logout2" class="buttons" onclick="OnclickLogout()">
     </p>
     </div>

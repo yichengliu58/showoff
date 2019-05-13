@@ -9,6 +9,10 @@ exports.login = function (req, res) {
     return res.json(resp_status_creator.create("STATUS_OK"));
 };
 
+exports.getUser = function(req, res) {
+    return res.json(req.session.user);
+}
+
 exports.loginPage = function (req, res) {
     return res.render('login');
 };

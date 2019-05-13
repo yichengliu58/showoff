@@ -9,6 +9,9 @@ var locationG;
 var textG;
 var imageG;
 var eventG;
+var stories;
+var seq = 0;
+var ifMyStoriesWindow = 1;
 
 /* register service worker */
 if ('serviceWorker' in navigator) {
@@ -94,12 +97,42 @@ function insertEvent(eventName, eventTime, eventLocation) {
     }
 }
 
+/* read data from story table */
+function readAllStory() {
+    var objectStore = db.transaction(['story']).objectStore('story');
+    objectStore.openCursor().onsuccess = function (event) {
+        var cursor = event.target.result;
+        if (cursor){
+            return cursor;
+        }
+    }
+
+}
+
 /* open post modal */
 function  openPostWindow() {
     totalLength = 0;
 }
 
+function getUserName(url, data) {
+    $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        type: 'GET',
+        success: function (dataR){
+            document.getElementById('userId').innerHTML = dataR;
+        },
+        error: function (xhr, status, error) {
+            alert('Error: ' + error.message);
+
+        }
+    });
+}
+
 $(document).ready(function(){
+    getUserName('api/getUser', null);
+
     /* reset post modal when close */
     $('#postModal').on('hidden.bs.modal', function (){
         document.getElementById("postForm").reset();
@@ -210,6 +243,29 @@ function  closeSearchFrame() {
     document.getElementById("story_frame").style.display="";
     document.getElementById("story_frame_phone").style.display="";
 }
+var myStories;
+/* click my stories button */
+function  openMyStoriesWindow() {
+    if (ifMyStoriesWindow == 1){
+        document.getElementById('myStories').innerText = 'all stories';
+        document.getElementById('myStories_phone').innerText = 'all stories';
+        ifMyStoriesWindow = 0;
+        var socket = io();
+        socket.emit('get story by user', document.getElementById('userId'));
+        socket.on('get story by user', function(msg){
+            myStories = JSON.parse(msg);
+            showCurrentStory(myStories[0]);
+            seq = 0;
+        });
+    }
+    else{
+        document.getElementById('myStories').innerText = 'my stories';
+        document.getElementById('myStories_phone').innerText = 'my stories';
+        ifMyStoriesWindow = 1;
+        showCurrentStory(stories[0]);
+        seq = 0;
+    }
+}
 
 /* click post button in post modal */
 function PostSubmit() {
@@ -255,11 +311,10 @@ function PostSubmit() {
                 function (position) {
                     var latitudePost = position.coords.latitude;
                     var longitudePost = position.coords.longitude;
-
                     /* data form which will be sent to server */
                     var postMsg = {
                         sid : 0,
-                        uid : "1",
+                        uid : document.getElementById("userId").value,
                         text : document.getElementById('storyText').value,
                         imgs : img,
                         datetime :  currentTime,
@@ -296,306 +351,174 @@ function PostSubmit() {
 }
 
 // send socket io request on 'next story' event to server
-var socket;
-function getNextStory(sid) {
-    socket.emit('get next story', sid);
-}
+// var socket;
+// function getNextStory(sid) {
+//     socket.emit('get next story', sid);
+// }
+//
+// // send socket io request on 'previous story' event to server
+// function getPreviousStory(sid) {
+//     socket.emit('get previous story', sid);
+// }
 
-// send socket io request on 'previous story' event to server
-function getPreviousStory(sid) {
-    socket.emit('get previous story', sid);
+function showCurrentStory(story){
+    // assgin data
+    var storyid = story.sid;
+    var username = story.uid;
+    var date = story.datetime;
+    var event = story.ename;
+    var location = story.location;
+    var lng = location.lo;
+    var lat = location.la;
+    var text = story.text;
+    var image1;
+    var image2;
+    var image3;
+    image = story.imgs;
+
+    /* assign data value to global variables which get from server */
+    storyidG = story.sid;
+    usernameG = story.uid;
+    dateG = story.datetime;
+    eventG = story.ename;
+    locationG = story.location;
+    textG = story.text;
+    imageG = story.imgs;
+    eventG = story.ename;
+
+    var storyId = document.getElementById("story-id");
+    var uname = document.getElementById("username");
+    var eventDate = document.getElementById("date");
+    var eventName = document.getElementById("event");
+    var eventLocation = document.getElementById("location");
+    var storyText = document.getElementById("story_text");
+    var img1 = document.getElementById("img1");
+    var img2 = document.getElementById("img2");
+    var img3 = document.getElementById("img3");
+
+    var storyId_phone = document.getElementById("story-id_phone");
+    var uname_phone = document.getElementById("username_phone");
+    var eventDate_phone = document.getElementById("date_phone");
+    var eventName_phone = document.getElementById("event_phone");
+    var eventLocation_phone = document.getElementById("location_phone");
+    var storyText_phone = document.getElementById("story_text_phone");
+    var img1_phone = document.getElementById("img1_phone");
+    var img2_phone = document.getElementById("img2_phone");
+    var img3_phone = document.getElementById("img3_phone");
+
+    // set relevant labels and images
+    storyId.innerText = storyid;
+    uname.innerText = username;
+    eventDate.innerText = date;
+    eventName.innerText = event;
+    eventLocation.innerText = lat + lng;
+    storyText.innerText = text;
+
+    if (story.imgs == null){
+        img1.style.display = "none";
+        img2.style.display = "none";
+        img3.style.display = "none";
+    }
+    else if (story.imgs != null){
+        if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+            console.log("4");
+            image1 = story.imgs.i1;
+            img1.style.display = "";
+            img2.style.display = "none";
+            img3.style.display = "none";
+            img1.setAttribute("src", image1);
+        }
+
+        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+            image1 = story.imgs.i1;
+            image2 = story.imgs.i2;
+            img1.style.display = "";
+            img2.style.display = "";
+            img3.style.display = "none";
+            img1.setAttribute("src", image1);
+            img2.setAttribute("src", image2);
+        }
+
+        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+            image1 = story.imgs.i1;
+            image2 = story.imgs.i2;
+            image3 = story.imgs.i3;
+            img1.style.display = "";
+            img2.style.display = "";
+            img3.style.display = "";
+            img1.setAttribute("src", image1);
+            img2.setAttribute("src", image2);
+            img3.setAttribute("src", image3);
+        }
+
+    }
+
+    // set relevant labels and images for phone frame
+    storyId_phone.innerText = storyid;
+    uname_phone.innerText = username;
+    eventDate_phone.innerText = date;
+    eventName_phone.innerText = event;
+    eventLocation_phone.innerText = location;
+    storyText_phone.innerText = text;
+
+    if (story.imgs == null){
+        img1_phone.style.display = "none";
+        img2_phone.style.display = "none";
+        img3_phone.style.display = "none";
+    }
+
+    else if (story.imgs != null){
+        if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
+            image1 = story.imgs.i1;
+            img1_phone.style.display = "";
+            img2_phone.style.display = "none";
+            img3_phone.style.display = "none";
+            img1_phone.setAttribute("src", image1);
+        }
+
+        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
+            image1 = story.imgs.i1;
+            image2 = story.imgs.i2;
+            img1_phone.style.display = "";
+            img2_phone.style.display = "";
+            img3_phone.style.display = "none";
+            img1_phone.setAttribute("src", image1);
+            img2_phone.setAttribute("src", image2);
+        }
+        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
+            image1 = story.imgs.i1;
+            image2 = story.imgs.i2;
+            image3 = story.imgs.i3;
+            img1_phone.style.display = "";
+            img2_phone.style.display = "";
+            img3_phone.style.display = "";
+            img1_phone.setAttribute("src", image1);
+            img2_phone.setAttribute("src", image2);
+            img3_phone.setAttribute("src", image3);
+        }
+
+    }
+
 }
 
 //receive socket io data from the server
 function socketOn() {
 
     socket = io();
-    socket.on('get next story', function (msg) {
+    socket.on('get all stories', function (msg) {
         // parse the JSON data
         var story = JSON.parse(msg);
-        if (story.hasOwnProperty("err")){
-            alert("This is the last story!");
-            return;
+        for (var i = 0; i < story.length; i++) {
+            insertStory(story[i].sid, story[i].uid, story[i].text, story[i].imgs, story[i].datetime, story[i].location); // insert data into story table
         }
-
-        // assgin data
-        var storyid = story.sid;
-        var username = story.uid;
-        var date = story.datetime;
-        var event = story.ename;
-        var location = story.location;
-        var lng = location.lo;
-        var lat = location.la;
-        var text = story.text;
-        var image1;
-        var image2;
-        var image3;
-        image = story.imgs;
-
-        /* assign data value to global variables which get from server */
-        storyidG = story.sid;
-        usernameG = story.uid;
-        dateG = story.datetime;
-        eventG = story.ename;
-        locationG = story.location;
-        textG = story.text;
-        imageG = story.imgs;
-        eventG = story.ename;
-
-        var storyId = document.getElementById("story-id");
-        var uname = document.getElementById("username");
-        var eventDate = document.getElementById("date");
-        var eventName = document.getElementById("event");
-        var eventLocation = document.getElementById("location");
-        var storyText = document.getElementById("story_text");
-        var img1 = document.getElementById("img1");
-        var img2 = document.getElementById("img2");
-        var img3 = document.getElementById("img3");
-
-        var storyId_phone = document.getElementById("story-id_phone");
-        var uname_phone = document.getElementById("username_phone");
-        var eventDate_phone = document.getElementById("date_phone");
-        var eventName_phone = document.getElementById("event_phone");
-        var eventLocation_phone = document.getElementById("location_phone");
-        var storyText_phone = document.getElementById("story_text_phone");
-        var img1_phone = document.getElementById("img1_phone");
-        var img2_phone = document.getElementById("img2_phone");
-        var img3_phone = document.getElementById("img3_phone");
-
-        // set relevant labels and images
-        storyId.innerText = storyid;
-        uname.innerText = username;
-        eventDate.innerText = date;
-        eventName.innerText = event;
-        eventLocation.innerText = lat + lng;
-        storyText.innerText = text;
-
-        if (story.imgs == null){
-            img1.style.display = "none";
-            img2.style.display = "none";
-            img3.style.display = "none";
-        }
-        else if (story.imgs != null){
-            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-                console.log("4");
-                image1 = story.imgs.i1;
-                img1.style.display = "";
-                img2.style.display = "none";
-                img3.style.display = "none";
-                img1.setAttribute("src", image1);
-            }
-
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                img1.style.display = "";
-                img2.style.display = "";
-                img3.style.display = "none";
-                img1.setAttribute("src", image1);
-                img2.setAttribute("src", image2);
-            }
-
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                image3 = story.imgs.i3;
-                img1.style.display = "";
-                img2.style.display = "";
-                img3.style.display = "";
-                img1.setAttribute("src", image1);
-                img2.setAttribute("src", image2);
-                img3.setAttribute("src", image3);
-            }
-
-        }
-
-        // set relevant labels and images for phone frame
-        storyId_phone.innerText = storyid;
-        uname_phone.innerText = username;
-        eventDate_phone.innerText = date;
-        eventName_phone.innerText = event;
-        eventLocation_phone.innerText = location;
-        storyText_phone.innerText = text;
-
-        if (story.imgs == null){
-            img1_phone.style.display = "none";
-            img2_phone.style.display = "none";
-            img3_phone.style.display = "none";
-        }
-
-        else if (story.imgs != null){
-            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "none";
-                img3_phone.style.display = "none";
-                img1_phone.setAttribute("src", image1);
-            }
-
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "";
-                img3_phone.style.display = "none";
-                img1_phone.setAttribute("src", image1);
-                img2_phone.setAttribute("src", image2);
-            }
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                image3 = story.imgs.i3;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "";
-                img3_phone.style.display = "";
-                img1_phone.setAttribute("src", image1);
-                img2_phone.setAttribute("src", image2);
-                img3_phone.setAttribute("src", image3);
-            }
-
-        }
-
     })
+        stories = readAllStory();
 
-    socket.on('get previous story', function (msg) {
-
-        // parse JSON data
-        var story = JSON.parse(msg);
-
-        if (story.hasOwnProperty("err")){
-            alert("This is the first story!");
-            return;
-        }
-
-        // assign data
-        var storyid = story.sid;
-        var username = story.uid;
-        var date = story.datetime;
-        var event = story.ename;
-        var location = story.location;
-        var text = story.text;
-        var image1;
-        var image2;
-        var image3;
-
-        var storyId = document.getElementById("story-id");
-        var uname = document.getElementById("username");
-        var eventDate = document.getElementById("date");
-        var eventName = document.getElementById("event");
-        var eventLocation = document.getElementById("location");
-        var storyText = document.getElementById("story_text");
-        var img1 = document.getElementById("img1");
-        var img2 = document.getElementById("img2");
-        var img3 = document.getElementById("img3");
-
-        var storyId_phone = document.getElementById("story-id_phone");
-        var uname_phone = document.getElementById("username_phone");
-        var eventDate_phone = document.getElementById("date_phone");
-        var eventName_phone = document.getElementById("event_phone");
-        var eventLocation_phone = document.getElementById("location_phone");
-        var storyText_phone = document.getElementById("story_text_phone");
-        var img1_phone = document.getElementById("img1_phone");
-        var img2_phone = document.getElementById("img2_phone");
-        var img3_phone = document.getElementById("img3_phone");
-
-        // set relevant labels and images
-        storyId.innerText = storyid;
-        uname.innerText = username;
-        eventDate.innerText = date;
-        eventName.innerText = event;
-        eventLocation.innerText = location;
-        storyText.innerText = text;
-
-        if (story.imgs == null){
-            img1.style.display = "none";
-            img2.style.display = "none";
-            img3.style.display = "none";
-        }
-
-        else if (story.imgs != null){
-            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                img1.style.display = "";
-                img2.style.display = "none";
-                img3.style.display = "none";
-                img1.setAttribute("src", image1);
-            }
-
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                img1.style.display = "";
-                img2.style.display = "";
-                img3.style.display = "none";
-                img1.setAttribute("src", image1);
-                img2.setAttribute("src", image2);
-            }
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                image3 = story.imgs.i3;
-                img1.style.display = "";
-                img2.style.display = "";
-                img3.style.display = "";
-                img1.setAttribute("src", image1);
-                img2.setAttribute("src", image2);
-                img3.setAttribute("src", image3);
-            }
-
-        }
-
-        // set relevant labels and images for phone frame
-        storyId_phone.innerText = storyid;
-        uname_phone.innerText = username;
-        eventDate_phone.innerText = date;
-        eventName_phone.innerText = event;
-        eventLocation_phone.innerText = location;
-        storyText_phone.innerText = text;
-        img1_phone.setAttribute("src", image1);
-        img2_phone.setAttribute("src", image2);
-        img3_phone.setAttribute("src", image3);
-
-        if (story.imgs == null){
-            img1_phone.style.display = "none";
-            img2_phone.style.display = "none";
-            img3_phone.style.display = "none";
-        }
-
-        else if (story.imgs != null){
-            if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "none";
-                img3_phone.style.display = "none";
-                img1_phone.setAttribute("src", image1);
-            }
-
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "";
-                img3_phone.style.display = "none";
-                img1_phone.setAttribute("src", image1);
-                img2_phone.setAttribute("src", image2);
-            }
-            else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
-                image1 = story.imgs.i1;
-                image2 = story.imgs.i2;
-                image3 = story.imgs.i3;
-                img1_phone.style.display = "";
-                img2_phone.style.display = "";
-                img3_phone.style.display = "";
-                img1_phone.setAttribute("src", image1);
-                img2_phone.setAttribute("src", image2);
-                img3_phone.setAttribute("src", image3);
-            }
-
-        }
-
-    })
-
-    showFirstStory();
+        // if (story.hasOwnProperty("err")){
+        //     alert("This is the last story!");
+        //     return;
+        // }
+        showCurrentStory(stories[0]);
 }
 
 // display the first story
@@ -606,17 +529,33 @@ function showFirstStory(){
 
 // display next story
 function nextStory() {
-    var storyid_emit = document.getElementById("story-id").innerText;
-    getNextStory(storyid_emit);
-    insertStory(storyidG,usernameG,textG,imageG,dateG,locationG); // insert data into story table
-    insertEvent(eventG,dateG,locationG); // insert data into event table
+    seq += 1;
+    if (ifMyStoriesWindow == 1){
+        showCurrentStory(stories[seq]);
+    }
+    else {
+        showCurrentStory(myStories[seq]);
+    }
+    // var storyid_emit = document.getElementById("story-id").innerText;
+    // getNextStory(storyid_emit);
+    // insertStory(storyidG,usernameG,textG,imageG,dateG,locationG); // insert data into story table
+    // insertEvent(eventG,dateG,locationG); // insert data into event table
 }
 
 // display previous story
 function previousStory(){
-    var storyid_emit = document.getElementById("story-id").innerText;
-    getPreviousStory(storyid_emit);
+    seq -= 1;
+    if (ifMyStoriesWindow == 1){
+        showCurrentStory(stories[seq]);
+    }
+    else {
+        showCurrentStory(myStories[seq]);
+    }
+
+    // var storyid_emit = document.getElementById("story-id").innerText;
+    // getPreviousStory(storyid_emit);
 }
+
 
 // initialize the google map
 function init() {
