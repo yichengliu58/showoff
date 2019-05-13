@@ -1,8 +1,12 @@
-// register logic
 var db = require('../../model/db');
 var resp_status_creator = require('../../utils/respStatusCreator.js');
 
-// login interface handler function
+/**
+ * register logic, use db to insert new record
+ * @param req request object in nodejs
+ * @param res response object in nodejs
+ * @return result of register
+ */
 exports.register = function (req, res) {
     db.search("users", {username: req.body.username}, function (err, r) {
         if(err || r.length == 0) {
@@ -20,6 +24,12 @@ exports.register = function (req, res) {
     });
 };
 
+/**
+ * register page
+ * @param req request object in nodejs
+ * @param res response object in nodejs
+ * @return result of rendering
+ */
 exports.registerPage = function (req, res) {
     return res.render('register');
 };

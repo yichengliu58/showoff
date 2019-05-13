@@ -106,6 +106,16 @@ exports.getAllEvents = function(msg) {
     });
 };
 
+exports.getAllStories = function(msg) {
+    db.search("stories", null, function (err, res) {
+        if(err || res.length == 0) {
+            io.emit('get all stories', JSON.stringify(""));
+        } else {
+            io.emit('get all stories', res);
+        }
+    });
+};
+
 exports.searchEvents = function(msg) {
     var arg = JSON.parse(msg);
 

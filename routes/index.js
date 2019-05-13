@@ -22,6 +22,11 @@ router.get('/homepage', function(req, res, next) {
 // event operations
 router.get('/chat', event.chatPage);
 
+/**
+ * set socket events
+ * @param io socket object
+ * @return io socket object
+ */
 router.io = function(io) {
     io.on('connection', function (socket) {
         event.setIO(io);
@@ -33,6 +38,7 @@ router.io = function(io) {
         socket.on('get next story', event.getNextStory);
         socket.on('get previous story', event.getPreviousStory);
         socket.on('get all events', event.getAllEvents);
+        socket.on('get all stories', event.getAllStories);
         socket.on('search event', event.searchEvents);
         socket.on('chat', event.chat);
     });

@@ -1,4 +1,8 @@
-// util function to parse a json string
+/**
+ * utility function for parsing a json string
+ * @param json string to be parsed
+ * @return parsed object
+ */
 exports.parseJSON = function(rawJson) {
     var res;
     try {
