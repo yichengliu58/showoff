@@ -53,7 +53,6 @@ exports.putStory = function(msg) {
             };
             db.insert("events", event, null);
         }
-        story.sid = idCount++;
         db.insert("stories", story, function (err, res) {
             if(err) {
                 io.emit('put story', JSON.stringify(respBuilder.create("STATUS_DB_ERR")));

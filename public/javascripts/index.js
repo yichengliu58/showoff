@@ -58,6 +58,7 @@ request.onupgradeneeded = function (event) {
         objectStore = db.createObjectStore('story',{keyPath:'sid'});
         // set story id, time and location as index
         objectStore.createIndex('sidIndex', 'sid', {unique: true});
+        objectStore.createIndex('uidIndex', 'uid', {unique: false});
          objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
          objectStore.createIndex('locationIndex', 'location', {unique: false});
     }
@@ -72,10 +73,11 @@ request.onupgradeneeded = function (event) {
 };
 
 /* insert data in story table */
-function insertStory(storyId, userId, storyContent, img, currentTime, currentLocation) {
+function insertStory(storyId, userId, storyContent, img, currentTime, currentLocation, ename) {
     var request = db.transaction(['story'], 'readwrite')
         .objectStore('story')
-        .add({sid: storyId, uid: userId, text: storyContent, imgs: img, datetime: currentTime, location: currentLocation});
+        .add({sid: storyId, uid: userId, text: storyContent, imgs: img,
+                datetime: currentTime, location: currentLocation, eventname: ename});
     request.onsuccess = function (event) {
         console.log('insert data successfully');
     };
@@ -97,16 +99,20 @@ function insertEvent(eventName, eventTime, eventLocation) {
     }
 }
 
-/* read data from story table */
-function readAllStory() {
-    var objectStore = db.transaction(['story']).objectStore('story');
-    objectStore.openCursor().onsuccess = function (event) {
-        var cursor = event.target.result;
-        if (cursor){
-            return cursor;
+var mystories = [];
+/* get stories by user id */
+function getStoryByUser(db,storeName,userid,callback) {
+    var transaction = db.transaction(storeName);
+    var store = transaction.objectStore(storeName);
+    var index = store.index('uidIndex');
+    index.openCursor().onsuccess = function (e) {
+        var cursor = e.target.result;
+        if(cursor) {
+            mystories.push(cursor.value);
+            cursor.continue();
         }
-    }
-
+        callback(mystories);
+    };
 }
 
 /* open post modal */
@@ -247,23 +253,25 @@ function  closeSearchFrame() {
 var myStories;
 /* click my stories button */
 function  openMyStoriesWindow() {
+    var userid = document.getElementById('userId').innerText;
     if (ifMyStoriesWindow == 1){
-        document.getElementById('myStories').innerText = 'all stories';
-        document.getElementById('myStories_phone').innerText = 'all stories';
+        document.getElementById('myStories').value = 'all stories';
+        document.getElementById('myStories_phone').value = 'all stories';
         ifMyStoriesWindow = 0;
-        var socket = io();
-        socket.emit('get story by user', document.getElementById('userId'));
-        socket.on('get story by user', function(msg){
-            myStories = JSON.parse(msg);
-            showCurrentStory(myStories[0]);
+        getStoryByUser(db,'story',userid,function (c) {
+            if(c.length == 0) {
+                alert("You haven't posted any story");
+                return;
+            }
+            showCurrentStory(mystories[0], 2);
             seq = 0;
         });
     }
     else{
-        document.getElementById('myStories').innerText = 'my stories';
-        document.getElementById('myStories_phone').innerText = 'my stories';
+        document.getElementById('myStories').value = 'my stories';
+        document.getElementById('myStories_phone').value = 'my stories';
         ifMyStoriesWindow = 1;
-        showCurrentStory(stories[0]);
+        showCurrentStory(allstories[0], 2);
         seq = 0;
     }
 }
@@ -315,7 +323,7 @@ function PostSubmit() {
                     /* data form which will be sent to server */
                     var postMsg = {
                         sid : 0,
-                        uid : document.getElementById("userId").value,
+                        uid : document.getElementById("userId").innerText,
                         text : document.getElementById('storyText').value,
                         imgs : img,
                         datetime :  currentTime,
@@ -323,7 +331,9 @@ function PostSubmit() {
                             lo : longitudePost,
                             la : latitudePost
                         },
-                        ename : document.getElementById('eventNameType').value,
+                        ename : document.getElementById('eventNameType').value ?
+                                document.getElementById('eventNameType').value :
+                                document.getElementById('eventNameSelect').value,
                         newevent: newEvent,
                     };
 
@@ -362,12 +372,19 @@ function PostSubmit() {
 //     socket.emit('get previous story', sid);
 // }
 
-function showCurrentStory(story){
+function showCurrentStory(story, n){
+    if(n == 1) {
+        alert("This is the last");
+        return;
+    } else if(n == 0) {
+        alert("This is the first");
+        return;
+    }
     // assgin data
     var storyid = story.sid;
     var username = story.uid;
     var date = story.datetime;
-    var event = story.ename;
+    var event = story.eventname;
     var location = story.location;
     var lng = location.lo;
     var lat = location.la;
@@ -387,7 +404,6 @@ function showCurrentStory(story){
     imageG = story.imgs;
     eventG = story.ename;
 
-    var storyId = document.getElementById("story-id");
     var uname = document.getElementById("username");
     var eventDate = document.getElementById("date");
     var eventName = document.getElementById("event");
@@ -397,7 +413,6 @@ function showCurrentStory(story){
     var img2 = document.getElementById("img2");
     var img3 = document.getElementById("img3");
 
-    var storyId_phone = document.getElementById("story-id_phone");
     var uname_phone = document.getElementById("username_phone");
     var eventDate_phone = document.getElementById("date_phone");
     var eventName_phone = document.getElementById("event_phone");
@@ -408,7 +423,6 @@ function showCurrentStory(story){
     var img3_phone = document.getElementById("img3_phone");
 
     // set relevant labels and images
-    storyId.innerText = storyid;
     uname.innerText = username;
     eventDate.innerText = date;
     eventName.innerText = event;
@@ -422,7 +436,6 @@ function showCurrentStory(story){
     }
     else if (story.imgs != null){
         if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-            console.log("4");
             image1 = story.imgs.i1;
             img1.style.display = "";
             img2.style.display = "none";
@@ -455,7 +468,6 @@ function showCurrentStory(story){
     }
 
     // set relevant labels and images for phone frame
-    storyId_phone.innerText = storyid;
     uname_phone.innerText = username;
     eventDate_phone.innerText = date;
     eventName_phone.innerText = event;
@@ -502,24 +514,40 @@ function showCurrentStory(story){
 
 }
 
+var allstories = [];
+
+/* read data from story table */
+function initCursor(callback) {
+    var objectStore = db.transaction(['story']).objectStore('story');
+    var req = objectStore.openCursor();
+
+    req.onsuccess = function (ev) {
+        var cursor = ev.target.result;
+        if(cursor) {
+            allstories.push(cursor.value);
+            cursor.continue();
+        }
+        callback(allstories);
+    };
+}
+
 //receive socket io data from the server
 function socketOn() {
 
     socket = io();
-    socket.on('get all stories', function (msg) {
-        // parse the JSON data
-        var story = JSON.parse(msg);
-        for (var i = 0; i < story.length; i++) {
-            insertStory(story[i].sid, story[i].uid, story[i].text, story[i].imgs, story[i].datetime, story[i].location); // insert data into story table
-        }
-    })
-        stories = readAllStory();
+    socket.emit('get all stories', "x");
 
-        // if (story.hasOwnProperty("err")){
-        //     alert("This is the last story!");
-        //     return;
-        // }
-        showCurrentStory(stories[0]);
+    socket.on('get all stories', function (msg) {
+        var story = msg;
+        for (var i = 0; i < story.length; i++) {
+            insertStory(story[i]._id, story[i].uid, story[i].text, story[i].imgs,
+                        story[i].datetime, story[i].location, story[i].ename);
+        }
+
+        initCursor(function (c) {
+            showCurrentStory(c[0], 2);
+        });
+    });
 }
 
 // display the first story
@@ -532,10 +560,20 @@ function showFirstStory(){
 function nextStory() {
     seq += 1;
     if (ifMyStoriesWindow == 1){
-        showCurrentStory(stories[seq]);
+        if(seq >= allstories.length) {
+            seq -= 1;
+            showCurrentStory(allstories[seq], 1);
+        } else {
+            showCurrentStory(allstories[seq], 2);
+        }
     }
     else {
-        showCurrentStory(myStories[seq]);
+        if(seq >= mystories.length) {
+            seq -= 1;
+            showCurrentStory(mystories[seq], 1);
+        } else {
+            showCurrentStory(mystories[seq], 2);
+        }
     }
     // var storyid_emit = document.getElementById("story-id").innerText;
     // getNextStory(storyid_emit);
@@ -547,10 +585,20 @@ function nextStory() {
 function previousStory(){
     seq -= 1;
     if (ifMyStoriesWindow == 1){
-        showCurrentStory(stories[seq]);
+        if(seq < 0) {
+            seq += 1;
+            showCurrentStory(allstories[seq], 0);
+        } else {
+            showCurrentStory(allstories[seq], 2);
+        }
     }
     else {
-        showCurrentStory(myStories[seq]);
+        if(seq < 0) {
+            seq += 1;
+            showCurrentStory(mystories[seq], 0);
+        } else {
+            showCurrentStory(mystories[seq], 2);
+        }
     }
 
     // var storyid_emit = document.getElementById("story-id").innerText;
