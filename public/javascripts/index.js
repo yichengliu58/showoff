@@ -238,25 +238,20 @@ function OnclickLogout() {
 /* click search button */
 function  openSearchWindow() {
     document.getElementById("search_frame").style.display="";
-    document.getElementById("search_frame_phone").style.visibility="visible";
     document.getElementById("story_frame").style.display="None";
-    document.getElementById("story_frame_phone").style.display="None";
 }
 
 /* click close button */
 function  closeSearchFrame() {
     document.getElementById("search_frame").style.display="None";
-    document.getElementById("search_frame_phone").style.visibility="hidden";
     document.getElementById("story_frame").style.display="";
-    document.getElementById("story_frame_phone").style.display="";
 }
 var myStories;
 /* click my stories button */
 function  openMyStoriesWindow() {
     var userid = document.getElementById('userId').innerText;
     if(localStorage.getItem("ifMyStoriesWindow") == 1) {
-        document.getElementById('myStories').value = 'all stories';
-        document.getElementById('myStories_phone').value = 'all stories';
+        document.getElementById('myStories').className = 'homepage';
         localStorage.setItem("ifMyStoriesWindow", 0);
         getStoryByUser(db,'story',userid,function (c) {
             if(c.length == 0) {
@@ -268,8 +263,7 @@ function  openMyStoriesWindow() {
         });
     }
     else{
-        document.getElementById('myStories').value = 'my stories';
-        document.getElementById('myStories_phone').value = 'my stories';
+        document.getElementById('myStories').className = 'mypage';
         localStorage.setItem("ifMyStoriesWindow", 1);
         showCurrentStory(allstories[0], 2);
         seq = 0;
@@ -413,15 +407,6 @@ function showCurrentStory(story, n){
     var img2 = document.getElementById("img2");
     var img3 = document.getElementById("img3");
 
-    var uname_phone = document.getElementById("username_phone");
-    var eventDate_phone = document.getElementById("date_phone");
-    var eventName_phone = document.getElementById("event_phone");
-    var eventLocation_phone = document.getElementById("location_phone");
-    var storyText_phone = document.getElementById("story_text_phone");
-    var img1_phone = document.getElementById("img1_phone");
-    var img2_phone = document.getElementById("img2_phone");
-    var img3_phone = document.getElementById("img3_phone");
-
     // set relevant labels and images
     uname.innerText = username;
     eventDate.innerText = date;
@@ -463,51 +448,6 @@ function showCurrentStory(story, n){
             img1.setAttribute("src", image1);
             img2.setAttribute("src", image2);
             img3.setAttribute("src", image3);
-        }
-
-    }
-
-    // set relevant labels and images for phone frame
-    uname_phone.innerText = username;
-    eventDate_phone.innerText = date;
-    eventName_phone.innerText = event;
-    eventLocation_phone.innerText = location;
-    storyText_phone.innerText = text;
-
-    if (story.imgs == null){
-        img1_phone.style.display = "none";
-        img2_phone.style.display = "none";
-        img3_phone.style.display = "none";
-    }
-
-    else if (story.imgs != null){
-        if (story.imgs.i1 != null && story.imgs.i2 == null && story.imgs.i3 == null){
-            image1 = story.imgs.i1;
-            img1_phone.style.display = "";
-            img2_phone.style.display = "none";
-            img3_phone.style.display = "none";
-            img1_phone.setAttribute("src", image1);
-        }
-
-        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
-            image1 = story.imgs.i1;
-            image2 = story.imgs.i2;
-            img1_phone.style.display = "";
-            img2_phone.style.display = "";
-            img3_phone.style.display = "none";
-            img1_phone.setAttribute("src", image1);
-            img2_phone.setAttribute("src", image2);
-        }
-        else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
-            image1 = story.imgs.i1;
-            image2 = story.imgs.i2;
-            image3 = story.imgs.i3;
-            img1_phone.style.display = "";
-            img2_phone.style.display = "";
-            img3_phone.style.display = "";
-            img1_phone.setAttribute("src", image1);
-            img2_phone.setAttribute("src", image2);
-            img3_phone.setAttribute("src", image3);
         }
 
     }
@@ -584,7 +524,7 @@ function nextStory() {
 // display previous story
 function previousStory(){
     seq -= 1;
-    if (ifMyStoriesWindow == 1){
+    if (localStorage.getItem("ifMyStoriesWindow") == 1){
         if(seq < 0) {
             seq += 1;
             showCurrentStory(allstories[seq], 0);
@@ -620,15 +560,10 @@ function init() {
 
 // initialize the global variables
 var map1;
-var map2;
 var marker1;
-var marker2;
 var infowindow1;
-var infowindow2;
 var latitude1;
 var longitude1;
-var latitude2;
-var longitude2;
 
 // set the properties of google map
 function show_map(position) {
@@ -656,7 +591,6 @@ function show_map(position) {
 
     // display on relevant widgets
     map1 = new google.maps.Map(document.getElementById("map"), myOptions);
-    map2 = new google.maps.Map(document.getElementById("map_phone"), myOptions);
 
     marker1 = new google.maps.Marker({
 
@@ -665,34 +599,16 @@ function show_map(position) {
         map : map1
     });
 
-    marker2 = new google.maps.Marker({
-
-        position: latlng,
-
-        map: map2
-    })
-
     infowindow1 = new google.maps.InfoWindow({
         content : "You are here."
     });
 
-    infowindow2 = new google.maps.InfoWindow({
-        content : "You are here."
-    });
-
     infowindow1.open(map1, marker1);
-    infowindow2.open(map2, marker2);
 
     // add eventListener for clicking any locations on the map
     google.maps.event.addListener(map1, 'click', function(event) {
         latitude1 = event.latLng.lat().toFixed(14);
         longitude1 = event.latLng.lng().toFixed(14);
-        placeMarker(event.latLng);
-    });
-
-    google.maps.event.addListener(map2, 'click', function(event) {
-        latitude2 = event.latLng.lat().toFixed(14);
-        longitude2 = event.latLng.lng().toFixed(14);
         placeMarker(event.latLng);
     });
 
@@ -717,23 +633,12 @@ function placeMarker(location) {
         map: map1,
     });
 
-    var marker4 = new google.maps.Marker({
-        position: location,
-        map: map2,
-    });
-
     var infowindow3 = new google.maps.InfoWindow({
         content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
                 + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn" onclick="getCoordinate1()">'
     });
 
-    var infowindow4 = new google.maps.InfoWindow({
-        content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
-            + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn_phone" onclick="getCoordinate2()">'
-    });
-
     infowindow3.open(map1, marker3);
-    infowindow4.open(map2, marker4);
 
 }
 
@@ -743,15 +648,6 @@ function getCoordinate1() {
     var longitudeValue1 = document.getElementById("longitude");
     latitudeValue1.innerText = latitude1;
     longitudeValue1.innerText = longitude1;
-    alert('You have selected a location. Click "Go" to search.');
-}
-
-// get the relevant coordinates on the phone map
-function getCoordinate2() {
-    var latitudeValue2 = document.getElementById("latitude_phone");
-    var longitudeValue2 = document.getElementById("longitude_phone");
-    latitudeValue2.innerText = latitude2;
-    longitudeValue2.innerText = longitude2;
     alert('You have selected a location. Click "Go" to search.');
 }
 
@@ -796,47 +692,6 @@ function SearchStory(){
             distance = event_on[i].distance;
             result.style.visibility = "visible";
             result.innerText = "Event name: " + name + " date: " + date + " distance from here: " + distance + " meters";
-        }
-    })
-}
-
-// eventListener of phone 'search' button
-function SearchStoryPhone(){
-
-    var keyword = document.getElementById("keywordSearch_phone").value;
-    var date = document.getElementById("dateSearch_phone").value;
-    var lat = document.getElementById("latitude_phone").innerText;
-    var lng = document.getElementById("longitude_phone").innerText;
-
-    if (keyword == "" && date == "" && lat == "" && lng == "") {
-        alert("At least fill one field!");
-        return;
-    }
-
-    var event = {
-        "name": keyword,
-        "datetime": date,
-        "location": {
-            "la": lat,
-            "lo": lng
-        }
-    }
-
-    var event_emit = JSON.stringify(event);
-    var socket = io();
-    socket.emit('search event', event_emit);
-    socket.on('search event', function (msg) {
-        var event_on = JSON.parse(msg);
-        var name;
-        var date;
-        var distance;
-        var result_phone = document.getElementById("result_phone");
-        for (var i = 0; i < event_on.length; i++){
-            name = event_on[i].name;
-            date = event_on[i].datetime;
-            distance = event_on[i].distance;
-            result_phone.style.visibility = "visible";
-            result_phone.innerText = "Event name: " + name + " date: " + date + " distance from here: " + distance + " meters";
         }
     })
 }

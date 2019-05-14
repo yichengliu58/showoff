@@ -17,197 +17,104 @@
   </head>
   <body onload="socketOn()">
 
-    <!-- Title for PC -->
-    <div id="index_frame">
-    <form id="welcome" onsubmit="OnSubmit()">
-    <h1>SHOW Yourself OFF</h1>
-    <p><label for="userId" id="userId" class="label_input" style="float: contour"></label>, welcome to Show-off</p>
-    <p><input type="button" value="post" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
-       <input type="button" value="search" id="search" name="searchStory1" class="buttons" onclick="openSearchWindow()">
-        <input type="button" value="my stories" id="myStories" name="myStories1" class="buttons" onclick="openMyStoriesWindow()">
-        <input type="button" value="log out" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()">
+  <!-- Title -->
+   <div class="container" id="index_frame">
+           <div class="row">
+               <div class="col-md">
+                   <h1>SHOW Yourself OFF</h1>
+                   <label for="userId" id="userId" class="label_input" style="float: contour" ></label>
+                   <p>
+                       <input type="button" value="" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()" >
+                       <input type="button" value="" id="search" name="searchStory1" class="buttons" onclick="openSearchWindow()">
+                       <input type="button" value="" id="myStories" name="myStories1" class="mypage" onclick="openMyStoriesWindow()">
+                       <input type="button" value="" id="logout" name="logout1" class="buttons" onclick="OnclickLogout()">
+                   </p>
+               </div>
+           </div>
+   </div>
+   <!-- End of title -->
 
-    </P>
-    </form>
+    <!-- Main frame -->
+    <div class="container" id="story_frame">
+            <table id="story" align="center">
+                <tr><h1>Enjoy the MUSIC</h1></tr>
+                <tr><td>
+                        <label for='username' id="username" class="label_input" style="float:left">Username</label>
+                        <label for='date' id="date" class="label_input" style="float:left">Date</label>
+                    </td>
+                </tr>
+                <tr><td><label for='Event' id="event" class="label_input" style="float:left">Event</label></td></tr>
+
+                <tr><td><label for='text' id="story_text" class="label_input" style="float:left;">Text</label></td></tr>
+
+                <tr>
+                    <td>
+                        <img id="img1" src="" width="300" height="300" />
+                        <img id="img2" src="" width="300" height="300" />
+                        <img id="img3" src="" width="300" height="300" />
+                    </td>
+                </tr>
+
+                <tr><td><label for='Location' id="location" class="label_input" style="float:left; display: none">Location</label></td></tr>
+
+                <tr>
+                    <td>
+                        <input type="button" value="" id="previousStory" class="buttons" onclick="previousStory()">
+                        <input type="button" value="" id="nextStory" class="buttons" onclick="nextStory()">
+                    </td>
+                </tr>
+
+            </table>
     </div>
-    <!-- End of PC title -->
-
-    <!-- Title for phone -->
-    <div id="phone_frame">
-    <h1>SHOW OFF</h1>
-        <p><label for="userId" id="userId" class="label_input" style="float: contour"></label>, welcome to Show-off</p>
-    <p>
-        <input type="button" value="post" id="post_phone" name="postStory2" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()">
-        <input type="button" value="search" id="search_phone" name="searchStory2" class="buttons" onclick="openSearchWindow()">
-        <input type="button" value="my stories" id="myStories_phone" name="myStories2" class="buttons" onclick="openMyStoriesWindow()">
-        <input type="button" value="log out" id="logout_phone" name="logout2" class="buttons" onclick="OnclickLogout()">
-    </p>
-    </div>
-    <!-- End of phone title -->
-
-    <!-- Main for PC -->
-    <div id="story_frame">
-        <table id="story" align="center">
-            <tr><h1>Enjoy the MUSIC</h1></tr>
-            <tr><td>
-                <label for='username' id="username" class="label_input" style="float:left">Username</label>
-                <label for='date' id="date" class="label_input" style="float:left">Date</label>
-                </td>
-            </tr>
-            <tr><td><label for='Event' id="event" class="label_input" style="float:left">Event</label></td></tr>
-
-            <tr><td><label for='text' id="story_text" class="label_input" style="float:left;">Text</label></td></tr>
-
-            <tr>
-                <td>
-                    <img id="img1" src="" width="300" height="300" />
-                    <img id="img2" src="" width="300" height="300" />
-                    <img id="img3" src="" width="300" height="300" />
-                </td>
-            </tr>
-
-            <tr><td><label for='Location' id="location" class="label_input" style="float:left; display: none">Location</label></td></tr>
-
-            <tr>
-                <td>
-                    <input type="button" value="previous" id="previousStory" class="buttons" onclick="previousStory()">
-                    <input type="button" value="next" id="nextStory" class="buttons" onclick="nextStory()">
-                </td>
-            </tr>
-
-        </table>
-    </div>
-    <!-- End of PC Main -->
-
-    <!-- Main for phone -->
-    <div id="story_frame_phone">
-        <table id="story" align="center">
-            <tr><h2>Enjoy the MUSIC</h2></tr>
-            <tr><td>
-                    <label for='username' id="username_phone" class="label_input" style="float:left">Username</label>
-                    <label for='date' id="date_phone" class="label_input" style="float:left">Date</label>
-                </td>
-            </tr>
-            <tr><td><label for='Event' id="event_phone" class="label_input" style="float:left">Event</label></td></tr>
-
-            <tr><td><label for="text" id="story_text_phone" class="label_input" style="float:left;">Text</label></td></tr>
-
-            <tr>
-                <td>
-                    <img id="img1_phone" src="" width="150" height="150" />
-                    <img id="img2_phone" src="" width="150" height="150" />
-                    <img id="img3_phone" src="" width="150" height="150" />
-                </td>
-            </tr>
-
-            <tr><td><label for='Location' id="location_phone" class="label_input" style="float:left; display: none">Location</label></td></tr>
-
-            <tr>
-                <td>
-                    <input type="button" value="previous" id="previousStory_phone" class="buttons" onclick="previousStory()">
-                    <input type="button" value="next" id="nextStory_phone" class="buttons" onclick="nextStory()">
-                </td>
-            </tr>
-
-        </table>
-    </div>
-    <!-- End of phone main -->
+    <!-- End of main frame -->
 
     <!-- Begin of search frame -->
-    <div id="search_frame" style="display:None">
-        <form id="searchFrame" >
-            <table id="searchTable" align="center">
+    <div class="container" id="search_frame" style="display:None">
+        <form id="searchFrame">
+            <div class="row">
+                <div class="col-md">
+                    Name:<input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
+                </div>
+            </div>
 
-                <tr>
-                    <td>Name:</td>
-                    <td>
-                        <input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
-                    </td>
-                    <td>Date:</td>
-                    <td>
-                        <input type="date" id="dateSearch" name="dateSearch" class="text_field">
-                    </td>
-                    <td></td>
-                    <td>
-                        <label for='location' id="latitude" class="label_input" style="display: none"></label>
-                        <label for='location' id="longitude" class="label_input" style="display: none"></label>
-                    </td>
-                    <td>
-                        <div id="map" style="width: 400px; height: 400px" align="center"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <textarea for='searchResult' id="result" class="text_field" readonly rows="5" cols="40" style="visibility: hidden"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
-                    </td>
-                    <td>
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStory()">
-                    </td>
-                    <td>
-                        <input type="button" value="Close" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
-                    </td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="col-md">
+                    Date:<input type="date" id="dateSearch" name="dateSearch" class="text_field">
+                </div>
+            </div>
+
+            <div class="row">
+                <label for='location' id="latitude" class="label_input" style="display: none"></label>
+                <label for='location' id="longitude" class="label_input" style="display: none"></label>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <div id="map" style="width: auto; height: 400px" align="center"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStory()">
+                    <input type="button" value="Close" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <textarea for='searchResult' id="result" class="text_field" readonly rows="5" cols="40" style="visibility: hidden"></textarea>
+                </div>
+            </div>
         </form>
     </div>
     <!-- End of search frame -->
-
-    <!-- Begin of search phone frame -->
-    <div id="search_frame_phone"  style="visibility: hidden">
-        <form id="searchFrame" >
-            <table id="searchTable" align="center">
-                <tr>
-                    <div id="map_phone" style="width: 300px; height: 200px" align="center"></div>
-                </tr>
-                <tr>
-                    <td>Name:</td>
-                    <td>
-                        <input type="text" id="keywordSearch_phone" name="keywordSearch" style="float:left" class="text_field">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date:</td>
-                    <td>
-                        <input type="date" id="dateSearch_phone" name="dateSearch" style="float:left" class="text_field">
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                    <td>
-                        <label for='location' id="latitude_phone" class="label_input" style="display:none;"></label>
-                        <label for='location' id="longitude_phone" class="label_input" style="display:none;"></label>
-                    </td>
-                    </td>
-                </tr>
-                <tr>
-                   <td></td>
-                   <td>
-                        <input type="button" value="Map" id="mapBtn" name="mapBtn" class="buttons" onclick="init()">
-                        <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStoryPhone()">
-                        <input type="button" value="Close" id="closeBtn" name="closeBtn" onclick="closeSearchFrame()" class="buttons">
-                   </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <textarea for='searchResult' id="result_phone" class="text_field" readonly rows="2" cols="20" style="float: left; visibility: hidden"></textarea>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <!-- End of search phone frame -->
 
    <!-- START POST MODAL -->
    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">

@@ -1,6 +1,6 @@
 /*set background and font*/
 body {
-  background-image: url("../images/music-festival-3.jpg");
+  background-image: url("../images/music-festival-2.jpg");
   background-size: 100%;
   background-repeat: repeat;
   font: normal 100% "Comic Sans MS", cursive, sans-serif;
@@ -9,7 +9,7 @@ body {
 
 @media only screen and (max-width: 500px) {
   body {
-    background-image: url("../images/music-festival-mobile-3.jpg");
+    background-image: url("../images/music-festival-mobile-0.jpg");
     background-size: 100%;
     background-repeat: repeat;
     font: normal 100% "Comic Sans MS", cursive, sans-serif;
@@ -25,7 +25,7 @@ body {
 
   margin: 100px auto;
 
-  background-color: rgba(240, 255, 255, 0.5);
+  background-color: rgba(240, 255, 255, 0.1);
 
   border-radius: 10px;
   text-align: center;
@@ -70,7 +70,6 @@ form p > *{
   text-align: center;
 
   color: white;
-  background-color: blue;
   border-radius: 6px;
   border: 0;
 
@@ -86,7 +85,6 @@ form p > *{
   text-align: center;
 
   color: white;
-  background-color: blue;
   border-radius: 6px;
   border: 0;
 

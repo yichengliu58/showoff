@@ -3,40 +3,52 @@
   <head>
 
     <title>login</title>
-    <link rel='stylesheet' href='/stylesheets/login.css' />
+      <link rel='stylesheet' href='/stylesheets/login.css' />
+      <script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+      <script src = '/javascripts/login.js'></script>
       <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-      <script src='javascripts/login.js'></script>
-      <script src="/socket.io/socket.io.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+      <link rel="stylesheet" href="bootstrap-4.3.1-dist/css//bootstrap.min.css">
+      <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   </head>
 
   <body>
-    <!--Main frame of login window-->
-    <div id="login_frame">
-    <form id="loginForm" onsubmit="onSubmit()">
-    <h2>Please log in</h2>
+  <!--Main frame of login window-->
+  <div class="container">
+      <div id="login_frame">
+          <form id="loginForm" onsubmit="onSubmit()">
+              <h2>Please log in</h2>
+              <div class="row">
+                  <div class="col-md">
+                      <label for='username' class="label_input">Username</label>
+                      <input type="text" name="username" id="username" class="text_field">
+                      <p><label id = "name-tip"></label></p>
+                  </div>
+              </div>
 
-        <p><label for='username' class="label_input">Username</label>
-           <input type="text" name="username" id="username" class="text_field">
-        </p>
-        <p><label id = "name-tip"></label></p>
+              <div class="row">
+                  <div class="col-md">
+                      <label for='password' class="label_input">Password</label>
+                      <input type="password" name="password" id="password" class="text_field">
+                      <p><label id = "password-tip"></label></p>
+                  </div>
+              </div>
 
-        <p><label for='password' class="label_input">Password</label>
-           <input type="password" name="password" id="password" class="text_field">
-        </p>
-        <p><label id = "password-tip"></label></p>
-
-        <div id="login_control">
-        <p><input type="submit" value="Log in" name="login" id="login"></p>
-        <p>Or no account?</p>
-        <p><input type="button" value="Sign up" name="register" id="register" class="label" onclick="window.location.href='/register'"></p>
-        </div>
-
-    </form>
-    </div>
-    <!--End of the window-->
+              <div class="row">
+                  <div class="col-md">
+                      <div id="login_control">
+                          <p><input type="submit" value="Log in" name="login" id="login" class="btn-dark"></p>
+                          <p>Or no account?</p>
+                          <p><input type="button" value="Sign up" name="register" id="register" class="btn-dark" onclick="window.location.href='/register'"></p>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  <!--End of the window-->
 
   </body>
 </html>

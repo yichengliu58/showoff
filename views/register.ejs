@@ -2,39 +2,52 @@
 <html>
   <head>
     <title>Register</title>
-    <link rel='stylesheet' href='/stylesheets/register.css' />
+        <link rel='stylesheet' href='/stylesheets/register.css' />
         <script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src = '/javascripts/register.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+        <link rel="stylesheet" href="bootstrap-4.3.1-dist/css//bootstrap.min.css">
+        <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
 
   <body>
   <!--The register window-->
-  <div id="register_frame">
-    <h1>Please Register</h1>
-    <form id = 'registerForm' onsubmit = 'onSubmit()'>
-        <p>
-            <label for = 'userName' class="label-input">Username</label>
-            <input type = 'text' name = 'userName' id = 'userName' class="text_field" maxlength =
-            15>
-        </p>
-        <p><label id = 'userNameTip'></label></p>
+  <div class="container">
+      <div id="register_frame">
+          <h2>Please Register</h2>
+          <form id = 'registerForm' onsubmit = 'onSubmit()'>
+              <div class="row">
+                  <div class="clearfix visible-xs"></div>
+                  <div class="col-md">
+                      <label for = 'userName' class="label-input">Username</label>
+                      <input type = 'text' name = 'username' id = 'userName' class="text_field" maxlength = 15>
+                      <p><label id = 'userNameTip'></label></p>
+                  </div>
+              </div>
 
-        <p>
-            <label for = 'password' class="label-input">Password</label>
-            <input type = 'password' name = 'password' id = 'password' class="text_field" maxlength = 15>
-        </p>
-        <p><label id = 'passwordTip'></label></p>
+              <div class="row">
+                  <div class="col-md">
+                      <label for = 'password' class="label-input">Password</label>
+                      <input type = 'password' name = 'password' id = 'password' class="text_field" maxlength = 15>
+                      <p><label id = 'passwordTip'></label></p>
+                  </div>
+              </div>
 
-        <div id="register_control">
-        <p>
-            <input type = 'submit' name = 'registerSubmit' id = 'registerSubmit' value = 'Submit'>
-        </p>
-        </div>
-
-    </form>
-    </div>
-    <!--The end of register window-->
+              <div class="row">
+                  <div class="col-md">
+                      <div id="register_control">
+                          <p>
+                              <input type = 'submit' name = 'registerSubmit' id = 'registerSubmit' value = 'Submit' class="btn-dark">
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  <!--The end of register window-->
 
   </body>
 </html>

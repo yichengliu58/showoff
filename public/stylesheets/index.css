@@ -1,6 +1,6 @@
 /*set background and font*/
 body {
-  background-image: url("../images/music-festival-7.jpg");
+  background-image: url("../images/music-festival-3.jpg");
   background-size: 100%;
   background-repeat: repeat;
   font: normal 100% "Comic Sans MS", cursive, sans-serif;
@@ -9,32 +9,108 @@ body {
 
 @media only screen and (max-width: 500px) {
   body {
-    background-image: url("../images/music-festival-mobile-6.jpg");
+    background-image: url("../images/music-festival-mobile-1.jpg");
     background-size: 100%;
     background-repeat: repeat;
     text-align: center;
   }
 }
 
+
 #index_frame{
 
   width: auto;
-  height: 150px;
+  height: auto;
   padding: 13px;
 
   margin: 15px auto;
 
-  background-color: rgba(240, 255, 255, 0.5);
+  background-color: rgba(240, 255, 255, 0.1);
 
   border-radius: 10px;
   text-align: center;
 
 }
 
-@media only screen and (max-width: 500px) {
-    #index_frame {
-        display: none;
-    }
+#post{
+    background-image: url("../images/camera.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+#search{
+    background-image: url("../images/search.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+.mypage{
+    font-size: 1.5em;
+    width: auto;
+    height: auto;
+    line-height: 28px;
+    text-align: center;
+
+    color: white;
+    background-color: blue;
+    border-radius: 6px;
+    border: 0;
+
+    float: bottom;
+
+    background-image: url("../images/nickname.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+.homepage{
+    font-size: 1.5em;
+    width: auto;
+    height: auto;
+    line-height: 28px;
+    text-align: center;
+
+    color: white;
+    background-color: blue;
+    border-radius: 6px;
+    border: 0;
+
+    float: bottom;
+    background-image: url("../images/homepage.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+#logout{
+    background-image: url("../images/cancel.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+#nextStory{
+    background-image: url("../images/next.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
+#previousStory{
+    background-image: url("../images/previous.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
 }
 
 #phone_frame{
@@ -45,23 +121,11 @@ body {
 
     margin: 0 auto;
 
-    background-color: rgba(240, 255, 255, 0.5);
+    background-color: rgba(240, 255, 255, 0.1);
 
     border-radius: 10px;
     text-align: center;
 
-}
-
-@media only screen and (max-width: 500px) {
-    #phone_frame {
-        display: block;
-    }
-}
-
-@media only screen and (min-width: 500px) {
-    #phone_frame {
-        display: none;
-    }
 }
 
 #story_frame{
@@ -72,38 +136,17 @@ body {
 
     margin: 40px auto;
 
-    background-color: rgba(240, 255, 255, 0.5);
+    background-color: rgba(240, 255, 255, 0.1);
 
     border-radius: 10px;
     text-align: center;
 
-}
-
-@media only screen and (max-width: 500px) {
-    #story_frame {
-        display: none;
-    }
 }
 
 #story_text{
     background-color: #3CD8FF;
     color: white;
     border-radius: 10px;
-
-}
-
-#story_frame_phone {
-
-    width: auto;
-    height: auto;
-    padding: 13px;
-
-    margin: 40px auto;
-
-    background-color: rgba(240, 255, 255, 0.5);
-
-    border-radius: 10px;
-    text-align: center;
 
 }
 
@@ -115,63 +158,10 @@ body {
 
     pmargin: 40px auto;
 
-    background-color: rgba(240, 255, 255, 0.5);
+    background-color: rgba(240, 255, 255, 0.1);
 
     border-radius: 10px;
     text-align: center;
-}
-
-@media only screen and (max-width: 500px) {
-    #search_frame {
-        display: none;
-    }
-}
-
-#search_frame_phone {
-
-    width: auto;
-    height: auto;
-    padding: 13px;
-
-    margin: 40px auto;
-
-    background-color: rgba(240, 255, 255, 0.5);
-
-    border-radius: 10px;
-    text-align: center;
-
-}
-
-@media only screen and (max-width: 500px) {
-    #search_frame_phone {
-        display: block;
-    }
-}
-
-@media only screen and (min-width: 500px) {
-    #search_frame_phone {
-        display: none;
-    }
-}
-
-#story_text_phone{
-
-    background-color: #3CD8FF;
-    color: white;
-    border-radius: 10px;
-
-}
-
-@media only screen and (max-width: 500px) {
-    #story_frame_phone {
-        display: block;
-    }
-}
-
-@media only screen and (min-width: 500px) {
-    #story_frame_phone {
-        display: none;
-    }
 }
 
 .modal-body{
