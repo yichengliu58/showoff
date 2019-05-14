@@ -34,7 +34,7 @@ function sendAjaxQuery(url, data) {
                 window.location.href = '/login';
             }
             else{
-                alert('Register failed');
+                alert('Register failed: ' + ret.err);
             }
 //            document.getElementById('registerInfo').innerHTML = JSON.stringify(ret);
 
