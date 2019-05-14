@@ -4,14 +4,14 @@ var srcs = new Array(); // src of upload pictures
 var storyidG;
 var usernameG;
 var dateG;
-var eventG;
 var locationG;
 var textG;
 var imageG;
 var eventG;
 var stories;
 var seq = 0;
-var ifMyStoriesWindow = 1;
+
+localStorage.setItem("ifMyStoriesWindow", 1);
 
 /* register service worker */
 if ('serviceWorker' in navigator) {
@@ -254,10 +254,10 @@ var myStories;
 /* click my stories button */
 function  openMyStoriesWindow() {
     var userid = document.getElementById('userId').innerText;
-    if (ifMyStoriesWindow == 1){
+    if(localStorage.getItem("ifMyStoriesWindow") == 1) {
         document.getElementById('myStories').value = 'all stories';
         document.getElementById('myStories_phone').value = 'all stories';
-        ifMyStoriesWindow = 0;
+        localStorage.setItem("ifMyStoriesWindow", 0);
         getStoryByUser(db,'story',userid,function (c) {
             if(c.length == 0) {
                 alert("You haven't posted any story");
@@ -270,7 +270,7 @@ function  openMyStoriesWindow() {
     else{
         document.getElementById('myStories').value = 'my stories';
         document.getElementById('myStories_phone').value = 'my stories';
-        ifMyStoriesWindow = 1;
+        localStorage.setItem("ifMyStoriesWindow", 1);
         showCurrentStory(allstories[0], 2);
         seq = 0;
     }
@@ -559,7 +559,7 @@ function showFirstStory(){
 // display next story
 function nextStory() {
     seq += 1;
-    if (ifMyStoriesWindow == 1){
+    if (localStorage.getItem("ifMyStoriesWindow") == 1) {
         if(seq >= allstories.length) {
             seq -= 1;
             showCurrentStory(allstories[seq], 1);
