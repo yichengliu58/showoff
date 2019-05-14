@@ -105,11 +105,12 @@ function getStoryByUser(db,storeName,userid,callback) {
     var transaction = db.transaction(storeName);
     var store = transaction.objectStore(storeName);
     var index = store.index('uidIndex');
-    index.openCursor().onsuccess = function (e) {
-        var cursor = e.target.result;
-        if(cursor) {
-            mystories.push(cursor.value);
-            cursor.continue();
+    var req = index.openCursor(IDBKeyRange.only(userid));
+    req.onsuccess = function(e) {
+        var res = e.target.result;
+        if(res) {
+            mystories.push(res.value);
+            res.continue();
         }
         callback(mystories);
     };
@@ -246,7 +247,7 @@ function  closeSearchFrame() {
     document.getElementById("search_frame").style.display="None";
     document.getElementById("story_frame").style.display="";
 }
-var myStories;
+
 /* click my stories button */
 function  openMyStoriesWindow() {
     var userid = document.getElementById('userId').innerText;
