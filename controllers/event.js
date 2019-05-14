@@ -115,6 +115,51 @@ exports.getAllStories = function(msg) {
     });
 };
 
+exports.searchStories = function(msg) {
+    var arg = JSON.parse(msg);
+
+    if(arg.location !== null && arg.location.lo !== null && arg.location.la !== null) {
+
+        var cond = {
+            $and: [{$where: '(this.location.la - ' + arg.location.la + ' <= 1000)'},
+                {$where: '(this.location.lo - ' + arg.location.lo + ' <= 1000)'}]
+        };
+
+        db.search("stories", cond, function (err, res) {
+            if (err) {
+                io.emit('search stories', JSON.stringify(""));
+            } else {
+                io.emit('search stories', res);
+            }
+        });
+        return;
+    }
+
+    if(arg.ename != null && arg.ename.length != 0) {
+        db.search("stories", {ename: {$regex:arg.ename}}, function (err, res) {
+            if(err) {
+                io.emit('search stories', JSON.stringify(""));
+            } else {
+                io.emit('search stories', res);
+            }
+        });
+        return;
+    }
+
+    if(arg.datetime != null) {
+        db.search("stories", {datetime: {$regex:arg.datetime}}, function (err, res) {
+            if(err) {
+                io.emit('search stories', JSON.stringify(""));
+            } else {
+                io.emit('search stories', res);
+            }
+        });
+        return;
+    }
+
+    io.emit('search stories', JSON.stringify(""));
+};
+
 exports.searchEvents = function(msg) {
     var arg = JSON.parse(msg);
 

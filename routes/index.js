@@ -40,6 +40,7 @@ router.io = function(io) {
         socket.on('get all events', event.getAllEvents);
         socket.on('get all stories', event.getAllStories);
         socket.on('search event', event.searchEvents);
+        socket.on('search stories', event.searchStories);
         socket.on('chat', event.chat);
     });
     return io;

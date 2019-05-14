@@ -59,6 +59,17 @@ resp_status: {
 }
 ``
 
+``
+search_stories: {
+    ename: xxx,
+    datetime: xxx,
+    location: {
+        lo: 1,
+        la: 2
+    }
+}
+``
+
 socket event definition:
 * 'put story': upload a story (together with an event info if there is a new one)
     * data uploaded: `story` defined above
@@ -82,4 +93,7 @@ socket event definition:
 * 'search event': given a location, get all events around it
     * data uploaded: `event` json string
     * data downloaded: `returned_event` json string
+* 'search stories': given some conditions, search stories related
+    * data uploaded: `search_stories` json string
+    * data downloaded: `story` json array 
 * 'chat': chat in one single chat room
