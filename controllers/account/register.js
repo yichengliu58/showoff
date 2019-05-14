@@ -9,7 +9,7 @@ var resp_status_creator = require('../../utils/respStatusCreator.js');
  */
 exports.register = function (req, res) {
     db.search("users", {username: req.body.username}, function (err, r) {
-        if(err || r.length == 0) {
+        if(err || r.length !== 0) {
             return res.json(resp_status_creator.create("STATUS_USER_EXIST"));
         } else {
             db.insert("users", {username: req.body.username, password: req.body.password},

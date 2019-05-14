@@ -5,40 +5,19 @@ function sendAjaxQuery(url, data) {
         data: data,
         dataType: 'json',
         type: 'POST',
-        success: function (dataR) {
-
-            var ret = dataR;
+        success: function (ret) {
             var userName = document.getElementById('username').value;
-            var passWord = document.getElementById('password').value;
             var nameTip = document.getElementById('name-tip');
             var passwordTip = document.getElementById('password-tip');
-            console.log(userName + passWord);
-            if (userName == '' && passWord == ''){
-                nameTip.innerText = "The username is required";
-                nameTip.style.color = "red";
-                passwordTip.innerText = "The password is required";
-                passwordTip.style.color = "red";
-            }
-            else if (userName != '' && passWord == ''){
-                nameTip.innerText ='';
-                passwordTip.innerText = "The password is required";
-                passwordTip.style.color = "red";
-            }
-            else if (userName == '' && passWord != ''){
-                passwordTip.innerText = '';
-                nameTip.innerText = "The username is required";
-                nameTip.style.color = "red";
-            }
-            else if (ret.code == 0){
+            if (ret.code === 0){
                 nameTip.innerText ='';
                 passwordTip.innerText = '';
                 alert(userName + ", welcome to Show-Off~");
                 window.location.href = '/index';
-            }
-            else if(ret.code == 1){
+            } else {
                 nameTip.innerText ='';
                 passwordTip.innerText = '';
-                alert("login failed, wrong password");
+                alert("login failed: " + ret.err);
             }
         },
         error: function (xhr, status, error) {
@@ -50,14 +29,32 @@ function sendAjaxQuery(url, data) {
 
 // eventListener of 'login' button
 function onSubmit() {
+    // check input data validity
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    var nameTip = document.getElementById('name-tip');
+    var passwordTip = document.getElementById('password-tip');
 
-    var formArray= $("form").serializeArray();
-    var data={};
-    for (index in formArray){
-        data[formArray[index].name]= formArray[index].value;
-    }
-    // const data = JSON.stringify($(this).serializeArray());
-    sendAjaxQuery('/api/login', data);
+    var ready = true;
     event.preventDefault();
+    if(username === "" || username == null) {
+        nameTip.innerText = "A username is required";
+        nameTip.style.color = "red";
+        ready = false;
+    }
+
+    if(password === "" || password == null) {
+        passwordTip.innerText = "A password is required";
+        passwordTip.style.color = "red";
+        ready = false;
+    }
+
+    if(ready) {
+        var data = {};
+        data["username"] = username;
+        data["password"] = password;
+        sendAjaxQuery('api/login', data);
+
+    }
 
 }
