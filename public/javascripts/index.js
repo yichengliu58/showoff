@@ -489,6 +489,9 @@ function socketOn() {
 
     socket.emit('get all events', '*');
     socket.on('get all events', function(msg) {
+        if(msg === null) {
+            return;
+        }
         eventnum = msg.length;
         for(var i = 0; i < msg.length; i++) {
             var request = db.transaction(['event'], 'readwrite')
@@ -520,6 +523,9 @@ function socketOn() {
     socket.emit('get all stories', "*");
 
     socket.on('get all stories', function (msg) {
+        if(msg === null) {
+            return;
+        }
         var story = msg;
         for (var i = 0; i < story.length; i++) {
             insertStory(story[i]._id, story[i].uid, story[i].text, story[i].imgs,
@@ -773,6 +779,12 @@ function SearchStory(){
     var socket = io();
     socket.emit('search stories', event_emit);
     socket.on('search stories', function (msg) {
+        if(msg === null) {
+            showCurrentStory(msg[0], 2);
+            document.getElementById("search_frame").style.display="None";
+            document.getElementById("story_frame").style.display="";
+            return;
+        }
         localStorage.setItem("ifMyStoriesWindow", 2);
         searchstories = msg;
         showCurrentStory(msg[0], 2);

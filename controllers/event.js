@@ -77,7 +77,7 @@ exports.getNextStory = function (msg) {
     // will produce random one
     db.randomSearchOne("stories", function (err, res) {
         if(err) {
-            io.emit('get next story', JSON.stringify(""));
+            io.emit('get next story', JSON.stringify());
         } else {
             io.emit('get next story', res);
         }
@@ -88,7 +88,7 @@ exports.getPreviousStory = function(msg) {
     // will produce random one
     db.randomSearchOne("stories", function (err, res) {
         if(err) {
-            io.emit('get next story', JSON.stringify(""));
+            io.emit('get next story', JSON.stringify());
         } else {
             io.emit('get next story', res);
         }
@@ -98,7 +98,7 @@ exports.getPreviousStory = function(msg) {
 exports.getAllEvents = function(msg) {
     db.search("events", null, function (err, res) {
         if(err || res.length == 0) {
-            io.emit('get all events', JSON.stringify(""));
+            io.emit('get all events', JSON.stringify());
         } else {
             io.emit('get all events', res);
         }
@@ -108,7 +108,7 @@ exports.getAllEvents = function(msg) {
 exports.getAllStories = function(msg) {
     db.search("stories", null, function (err, res) {
         if(err || res.length == 0) {
-            io.emit('get all stories', JSON.stringify(""));
+            io.emit('get all stories', JSON.stringify());
         } else {
             io.emit('get all stories', res);
         }
@@ -126,7 +126,7 @@ exports.searchStories = function(msg) {
 
         db.search("stories", cond, function (err, res) {
             if (err) {
-                io.emit('search stories', JSON.stringify(""));
+                io.emit('search stories', JSON.stringify());
             } else {
                 io.emit('search stories', res);
             }
@@ -137,7 +137,7 @@ exports.searchStories = function(msg) {
     if(arg.ename != "" && arg.ename.length != 0) {
         db.search("stories", {ename: {$regex:arg.ename}}, function (err, res) {
             if(err) {
-                io.emit('search stories', JSON.stringify(""));
+                io.emit('search stories', JSON.stringify());
             } else {
                 io.emit('search stories', res);
             }
@@ -148,7 +148,7 @@ exports.searchStories = function(msg) {
     if(arg.datetime != "") {
         db.search("stories", {datetime: {$regex:arg.datetime}}, function (err, res) {
             if(err) {
-                io.emit('search stories', JSON.stringify(""));
+                io.emit('search stories', JSON.stringify());
             } else {
                 io.emit('search stories', res);
             }
@@ -156,7 +156,7 @@ exports.searchStories = function(msg) {
         return;
     }
 
-    io.emit('search stories', JSON.stringify(""));
+    io.emit('search stories', JSON.stringify());
 };
 
 exports.searchEvents = function(msg) {
@@ -165,7 +165,7 @@ exports.searchEvents = function(msg) {
     if(arg.name != null && arg.name.length != 0) {
         db.search("events", {name: {$regex:arg.name}}, function (err, res) {
             if(err) {
-                io.emit('search event', JSON.stringify(""));
+                io.emit('search event', JSON.stringify());
             } else {
                 io.emit('search event', res);
             }
@@ -173,7 +173,7 @@ exports.searchEvents = function(msg) {
     } else if(arg.datetime != null) {
         db.search("events", {datetime: {$regex:arg.datetime}}, function (err, res) {
             if(err) {
-                io.emit('search event', JSON.stringify(""));
+                io.emit('search event', JSON.stringify());
             } else {
                 io.emit('search event', res);
             }
@@ -183,7 +183,7 @@ exports.searchEvents = function(msg) {
                             {$where: '(this.location.lo - '+arg.location.lo+' <= 1000)'}]};
         db.search("events", cond, function (err, res) {
             if(err) {
-                io.emit('search event', JSON.stringify(""));
+                io.emit('search event', JSON.stringify());
             } else {
                 io.emit('search event', res);
             }
