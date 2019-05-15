@@ -118,8 +118,7 @@ exports.getAllStories = function(msg) {
 exports.searchStories = function(msg) {
     var arg = JSON.parse(msg);
 
-    if(arg.location !== null && arg.location.lo !== null && arg.location.la !== null) {
-
+    if(arg.location !== null && arg.location.lo != "" && arg.location.la != "") {
         var cond = {
             $and: [{$where: '(this.location.la - ' + arg.location.la + ' <= 1000)'},
                 {$where: '(this.location.lo - ' + arg.location.lo + ' <= 1000)'}]
@@ -135,7 +134,7 @@ exports.searchStories = function(msg) {
         return;
     }
 
-    if(arg.ename != null && arg.ename.length != 0) {
+    if(arg.ename != "" && arg.ename.length != 0) {
         db.search("stories", {ename: {$regex:arg.ename}}, function (err, res) {
             if(err) {
                 io.emit('search stories', JSON.stringify(""));
@@ -146,7 +145,7 @@ exports.searchStories = function(msg) {
         return;
     }
 
-    if(arg.datetime != null) {
+    if(arg.datetime != "") {
         db.search("stories", {datetime: {$regex:arg.datetime}}, function (err, res) {
             if(err) {
                 io.emit('search stories', JSON.stringify(""));

@@ -64,9 +64,9 @@ request.onupgradeneeded = function (event) {
     }
     if(!db.objectStoreNames.contains('event')){
         // set event name as key
-        objectStore = db.createObjectStore('event', {keyPath:'ename'});
+        objectStore = db.createObjectStore('event', {keyPath:'name'});
         // set event name, time and location as index
-        objectStore.createIndex('enameIndex', 'ename', {unique: true});
+        objectStore.createIndex('enameIndex', 'name', {unique: true});
         objectStore.createIndex('datetimeIndex', 'datetime', {unique: false});
         objectStore.createIndex('locationIndex', 'location', {unique: false});
     }
@@ -147,18 +147,12 @@ $(document).ready(function(){
         elem.innerHTML = "";
     });
     /* initialize dropdown list when open the post modal */
-    $('#postModal').on('show.bs.modal', function (){
+    $('#postModal').on('show.bs.modal', function () {
         var obj = document.getElementById('eventNameSelect');
-        var socket = io();
-        socket.emit('get all events', '*');
-        socket.on('get all events', function(msg){
-            //s = JSON.parse(msg);
-            s = msg;
-            for (var i = 0; i < s.length; i++){
-                var a = s[i];
-                obj.options[i+1] = new Option(a.name, a.name);
-            }
-        });
+        for (var i = 0; i < eventlist.length; i++) {
+            var a = eventlist[i];
+            obj.options[i + 1] = new Option(a.name, a.name);
+        }
     });
 
     /* click upload file button */
@@ -472,11 +466,45 @@ function initCursor(callback) {
     };
 }
 
+var eventlist = [];
+var eventnum = 0;
+var addeventnum = 0;
 //receive socket io data from the server
 function socketOn() {
 
     socket = io();
-    socket.emit('get all stories', "x");
+
+    socket.emit('get all events', '*');
+    socket.on('get all events', function(msg) {
+        eventnum = msg.length;
+        for(var i = 0; i < msg.length; i++) {
+            var request = db.transaction(['event'], 'readwrite')
+                            .objectStore('event')
+                            .add({
+                                name: msg[i].name, datetime: msg[i].datetime,
+                                location: msg[i].location });
+            request.onsuccess = function (event) {
+                addeventnum += 1;
+                if(addeventnum === eventnum) {
+                    var transaction = db.transaction("event");
+                    var store = transaction.objectStore("event");
+                    var req = store.openCursor();
+                    req.onsuccess = function(e) {
+                        var res = e.target.result;
+                        if (res) {
+                            eventlist.push(res.value);
+                            res.continue();
+                        }
+                    }
+                }
+            };
+            request.onerror = function (event) {
+                console.log('insert event failed');
+            }
+        }
+    });
+
+    socket.emit('get all stories', "*");
 
     socket.on('get all stories', function (msg) {
         var story = msg;
@@ -578,11 +606,11 @@ function show_map(position) {
     // basis options of the map
     var myOptions = {
 
-        zoom : 16,
+        zoom: 16,
 
-        center : latlng,
+        center: latlng,
 
-        mapTypeId : google.maps.MapTypeId.ROADMAP,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
 
         mapTypeControl: false,
 
@@ -597,73 +625,59 @@ function show_map(position) {
 
     marker1 = new google.maps.Marker({
 
-        position : latlng,
+        position: latlng,
 
-        map : map1
+        map: map1
     });
 
     infowindow1 = new google.maps.InfoWindow({
-        content : "You are here."
+        content: "You are here."
     });
 
     infowindow1.open(map1, marker1);
 
     var positions = [];
-    var socket = io();
-    socket.emit('get all events', '*');
-    socket.on('get all events', function (msg) {
 
-        var events = [];
-        var event_name = [];
-        var event_latitude = [];
-        var event_longitude = [];
-        var event_latlng = [];
-        events = msg;
+    var events = eventlist;
+    var event_name = [];
+    var event_latitude = [];
+    var event_longitude = [];
+    var event_latlng = [];
 
-        for(var i = 0; i < events.length; i++){
-            event_name[i] = events[i].name;
-            event_latitude[i] = events[i].location.la;
-            event_longitude[i] = events[i].location.lo;
-        }
+    for (var i = 0; i < events.length; i++) {
+        event_name[i] = events[i].name;
+        event_latitude[i] = events[i].location.la;
+        event_longitude[i] = events[i].location.lo;
+    }
 
-        for (var i = 0; i < event_name.length; i++){
+    for (var i = 0; i < event_name.length; i++) {
 
-            event_latlng = new google.maps.LatLng(event_latitude[i], event_longitude[i]);
-            positions.push(event_latlng);
-        }
+        event_latlng = new google.maps.LatLng(event_latitude[i], event_longitude[i]);
+        positions.push(event_latlng);
+    }
 
-        for (var i = 0; i <positions.length; i++){
+    for (var i = 0; i < positions.length; i++) {
 
-            marker1 = new google.maps.Marker({
-                position: positions[i],
+        marker1 = new google.maps.Marker({
+            position: positions[i],
 
-                map: map1
-            });
+            map: map1
+        });
 
-            var eventname = new google.maps.InfoWindow({
-                content: "event name: " + event_name[i]
-            })
+        var eventname = new google.maps.InfoWindow({
+            content: "event name: " + event_name[i]
+        });
 
-            eventname.open(map1, marker1);
+        eventname.open(map1, marker1);
 
-            google.maps.event.addListener(marker1, 'click', function (event) {
-                lat_search = event.latLng.lat();
-                lng_search = event.latLng.lng();
-                getCoordinate1();
-            })
-
-        }
-
-    });
-
-    // add eventListener for clicking any locations on the map
-    // google.maps.event.addListener(map1, 'click', function(event) {
-    //     latitude1 = event.latLng.lat().toFixed(14);
-    //     longitude1 = event.latLng.lng().toFixed(14);
-    //     placeMarker(event.latLng);
-    // });
-
+        google.maps.event.addListener(marker1, 'click', function (event) {
+            lat_search = event.latLng.lat();
+            lng_search = event.latLng.lng();
+            getCoordinate1();
+        });
+    }
 }
+
 
 // error handler
 function handle_error(error){
