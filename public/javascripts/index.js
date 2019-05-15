@@ -1,5 +1,6 @@
 var totalLength; // amount of pictures user choose to upload
 var srcs = new Array(); // src of upload pictures
+
 /* global variables to store values which will be insert into tables */
 var storyidG;
 var usernameG;
@@ -8,12 +9,17 @@ var locationG;
 var textG;
 var imageG;
 var eventG;
-var stories;
-var seq = 0;
 
+var stories; // an array storing story data which get from local database
+var seq = 0; // a variable indicates order of story stored in local database that are shown currently
+
+// a variable indicates if current page shows all stories or my stories
+// 1-all stories (default)  0-my stories
 localStorage.setItem("ifMyStoriesWindow", 1);
 
-/* register service worker */
+/**
+ * register service worker
+ */
 if ('serviceWorker' in navigator) {
 // run this code at loading time
     window.addEventListener('load', function() {
@@ -32,23 +38,35 @@ if ('serviceWorker' in navigator) {
             });
     });}
 
-// open database
+/**
+ * open database
+ * @type {IDBOpenDBRequest}
+ */
 var request = window.indexedDB.open('localDb',1);
 
-/* error */
+/**
+ * error
+ * @param event
+ */
 request.onerror = function (event) {
     console.log('open failed');
 };
 
-/* success */
 var db;
+/**
+ * success
+ * @param event
+ */
 request.onsuccess = function (event) {
     db = request.result;
     console.log('open successfully');
 
 };
 
-/* upgradeneeded */
+/**
+ * upgradeneeded
+ * @param event
+ */
 request.onupgradeneeded = function (event) {
     db = event.target.result;
     var objectStore;
@@ -72,7 +90,16 @@ request.onupgradeneeded = function (event) {
     }
 };
 
-/* insert data in story table */
+/**
+ *  insert data into story table
+ *  @param storyId           unique id of each story
+ *  @param userId            unique name of user
+ *  @param storyContent      text of story
+ *  @param img               image information
+ *  @param currentTime       time of posting story
+ *  @param currentLocation   location of posting story
+ *  @param ename             name of event that the story belonged to
+ */
 function insertStory(storyId, userId, storyContent, img, currentTime, currentLocation, ename) {
     var request = db.transaction(['story'], 'readwrite')
         .objectStore('story')
@@ -86,7 +113,12 @@ function insertStory(storyId, userId, storyContent, img, currentTime, currentLoc
     }
 }
 
-/* insert data in event table */
+/**
+ *  insert data in event table
+ *  @param eventName           name of event
+ *  @param eventTime           time of creating event
+ *  @param eventLocation       location of creating event
+ */
 function insertEvent(eventName, eventTime, eventLocation) {
     var request = db.transaction(['event'], 'readwrite')
         .objectStore('event')
@@ -99,8 +131,15 @@ function insertEvent(eventName, eventTime, eventLocation) {
     }
 }
 
-var mystories = [];
-/* get stories by user id */
+var mystories = []; // an array stored stories data by user id which get from local database
+/**
+/**
+ *  get stories by user id
+ *  @param db            local database
+ *  @param storeName     table name
+ *  @param userid        unique name of user
+ *  @param callback      return function
+ */
 function getStoryByUser(db,storeName,userid,callback) {
     var transaction = db.transaction(storeName);
     var store = transaction.objectStore(storeName);
@@ -116,11 +155,18 @@ function getStoryByUser(db,storeName,userid,callback) {
     };
 }
 
-/* open post modal */
+/**
+ * open post modal
+ */
 function  openPostWindow() {
     totalLength = 0;
 }
 
+/**
+ * get name of current login user
+ * @param url
+ * @param data
+ */
 function getUserName(url, data) {
     $.ajax({
         url: url,
@@ -137,6 +183,9 @@ function getUserName(url, data) {
     });
 }
 
+/**
+ * loading the page
+ */
 $(document).ready(function(){
     getUserName('api/getUser', null);
 
@@ -146,6 +195,7 @@ $(document).ready(function(){
         var elem = document.getElementById("showImg");
         elem.innerHTML = "";
     });
+
     /* initialize dropdown list when open the post modal */
     $('#postModal').on('show.bs.modal', function () {
         var obj = document.getElementById('eventNameSelect');
@@ -206,7 +256,11 @@ $(document).ready(function(){
 
 })
 
-// send logout request on Ajax form
+/**
+ * send logout request on Ajax form
+ * @param url
+ * @param data
+ */
 function sendAjaxQuery(url, data) {
 
     $.ajax({
@@ -224,62 +278,86 @@ function sendAjaxQuery(url, data) {
     )
 }
 
-// the eventListener of logout button
+/**
+ * the eventListener of logout button
+ * @constructor
+ */
 function OnclickLogout() {
     sendAjaxQuery('/api/logout');
     event.preventDefault();
 }
 
-/* click search button */
+/**
+ * click search button
+ */
 function  openSearchWindow() {
     document.getElementById("search_frame").style.display="";
     document.getElementById("story_frame").style.display="None";
 }
 
-/* click close button */
+/**
+ * click close button on search frame
+ */
 function  closeSearchFrame() {
     document.getElementById("search_frame").style.display="None";
     document.getElementById("story_frame").style.display="";
 }
 
-/* click my stories button */
+/**
+ * click my stories/all stories button
+ */
 function  openMyStoriesWindow() {
-    var userid = document.getElementById('userId').innerText;
+    var userid = document.getElementById('userId').innerText; // get user id
+    // if the current frame shows all stories
     if(localStorage.getItem("ifMyStoriesWindow") == 1) {
         document.getElementById('myStories').className = 'homepage';
-        localStorage.setItem("ifMyStoriesWindow", 0);
+        localStorage.setItem("ifMyStoriesWindow", 0); // after clicking it is my stories now
         getStoryByUser(db,'story',userid,function (c) {
             if(c.length == 0) {
                 alert("You haven't posted any story");
                 return;
             }
-            showCurrentStory(mystories[0], 2);
-            seq = 0;
+            showCurrentStory(mystories[0], 2); // show my stories
+            seq = 0; // reset the sequence
         });
     }
+    // if the current frame shows my stores
     else{
         document.getElementById('myStories').className = 'mypage';
-        localStorage.setItem("ifMyStoriesWindow", 1);
-        showCurrentStory(allstories[0], 2);
-        seq = 0;
+        localStorage.setItem("ifMyStoriesWindow", 1); // after clicking it is all stories now
+        showCurrentStory(allstories[0], 2); // show all stories
+        seq = 0; // reset the sequence
     }
 }
 
-/* click post button in post modal */
+/**
+ * click post button in post modal
+ * @constructor
+ */
 function PostSubmit() {
+    // a variable to distinguish if inputs are proper
+    // 0-post successfully (default) 1-post failed
     var approve = 0;
+
+    /* create a new event and select a existing event at the same time */
     if(document.getElementById('eventNameType').value != '' && document.getElementById('eventNameSelect').value != '0'){
         alert("can't create event and select existed event at the same time");
         approve = 1;
     }
+
+    /* no event input */
     if(document.getElementById('eventNameType').value == '' && document.getElementById('eventNameSelect').value == '0'){
         alert("please input event name");
         approve = 1;
     }
+
+    /* no text input or image upload */
     if(document.getElementById('storyText').value == '' && document.getElementById('showImg').childElementCount == 0){
         alert("please at least input text or upload picture");
         approve = 1
     }
+
+    /* create event which has already existed */
     var obj = document.getElementById('eventNameSelect')
     for(var i=0; i<obj.options.length; i++){
         if(document.getElementById('eventNameType').value == obj.options[i].value){
@@ -287,11 +365,11 @@ function PostSubmit() {
             approve = 1;
         }
     }
+
     /* post successfully */
     if(approve == 0){
         var img = new Object();
         for (var i=1; i<srcs.length+1; i++){
-
             img["i"+i] = srcs[i-1];
         }
         var newEvent; // boolean, true means it is a new event, false means the event has already existed
@@ -328,8 +406,8 @@ function PostSubmit() {
 
                     var s = JSON.stringify(postMsg);
                     var socket = io();
-                    socket.emit('put story', s);
-
+                    socket.emit('put story', s); // send posted story information to the server
+                    // after information received by server
                     socket.on('put story', function(msg){
                         s = JSON.parse(msg);
                         if(s.code == 0){
@@ -350,17 +428,11 @@ function PostSubmit() {
     }
 }
 
-// send socket io request on 'next story' event to server
-// var socket;
-// function getNextStory(sid) {
-//     socket.emit('get next story', sid);
-// }
-//
-// // send socket io request on 'previous story' event to server
-// function getPreviousStory(sid) {
-//     socket.emit('get previous story', sid);
-// }
-
+/**
+ * show one story on the page
+ * @param story     array storing story data
+ * @param n         variable indicates story order, 1-last story, 0-first story, 2-neither last nor first
+ */
 function showCurrentStory(story, n){
     if(n == 1) {
         alert("This is the last");
@@ -370,6 +442,7 @@ function showCurrentStory(story, n){
         return;
     }
 
+    /* assgin data */
     var uname = document.getElementById("username");
     var eventDate = document.getElementById("date");
     var eventName = document.getElementById("event");
@@ -422,6 +495,7 @@ function showCurrentStory(story, n){
     eventLocation.innerText = lat + lng;
     storyText.innerText = text;
 
+    /* show images by estimating the amount of pictures */
     if (story.imgs == null){
         img1.style.display = "none";
         img2.style.display = "none";
@@ -435,7 +509,6 @@ function showCurrentStory(story, n){
             img3.style.display = "none";
             img1.setAttribute("src", image1);
         }
-
         else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 == null){
             image1 = story.imgs.i1;
             image2 = story.imgs.i2;
@@ -445,7 +518,6 @@ function showCurrentStory(story, n){
             img1.setAttribute("src", image1);
             img2.setAttribute("src", image2);
         }
-
         else if (story.imgs.i1 != null && story.imgs.i2 != null && story.imgs.i3 != null){
             image1 = story.imgs.i1;
             image2 = story.imgs.i2;
@@ -457,14 +529,15 @@ function showCurrentStory(story, n){
             img2.setAttribute("src", image2);
             img3.setAttribute("src", image3);
         }
-
     }
 
 }
 
 var allstories = [];
-
-/* read data from story table */
+/**
+ * read data from story table
+ * @param callback
+ */
 function initCursor(callback) {
     var objectStore = db.transaction(['story']).objectStore('story');
     var req = objectStore.openCursor();
@@ -482,9 +555,10 @@ function initCursor(callback) {
 var eventlist = [];
 var eventnum = 0;
 var addeventnum = 0;
-//receive socket io data from the server
+/**
+ * receive socket io data from the server
+ */
 function socketOn() {
-
     socket = io();
 
     socket.emit('get all events', '*');
@@ -538,13 +612,9 @@ function socketOn() {
     });
 }
 
-// display the first story
-function showFirstStory(){
-    getNextStory(-1);
-    document.getElementById("story-id").style.display = "none";
-}
-
-// display next story
+/**
+ * display next story
+ */
 function nextStory() {
     seq += 1;
     var ims = localStorage.getItem("ifMyStoriesWindow");
@@ -570,10 +640,11 @@ function nextStory() {
             showCurrentStory(mystories[seq], 2);
         }
     }
-
 }
 
-// display previous story
+/**
+ * display previous story
+ */
 function previousStory(){
     seq -= 1;
     var ims = localStorage.getItem("ifMyStoriesWindow");
@@ -599,13 +670,11 @@ function previousStory(){
             showCurrentStory(mystories[seq], 2);
         }
     }
-
-    // var storyid_emit = document.getElementById("story-id").innerText;
-    // getPreviousStory(storyid_emit);
 }
 
-
-// initialize the google map
+/**
+ * initialize the google map
+ */
 function init() {
     console.log("entering the init() method");
     if (navigator.geolocation) {
@@ -614,21 +683,20 @@ function init() {
     } else {
         console.log(' Browser does not support geolocation ');
     }
-
 }
 
-// initialize the global variables
+/* initialize the global variables */
 var map1;
 var marker1;
 var infowindow1;
-// var latitude1;
-// var longitude1;
 var lat_search;
 var lng_search;
 
-// set the properties of google map
+/**
+ * set the properties of google map
+ * @param position
+ */
 function show_map(position) {
-
     // get the current location
     var coords = position.coords;
     var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
@@ -708,36 +776,26 @@ function show_map(position) {
     }
 }
 
+    });
+}
 
-// error handler
+/**
+ * error handler
+ * @param error
+ */
 function handle_error(error){
+    /* define error types */
     var errorTypes={
         1:'The location service has been blocked',
         2:'Can not get location information',
         3:'Get information overtime'
     };
-
     console.log(errorTypes[error.code] + ":,Can not get your location");
 }
 
-// initialize markers on the map
-// function placeMarker(location) {
-//
-//     var marker3 = new google.maps.Marker({
-//         position: location,
-//         map: map1,
-//     });
-//
-//     var infowindow3 = new google.maps.InfoWindow({
-//         content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
-//                 + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn" onclick="getCoordinate1()">'
-//     });
-//
-//     infowindow3.open(map1, marker3);
-//
-// }
-
-// get the relevant coordinates
+/**
+ * get the relevant coordinates
+ */
 function getCoordinate1() {
     var latitudeValue1 = document.getElementById("latitude");
     var longitudeValue1 = document.getElementById("longitude");
@@ -748,11 +806,14 @@ function getCoordinate1() {
     alert('You have selected a location. Click "Go" to search.');
 }
 
-// search relevant events
-// eventListener of 'search' button
 var searchstories = [];
+/**
+ * search relevant events
+ * eventListener of 'search' button
+ * @constructor
+ */
 function SearchStory(){
-
+    /* get data from inputs on page */
     var keyword = document.getElementById("keywordSearch").value;
     var date = document.getElementById("dateSearch").value;
     var lat = document.getElementById("latitude").innerText;
