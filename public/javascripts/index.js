@@ -369,6 +369,16 @@ function showCurrentStory(story, n){
         alert("This is the first");
         return;
     }
+
+    var uname = document.getElementById("username");
+    var eventDate = document.getElementById("date");
+    var eventName = document.getElementById("event");
+    var eventLocation = document.getElementById("location");
+    var storyText = document.getElementById("story_text");
+    var img1 = document.getElementById("img1");
+    var img2 = document.getElementById("img2");
+    var img3 = document.getElementById("img3");
+
     if(story == null) {
         uname.innerText = "";
         eventDate.innerText = "";
@@ -379,12 +389,13 @@ function showCurrentStory(story, n){
         img1.style.display = "none";
         img2.style.display = "none";
         img3.style.display = "none";
+        return;
     }
     // assgin data
     var storyid = story.sid;
     var username = story.uid;
     var date = story.datetime;
-    var event = story.eventname;
+    var event = story.ename;
     var location = story.location;
     var lng = location.lo;
     var lat = location.la;
@@ -403,15 +414,6 @@ function showCurrentStory(story, n){
     textG = story.text;
     imageG = story.imgs;
     eventG = story.ename;
-
-    var uname = document.getElementById("username");
-    var eventDate = document.getElementById("date");
-    var eventName = document.getElementById("event");
-    var eventLocation = document.getElementById("location");
-    var storyText = document.getElementById("story_text");
-    var img1 = document.getElementById("img1");
-    var img2 = document.getElementById("img2");
-    var img3 = document.getElementById("img3");
 
     // set relevant labels and images
     uname.innerText = username;
