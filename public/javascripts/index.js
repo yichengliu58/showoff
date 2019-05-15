@@ -369,6 +369,17 @@ function showCurrentStory(story, n){
         alert("This is the first");
         return;
     }
+    if(story == null) {
+        uname.innerText = "";
+        eventDate.innerText = "";
+        eventName.innerText = "";
+        eventLocation.innerText = "";
+        storyText.innerText = "";
+
+        img1.style.display = "none";
+        img2.style.display = "none";
+        img3.style.display = "none";
+    }
     // assgin data
     var storyid = story.sid;
     var username = story.uid;
@@ -528,15 +539,22 @@ function showFirstStory(){
 // display next story
 function nextStory() {
     seq += 1;
-    if (localStorage.getItem("ifMyStoriesWindow") == 1) {
+    var ims = localStorage.getItem("ifMyStoriesWindow");
+    if (ims == 1) {
         if(seq >= allstories.length) {
             seq -= 1;
             showCurrentStory(allstories[seq], 1);
         } else {
             showCurrentStory(allstories[seq], 2);
         }
-    }
-    else {
+    } else if(ims == 2) {
+        if(seq >= searchstories.length) {
+            seq -= 1;
+            showCurrentStory(searchstories[seq], 1);
+        } else {
+            showCurrentStory(searchstories[seq], 2);
+        }
+    } else {
         if(seq >= mystories.length) {
             seq -= 1;
             showCurrentStory(mystories[seq], 1);
@@ -544,24 +562,28 @@ function nextStory() {
             showCurrentStory(mystories[seq], 2);
         }
     }
-    // var storyid_emit = document.getElementById("story-id").innerText;
-    // getNextStory(storyid_emit);
-    // insertStory(storyidG,usernameG,textG,imageG,dateG,locationG); // insert data into story table
-    // insertEvent(eventG,dateG,locationG); // insert data into event table
+
 }
 
 // display previous story
 function previousStory(){
     seq -= 1;
-    if (localStorage.getItem("ifMyStoriesWindow") == 1){
+    var ims = localStorage.getItem("ifMyStoriesWindow");
+    if (ims == 1){
         if(seq < 0) {
             seq += 1;
             showCurrentStory(allstories[seq], 0);
         } else {
             showCurrentStory(allstories[seq], 2);
         }
-    }
-    else {
+    } else if(ims == 2) {
+        if(seq < 0) {
+            seq += 1;
+            showCurrentStory(searchstories[seq], 0);
+        } else {
+            showCurrentStory(searchstories[seq], 2);
+        }
+    } else {
         if(seq < 0) {
             seq += 1;
             showCurrentStory(mystories[seq], 0);
@@ -720,6 +742,7 @@ function getCoordinate1() {
 
 // search relevant events
 // eventListener of 'search' button
+var searchstories = [];
 function SearchStory(){
 
     var keyword = document.getElementById("keywordSearch").value;
@@ -748,19 +771,10 @@ function SearchStory(){
     var socket = io();
     socket.emit('search stories', event_emit);
     socket.on('search stories', function (msg) {
-        var event_on = msg;
-        console.log(msg);
-        var name;
-        var date;
-        var distance;
-        var result = document.getElementById("result");
-        for (var i = 0; i < event_on.length; i++){
-            name = event_on[i].name;
-            console.log(name);
-            date = event_on[i].datetime;
-            distance = event_on[i].distance;
-            result.style.visibility = "visible";
-            result.innerText = "Event name: " + name + " date: " + date + " distance from here: " + distance + " meters";
-        }
+        localStorage.setItem("ifMyStoriesWindow", 2);
+        searchstories = msg;
+        showCurrentStory(msg[0], 2);
+        document.getElementById("search_frame").style.display="None";
+        document.getElementById("story_frame").style.display="";
     })
 }
