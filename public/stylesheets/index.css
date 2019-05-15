@@ -3,7 +3,7 @@ body {
   background-image: url("../images/music-festival-3.jpg");
   background-size: 100%;
   background-repeat: repeat;
-  font: normal 100% "Comic Sans MS", cursive, sans-serif;
+  font: normal 100% 'Oswald', Arial, sans-serif;
   text-align: center;
 }
 
@@ -56,7 +56,7 @@ body {
     text-align: center;
 
     color: white;
-    background-color: blue;
+    background-color: #545b62;
     border-radius: 6px;
     border: 0;
 
@@ -77,7 +77,7 @@ body {
     text-align: center;
 
     color: white;
-    background-color: blue;
+    background-color: #545b62;
     border-radius: 6px;
     border: 0;
 
@@ -225,7 +225,7 @@ body {
   text-align: center;
 
   color: white;
-  background-color: blue;
+  background-color: #545b62;
   border-radius: 6px;
   border: 0;
 

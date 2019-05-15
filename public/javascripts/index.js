@@ -552,7 +552,7 @@ function init() {
     console.log("entering the init() method");
     if (navigator.geolocation) {
         console.log(' Browser support geolocation ');
-        navigator.geolocation.getCurrentPosition(show_map,handle_error ,null);
+        navigator.geolocation.getCurrentPosition(show_map, handle_error ,null);
     } else {
         console.log(' Browser does not support geolocation ');
     }
@@ -563,8 +563,10 @@ function init() {
 var map1;
 var marker1;
 var infowindow1;
-var latitude1;
-var longitude1;
+// var latitude1;
+// var longitude1;
+var lat_search;
+var lng_search;
 
 // set the properties of google map
 function show_map(position) {
@@ -606,12 +608,60 @@ function show_map(position) {
 
     infowindow1.open(map1, marker1);
 
-    // add eventListener for clicking any locations on the map
-    google.maps.event.addListener(map1, 'click', function(event) {
-        latitude1 = event.latLng.lat().toFixed(14);
-        longitude1 = event.latLng.lng().toFixed(14);
-        placeMarker(event.latLng);
+    var positions = [];
+    var socket = io();
+    socket.emit('get all events', '*');
+    socket.on('get all events', function (msg) {
+
+        var events = [];
+        var event_name = [];
+        var event_latitude = [];
+        var event_longitude = [];
+        var event_latlng = [];
+        events = msg;
+
+        for(var i = 0; i < events.length; i++){
+            event_name[i] = events[i].name;
+            event_latitude[i] = events[i].location.la;
+            event_longitude[i] = events[i].location.lo;
+        }
+
+        for (var i = 0; i < event_name.length; i++){
+
+            event_latlng = new google.maps.LatLng(event_latitude[i], event_longitude[i]);
+            positions.push(event_latlng);
+        }
+
+        for (var i = 0; i <positions.length; i++){
+
+            marker1 = new google.maps.Marker({
+                position: positions[i],
+
+                map: map1
+            });
+
+            var eventname = new google.maps.InfoWindow({
+                content: "event name: " + event_name[i]
+            })
+
+            eventname.open(map1, marker1);
+
+            google.maps.event.addListener(marker1, 'click', function (event) {
+                lat_search = event.latLng.lat();
+                lng_search = event.latLng.lng();
+                getCoordinate1();
+            })
+
+        }
+
     });
+
+    // add eventListener for clicking any locations on the map
+    // google.maps.event.addListener(map1, 'click', function(event) {
+    //     latitude1 = event.latLng.lat().toFixed(14);
+    //     longitude1 = event.latLng.lng().toFixed(14);
+    //     placeMarker(event.latLng);
+    // });
 
 }
 
@@ -627,28 +677,30 @@ function handle_error(error){
 }
 
 // initialize markers on the map
-function placeMarker(location) {
-
-    var marker3 = new google.maps.Marker({
-        position: location,
-        map: map1,
-    });
-
-    var infowindow3 = new google.maps.InfoWindow({
-        content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
-                + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn" onclick="getCoordinate1()">'
-    });
-
-    infowindow3.open(map1, marker3);
-
-}
+// function placeMarker(location) {
+//
+//     var marker3 = new google.maps.Marker({
+//         position: location,
+//         map: map1,
+//     });
+//
+//     var infowindow3 = new google.maps.InfoWindow({
+//         content: '<br>click "OK" to select the location' + '<br>THEN click "Go" to search events nearby'
+//                 + '<br>OR click "Map" to cancel selections' + '<br><input type="button" value="OK" id="mapBtn" onclick="getCoordinate1()">'
+//     });
+//
+//     infowindow3.open(map1, marker3);
+//
+// }
 
 // get the relevant coordinates
 function getCoordinate1() {
     var latitudeValue1 = document.getElementById("latitude");
     var longitudeValue1 = document.getElementById("longitude");
-    latitudeValue1.innerText = latitude1;
-    longitudeValue1.innerText = longitude1;
+    latitudeValue1.innerText = lat_search;
+    longitudeValue1.innerText = lng_search;
+    console.log("lat" + latitudeValue1.innerText);
+    console.log("lat" + longitudeValue1.innerText);
     alert('You have selected a location. Click "Go" to search.');
 }
 
@@ -668,7 +720,7 @@ function SearchStory(){
 
     // compose a JSON data
     var event = {
-        "name": keyword,
+        "ename": keyword,
         "datetime": date,
         "location": {
             "la": lat,
@@ -680,15 +732,17 @@ function SearchStory(){
     // receive socket io data from server
     var event_emit = JSON.stringify(event);
     var socket = io();
-    socket.emit('search event', event_emit);
-    socket.on('search event', function (msg) {
+    socket.emit('search stories', event_emit);
+    socket.on('search stories', function (msg) {
         var event_on = msg;
+        console.log(msg);
         var name;
         var date;
         var distance;
         var result = document.getElementById("result");
         for (var i = 0; i < event_on.length; i++){
             name = event_on[i].name;
+            console.log(name);
             date = event_on[i].datetime;
             distance = event_on[i].distance;
             result.style.visibility = "visible";
