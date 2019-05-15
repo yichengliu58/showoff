@@ -153,6 +153,9 @@ function getStoryByUser(db,storeName,userid,callback) {
         }
         callback(mystories);
     };
+    req.onerror = function (e) {
+        callback(mystories);
+    }
 }
 
 /**
@@ -468,7 +471,7 @@ function showCurrentStory(story, n){
     var storyid = story.sid;
     var username = story.uid;
     var date = story.datetime;
-    var event = story.ename;
+    var event = story.eventname;
     var location = story.location;
     var lng = location.lo;
     var lat = location.la;
@@ -482,11 +485,10 @@ function showCurrentStory(story, n){
     storyidG = story.sid;
     usernameG = story.uid;
     dateG = story.datetime;
-    eventG = story.ename;
+    eventG = story.eventname;
     locationG = story.location;
     textG = story.text;
     imageG = story.imgs;
-    eventG = story.ename;
 
     // set relevant labels and images
     uname.innerText = username;
@@ -550,11 +552,13 @@ function initCursor(callback) {
         }
         callback(allstories);
     };
+
+    req.onerror = function (ev) {
+        callback(allstories);
+    }
 }
 
 var eventlist = [];
-var eventnum = 0;
-var addeventnum = 0;
 /**
  * receive socket io data from the server
  */
@@ -563,33 +567,25 @@ function socketOn() {
 
     socket.emit('get all events', '*');
     socket.on('get all events', function(msg) {
-        if(msg === null) {
+        if (msg === null) {
             return;
         }
-        eventnum = msg.length;
-        for(var i = 0; i < msg.length; i++) {
+
+        for (var i = 0; i < msg.length; i++) {
+            eventlist[i] = {
+                name: msg[i].name, datetime: msg[i].datetime,
+                location: msg[i].location
+            };
+        }
+
+        for(var i = 0; i < eventlist.length; i++) {
             var request = db.transaction(['event'], 'readwrite')
-                            .objectStore('event')
-                            .add({
-                                name: msg[i].name, datetime: msg[i].datetime,
-                                location: msg[i].location });
+                .objectStore('event').add(eventlist[i]);
             request.onsuccess = function (event) {
-                addeventnum += 1;
-                if(addeventnum === eventnum) {
-                    var transaction = db.transaction("event");
-                    var store = transaction.objectStore("event");
-                    var req = store.openCursor();
-                    req.onsuccess = function(e) {
-                        var res = e.target.result;
-                        if (res) {
-                            eventlist.push(res.value);
-                            res.continue();
-                        }
-                    }
-                }
+                console.log("insert eventlist successfully");
             };
             request.onerror = function (event) {
-                console.log('insert event failed');
+                console.log("insert eventlist failed");
             }
         }
     });
@@ -774,9 +770,6 @@ function show_map(position) {
             getCoordinate1();
         });
     }
-}
-
-    });
 }
 
 /**
