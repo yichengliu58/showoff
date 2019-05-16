@@ -21,7 +21,7 @@
    <div class="container" id="index_frame">
            <div class="row">
                <div class="col-md">
-                   <h1 id="title">SHOW yourself OFF</h1>
+                   <h1 id="title">SHOW OFF</h1>
                    <label for="userId" id="userId" class="label_input" style="float: contour" ></label>
                    <p>
                        <input type="button" value="" id="post" name="postStory1" class="buttons" data-toggle="modal" data-target="#postModal" data-backdrop="static" data-keyboard="false" onclick="openPostWindow()" >
@@ -74,13 +74,13 @@
         <form id="searchFrame">
             <div class="row">
                 <div class="col-md">
-                    Name:<input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
+                    Event name:<input type="text" id="keywordSearch" name="keywordSearch" class="text_field">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md">
-                    Date:<input type="date" id="dateSearch" name="dateSearch" class="text_field">
+                    Event date:<input type="date" id="dateSearch" name="dateSearch" class="text_field">
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
             <div class="row">
                 <div class="col-md">
                     <input type="button" value="Go" id="searchBtn" name="searchBtn" class="buttons" onclick="SearchStory()">
-                    <input type="button" value="Close" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
+                    <input type="button" value="Back" id="closeBtn" name="closeBtn" class="buttons" onclick="closeSearchFrame()">
                 </div>
             </div>
         </form>
@@ -149,8 +149,8 @@
                             </table>
                        </div>
                        <div class="modal-footer">
-                           <button type="button" id="post_submit" class="postbuttons" onclick="PostSubmit()" >Submit</button>
-                           <button type="button" id="post_cancel" class="postbuttons" data-dismiss="modal" >Cancel</button>
+                           <button type="button" id="post_submit" class="buttons" onclick="PostSubmit()" >Submit</button>
+                           <button type="button" id="post_cancel" class="buttons" data-dismiss="modal" >Cancel</button>
                        </div>
                    </div>
                </div>

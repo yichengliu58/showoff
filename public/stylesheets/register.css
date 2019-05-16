@@ -3,20 +3,22 @@ body {
   background-image: url("../images/music-festival-1.jpg");
   background-size: 100%;
   background-repeat: repeat;
-  font: normal 100% "Comic Sans MS", cursive, sans-serif;
+  font-family: Verdana, Genevs, Arial, sans-serif;
   text-align: center;
 }
 
+/*set background and font for phone*/
 @media only screen and (max-width: 500px) {
   body {
     background-image: url("../images/music-festival-mobile-2.jpg");
     background-size: 100%;
     background-repeat: repeat;
-    font: normal 100% "Comic Sans MS", cursive, sans-serif;
+    font-family: Verdana, Genevs, Arial, sans-serif;
     text-align: center;
   }
 }
 
+/*set layout and appearance for register-frame*/
 #register_frame{
 
   width: auto;
@@ -38,6 +40,7 @@ form p > *{
   vertical-align: middle;
 }
 
+/*set appearance for labels*/
 .label-input{
 
   font-size: 1.5em;
@@ -54,6 +57,7 @@ form p > *{
 
 }
 
+/*set appearance for text fields*/
 .text_field{
   width: auto;
   height: auto;
@@ -62,6 +66,7 @@ form p > *{
 
 }
 
+/*set appearance for buttons*/
 #registerSubmit{
 
   font-size: 1.5em;

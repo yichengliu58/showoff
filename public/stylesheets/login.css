@@ -3,22 +3,22 @@ body {
   background-image: url("../images/music-festival-2.jpg");
   background-size: 100%;
   background-repeat: repeat;
-  font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro",
-  Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Verdana, Genevs, Arial, sans-serif;
   text-align: center;
 }
 
+/*set background and font for phone*/
 @media only screen and (max-width: 500px) {
   body {
     background-image: url("../images/music-festival-mobile-0.jpg");
     background-size: 100%;
     background-repeat: repeat;
-    font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro",
-    Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Verdana, Genevs, Arial, sans-serif;
     text-align: center;
   }
 }
 
+/*set layout and appearance for login-frame*/
 #login_frame{
 
   width: auto;
@@ -40,6 +40,7 @@ form p > *{
   vertical-align: middle;
 }
 
+/*set appearance for labels*/
 .label_input{
 
   font-size: 1.5em;
@@ -56,6 +57,7 @@ form p > *{
 
 }
 
+/*set appearance for text fields*/
 .text_field{
   width: auto;
   height: auto;
@@ -64,6 +66,7 @@ form p > *{
 
 }
 
+/*set appearance for buttons*/
 #login{
 
   font-size: 1.5em;
@@ -97,6 +100,7 @@ form p > *{
 #login_control{
   padding: 0 auto;
 }
+
 
 .btn-blue{
   background-color: #6DA2D9;

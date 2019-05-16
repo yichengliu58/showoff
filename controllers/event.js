@@ -120,8 +120,8 @@ exports.searchStories = function(msg) {
 
     if(arg.location !== null && arg.location.lo != "" && arg.location.la != "") {
         var cond = {
-            $and: [{$where: '(this.location.la - ' + arg.location.la + ' <= 1000)'},
-                {$where: '(this.location.lo - ' + arg.location.lo + ' <= 1000)'}]
+            $and: [{$where: '(this.location.la - ' + arg.location.la + ' <= 100)'},
+                {$where: '(this.location.lo - ' + arg.location.lo + ' <= 100)'}]
         };
 
         db.search("stories", cond, function (err, res) {
@@ -179,8 +179,8 @@ exports.searchEvents = function(msg) {
             }
         });
     } else {
-        var cond = {$and: [{$where: '(this.location.la - '+arg.location.la+' <= 1000)'},
-                            {$where: '(this.location.lo - '+arg.location.lo+' <= 1000)'}]};
+        var cond = {$and: [{$where: '(this.location.la - '+arg.location.la+' <= 100)'},
+                            {$where: '(this.location.lo - '+arg.location.lo+' <= 100)'}]};
         db.search("events", cond, function (err, res) {
             if(err) {
                 io.emit('search event', JSON.stringify());

@@ -821,7 +821,7 @@ function getCoordinate1() {
     longitudeValue1.innerText = lng_search;
     // console.log("lat" + latitudeValue1.innerText);
     // console.log("lat" + longitudeValue1.innerText);
-    alert('You have selected an event. Click "Go" to search stories about it~ ');
+    alert('You have selected a location. Click "Go" to search stories about it~ ');
 }
 
 var searchstories = [];

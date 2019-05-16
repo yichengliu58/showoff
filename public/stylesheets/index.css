@@ -3,10 +3,11 @@ body {
   background-image: url("../images/music-festival-3.jpg");
   background-size: 100%;
   background-repeat: repeat;
-  font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif,", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
+  font-family: Verdana, Genevs, Arial, sans-serif;
   text-align: center;
 }
 
+/*set background and font for phone*/
 @media only screen and (max-width: 500px) {
   body {
     background-image: url("../images/music-festival-mobile-1.jpg");
@@ -16,11 +17,13 @@ body {
   }
 }
 
+/*set appearance for title*/
 #title{
 
+    font-family: Verdana, Genevs, Arial, sans-serif;
     width: 60%;
     height: auto;
-    padding: 13px;
+    padding: 5px;
 
     margin: 0px auto;
 
@@ -35,7 +38,7 @@ body {
 
     width: auto;
     height: auto;
-    padding: 13px;
+    padding: 5px;
 
     margin: 0px auto;
 
@@ -46,11 +49,12 @@ body {
     text-align: center;
 }
 
+/*set appearance for index-frame*/
 #index_frame{
 
   width: auto;
   height: auto;
-  padding: 13px;
+  padding: 5px;
 
   margin: 0px auto;
 
@@ -61,11 +65,12 @@ body {
 
 }
 
+/*set appearance for story-frame*/
 #story_frame{
 
     width: auto;
     height: auto;
-    padding: 13px;
+    padding: 10px;
 
     margin: 0px auto;
 
@@ -77,13 +82,14 @@ body {
 
 }
 
+/*set appearance for search-frame*/
 #search_frame{
 
     width: auto;
     height: auto;
-    padding: 13px;
+    padding: 10px;
 
-    pmargin: 40px auto;
+    margin: 0px auto;
 
     background-color: rgba(240, 255, 255, 0.1);
 
@@ -92,6 +98,7 @@ body {
     text-align: center;
 }
 
+/*set appearance for buttons*/
 #post{
     background-image: url("../images/camera.png");
     width:50px;
@@ -124,13 +131,16 @@ body {
     text-align: center;
 
     background-color: #6DA2D9;
-    box-shadow: 0 0 0 1px #6698cb inset,
-    0 0 0 2px rgba(255,255,255,0.15) inset,
-    0 8px 0 0 rgba(110, 164, 219, .7),
-    0 8px 0 1px rgba(0,0,0,.4),
-    0 8px 8px 1px rgba(0,0,0,0.5);
-    border-radius: 6px;
-    border: 0;
+    padding: 8px 18px;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.21);
+    border-bottom-color: rgba(0,0,0,0.34);
+    text-shadow:0 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset,
+    0 2px 0 -1px rgba(0,0,0,0.13),
+    0 3px 0 -1px rgba(0,0,0,0.08),
+    0 3px 13px -1px rgba(0,0,0,0.21);
 
     float: bottom;
 
@@ -149,13 +159,16 @@ body {
     text-align: center;
 
     background-color: #6DA2D9;
-    box-shadow: 0 0 0 1px #6698cb inset,
-    0 0 0 2px rgba(255,255,255,0.15) inset,
-    0 8px 0 0 rgba(110, 164, 219, .7),
-    0 8px 0 1px rgba(0,0,0,.4),
-    0 8px 8px 1px rgba(0,0,0,0.5);
-    border-radius: 6px;
-    border: 0;
+    padding: 8px 18px;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.21);
+    border-bottom-color: rgba(0,0,0,0.34);
+    text-shadow:0 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset,
+    0 2px 0 -1px rgba(0,0,0,0.13),
+    0 3px 0 -1px rgba(0,0,0,0.08),
+    0 3px 13px -1px rgba(0,0,0,0.21);
 
     float: bottom;
     background-image: url("../images/homepage.png");
@@ -189,6 +202,7 @@ body {
     cursor:pointer;
 }
 
+/*set appearance for modal-frame*/
 .modal-body{
     background-color: white;
     color: black;
@@ -217,18 +231,22 @@ body {
 
   color: white;
   background-color: #6DA2D9;
-  box-shadow: 0 0 0 1px #6698cb inset,
-  0 0 0 2px rgba(255,255,255,0.15) inset,
-  0 8px 0 0 rgba(110, 164, 219, .7),
-  0 8px 0 1px rgba(0,0,0,.4),
-  0 8px 8px 1px rgba(0,0,0,0.5);
-  border-radius: 6px;
-  border: 0;
+  padding: 8px 18px;
+  font-size: 14px;
+  display: inline-block;
+  border: 1px solid rgba(0,0,0,0.21);
+  border-bottom-color: rgba(0,0,0,0.34);
+  text-shadow:0 1px 0 rgba(0,0,0,0.15);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset,
+  0 2px 0 -1px rgba(0,0,0,0.13),
+  0 3px 0 -1px rgba(0,0,0,0.08),
+  0 3px 13px -1px rgba(0,0,0,0.21);
 
   float: bottom;
 
 }
 
+/*set appearance for labels*/
 .label_input{
 
     font-size: 1.5em;
@@ -238,11 +256,6 @@ body {
     text-align: center;
 
     color: black;
-    /*background-color: #4e555b;*/
-    /*border-top-left-radius: 5px;*/
-    /*border-bottom-right-radius: 5px;*/
-    /*border: 0;*/
-
 }
 
 .text_field{
@@ -272,19 +285,6 @@ body {
     height: 100%;
     opacity: 0;
     cursor: pointer;
-}
-
-.postbuttons{
-    color: black;
-    padding: 15px 25px;
-    display: inline-block;
-    border: 1px solid rgba(0,0,0,0.21);
-    border-bottom-color: rgba(0,0,0,0.34);
-    text-shadow:0 1px 0 rgba(0,0,0,0.15);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset,
-    0 2px 0 -1px rgba(0,0,0,0.13),
-    0 3px 0 -1px rgba(0,0,0,0.08),
-    0 3px 13px -1px rgba(0,0,0,0.21);
 }
 
   .pic{
