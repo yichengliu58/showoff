@@ -178,6 +178,7 @@ function getUserName(url, data) {
         type: 'GET',
         success: function (dataR){
             document.getElementById('userId').innerHTML = dataR;
+            localStorage.setItem("userid", dataR);
         },
         error: function (xhr, status, error) {
             alert('Error: ' + error.message);
@@ -575,7 +576,6 @@ function socketOn() {
         }
 
         for (var i = 0; i < msg.length; i++) {
-            console.log("ooo " + i);
             eventlist[i] = {
 
                 name: msg[i].name, datetime: msg[i].datetime,

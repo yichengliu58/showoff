@@ -1,4 +1,19 @@
 <!doctype html>
+<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    function sendMsg() {
+        var msg = document.getElementById("m").value;
+        var uid = localStorage.getItem("userid");
+        socket.emit('chat', JSON.stringify({uid: uid, msg: msg}));
+        document.getElementById("m").value = "";
+    }
+
+    socket.on('chat', function(msg){
+        $('#messages').append($('<li>').text(msg));
+    });
+</script>
 <html>
 <head>
     <title>Socket.IO chat</title>
@@ -15,27 +30,8 @@
 </head>
 <body>
 <ul id="messages"></ul>
-<form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
+<form onsubmit="return false">
+    <input id="m" autocomplete="off" /><button onclick="sendMsg()">Send</button>
 </form>
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
-
-    // connect to server
-    var socket = io();
-    $('form').submit(function(){
-        // send data parameter：1. a event 2. the data
-        socket.emit('chat', $('#m').val());
-        $('#m').val('');
-        return false;
-    });
-    // receive data
-    // parameter 1： which event parameter 2. a function（received data）, how to operate the data
-    socket.on('chat', function(msg){
-        // parse the JSON data to string, then display
-        $('#messages').append($('<li>').text(msg));
-    });
-</script>
 </html>
