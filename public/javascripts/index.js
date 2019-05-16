@@ -104,7 +104,7 @@ function insertStory(storyId, userId, storyContent, img, currentTime, currentLoc
     var request = db.transaction(['story'], 'readwrite')
         .objectStore('story')
         .add({sid: storyId, uid: userId, text: storyContent, imgs: img,
-                datetime: currentTime, location: currentLocation, eventname: ename});
+                datetime: currentTime, location: currentLocation, ename: ename});
     request.onsuccess = function (event) {
         console.log('insert data successfully');
     };
@@ -320,16 +320,18 @@ function  openMyStoriesWindow() {
                 alert("You haven't posted any story");
                 return;
             }
-            showCurrentStory(mystories[0], 2); // show my stories
-            seq = 0; // reset the sequence
+            var index = mystories.length - 1;
+            showCurrentStory(mystories[index], 2); // show my stories
+            seq = index; // reset the sequence
         });
     }
     // if the current frame shows my stores
     else{
         document.getElementById('myStories').className = 'mypage';
         localStorage.setItem("ifMyStoriesWindow", 1); // after clicking it is all stories now
-        showCurrentStory(allstories[0], 2); // show all stories
-        seq = 0; // reset the sequence
+        var index = allstories.length - 1;
+        showCurrentStory(allstories[index], 2); // show all stories
+        seq = index; // reset the sequence
     }
 }
 
@@ -416,7 +418,7 @@ function PostSubmit() {
                         if(s.code == 0){
                             $('#postModal').modal('hide'); // close the modal when post successfully
                             srcs = []; // clear the array
-                            // location.reload();
+                            location.reload(true);
                         }
                     });
                 },
@@ -470,8 +472,9 @@ function showCurrentStory(story, n){
     // assgin data
     var storyid = story.sid;
     var username = story.uid;
-    var date = story.datetime;
-    var event = story.eventname;
+    var i = story.datetime.indexOf("T");
+    var date = story.datetime.substring(0, i);
+    var event = story.ename;
     var location = story.location;
     var lng = location.lo;
     var lat = location.la;
@@ -485,7 +488,7 @@ function showCurrentStory(story, n){
     storyidG = story.sid;
     usernameG = story.uid;
     dateG = story.datetime;
-    eventG = story.eventname;
+    eventG = story.ename;
     locationG = story.location;
     textG = story.text;
     imageG = story.imgs;
@@ -605,7 +608,9 @@ function socketOn() {
         }
 
         initCursor(function (c) {
-            showCurrentStory(c[0], 2);
+            var index = c.length - 1;
+            showCurrentStory(c[index], 2);
+            seq = index;
         });
     });
 }
@@ -613,27 +618,27 @@ function socketOn() {
 /**
  * display next story
  */
-function nextStory() {
+function previousStory() {
     seq += 1;
     var ims = localStorage.getItem("ifMyStoriesWindow");
     if (ims == 1) {
         if(seq >= allstories.length) {
             seq -= 1;
-            showCurrentStory(allstories[seq], 1);
+            showCurrentStory(allstories[seq], 0);
         } else {
             showCurrentStory(allstories[seq], 2);
         }
     } else if(ims == 2) {
         if(seq >= searchstories.length) {
             seq -= 1;
-            showCurrentStory(searchstories[seq], 1);
+            showCurrentStory(searchstories[seq], 0);
         } else {
             showCurrentStory(searchstories[seq], 2);
         }
     } else {
         if(seq >= mystories.length) {
             seq -= 1;
-            showCurrentStory(mystories[seq], 1);
+            showCurrentStory(mystories[seq], 0);
         } else {
             showCurrentStory(mystories[seq], 2);
         }
@@ -643,27 +648,27 @@ function nextStory() {
 /**
  * display previous story
  */
-function previousStory(){
+function nextStory(){
     seq -= 1;
     var ims = localStorage.getItem("ifMyStoriesWindow");
     if (ims == 1){
         if(seq < 0) {
             seq += 1;
-            showCurrentStory(allstories[seq], 0);
+            showCurrentStory(allstories[seq], 1);
         } else {
             showCurrentStory(allstories[seq], 2);
         }
     } else if(ims == 2) {
         if(seq < 0) {
             seq += 1;
-            showCurrentStory(searchstories[seq], 0);
+            showCurrentStory(searchstories[seq], 1);
         } else {
             showCurrentStory(searchstories[seq], 2);
         }
     } else {
         if(seq < 0) {
             seq += 1;
-            showCurrentStory(mystories[seq], 0);
+            showCurrentStory(mystories[seq], 1);
         } else {
             showCurrentStory(mystories[seq], 2);
         }
@@ -854,14 +859,16 @@ function SearchStory(){
     socket.emit('search stories', event_emit);
     socket.on('search stories', function (msg) {
         if(msg === null) {
-            showCurrentStory(msg[0], 2);
+            var indx = msg.length - 1;
+            showCurrentStory(msg[indx], 2);
             document.getElementById("search_frame").style.display="None";
             document.getElementById("story_frame").style.display="";
             return;
         }
         localStorage.setItem("ifMyStoriesWindow", 2);
         searchstories = msg;
-        showCurrentStory(msg[0], 2);
+        var indx = msg.length - 1;
+        showCurrentStory(msg[indx], 2);
         document.getElementById("search_frame").style.display="None";
         document.getElementById("story_frame").style.display="";
     })
