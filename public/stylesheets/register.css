@@ -23,10 +23,11 @@ body {
   height: auto;
   padding: 13px;
 
-  margin: 100px auto;
+  margin: 30px auto;
 
-  background-color: rgba(240, 255, 255, 0.1);
+  background-color: rgba(240, 255, 255, 0.2);
 
+  border-style: outset;
   border-radius: 10px;
   text-align: center;
 
@@ -46,7 +47,7 @@ form p > *{
   text-align: center;
 
   color: white;
-  background-color: #3CD8FF;
+  background-color: #495057;
   border-top-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border: 0;
@@ -78,4 +79,13 @@ form p > *{
 
 #register_control{
   padding: 0 auto;
+}
+
+.btn-blue{
+  background-color: #6DA2D9;
+  box-shadow: 0 0 0 1px #6698cb inset,
+  0 0 0 2px rgba(255,255,255,0.15) inset,
+  0 8px 0 0 rgba(110, 164, 219, .7),
+  0 8px 0 1px rgba(0,0,0,.4),
+  0 8px 8px 1px rgba(0,0,0,0.5);
 }

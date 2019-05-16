@@ -3,7 +3,7 @@ body {
   background-image: url("../images/music-festival-3.jpg");
   background-size: 100%;
   background-repeat: repeat;
-  font: normal 100% 'Oswald', Arial, sans-serif;
+  font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif,", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
   text-align: center;
 }
 
@@ -16,6 +16,35 @@ body {
   }
 }
 
+#title{
+
+    width: 60%;
+    height: auto;
+    padding: 13px;
+
+    margin: 0px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-style: outset;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#userId{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 0px auto;
+
+    background-color: rgba(240, 255, 255, 0.5);
+
+    border-style: outset;
+    border-radius: 10px;
+    text-align: center;
+}
 
 #index_frame{
 
@@ -23,13 +52,44 @@ body {
   height: auto;
   padding: 13px;
 
-  margin: 15px auto;
+  margin: 0px auto;
 
-  background-color: rgba(240, 255, 255, 0.1);
+  background-color: rgba(240, 255, 255, 0);
 
   border-radius: 10px;
   text-align: center;
 
+}
+
+#story_frame{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    margin: 0px auto;
+
+    background-color: rgba(240, 255, 255, 0.2);
+
+    border-style: inset;
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+#search_frame{
+
+    width: auto;
+    height: auto;
+    padding: 13px;
+
+    pmargin: 40px auto;
+
+    background-color: rgba(240, 255, 255, 0.1);
+
+    border-style: inset;
+    border-radius: 10px;
+    text-align: center;
 }
 
 #post{
@@ -48,6 +108,14 @@ body {
     cursor:pointer;
 }
 
+#chat{
+    background-image: url("../images/chat.png");
+    width:50px;
+    height:50px;
+    border:0px;
+    cursor:pointer;
+}
+
 .mypage{
     font-size: 1.5em;
     width: auto;
@@ -55,8 +123,12 @@ body {
     line-height: 28px;
     text-align: center;
 
-    color: white;
-    background-color: #545b62;
+    background-color: #6DA2D9;
+    box-shadow: 0 0 0 1px #6698cb inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 8px 0 0 rgba(110, 164, 219, .7),
+    0 8px 0 1px rgba(0,0,0,.4),
+    0 8px 8px 1px rgba(0,0,0,0.5);
     border-radius: 6px;
     border: 0;
 
@@ -76,8 +148,12 @@ body {
     line-height: 28px;
     text-align: center;
 
-    color: white;
-    background-color: #545b62;
+    background-color: #6DA2D9;
+    box-shadow: 0 0 0 1px #6698cb inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 8px 0 0 rgba(110, 164, 219, .7),
+    0 8px 0 1px rgba(0,0,0,.4),
+    0 8px 8px 1px rgba(0,0,0,0.5);
     border-radius: 6px;
     border: 0;
 
@@ -113,107 +189,22 @@ body {
     cursor:pointer;
 }
 
-#phone_frame{
-
-    width: auto;
-    height: auto;
-    padding: 13px;
-
-    margin: 0 auto;
-
-    background-color: rgba(240, 255, 255, 0.1);
-
-    border-radius: 10px;
-    text-align: center;
-
-}
-
-#story_frame{
-
-    width: auto;
-    height: auto;
-    padding: 13px;
-
-    margin: 40px auto;
-
-    background-color: rgba(240, 255, 255, 0.1);
-
-    border-radius: 10px;
-    text-align: center;
-
-}
-
-#story_text{
-    background-color: #3CD8FF;
-    color: white;
-    border-radius: 10px;
-
-}
-
-#search_frame{
-
-    width: auto;
-    height: auto;
-    padding: 13px;
-
-    pmargin: 40px auto;
-
-    background-color: rgba(240, 255, 255, 0.1);
-
-    border-radius: 10px;
-    text-align: center;
-}
-
 .modal-body{
-    background-color: #3CD8FF;
-    font: normal 100% "Comic Sans MS", cursive, sans-serif;
-    color: white;
+    background-color: white;
+    color: black;
+    border-style: outset;
 }
 
 .modal-header{
-    background-color: #3CD8FF;
-    font: normal 100% "Comic Sans MS", cursive, sans-serif;
-    color: white;
+    background-color: white;
+    color: black;
+    border-style: outset;
 }
 
 .modal-footer{
-    background-color: #3CD8FF;
-    font: normal 100% "Comic Sans MS", cursive, sans-serif;
-    color: white;
-}
-
-#post_submit{
-
-    font-size: 1.5em;
-    width: auto;
-    height: auto;
-    line-height: 28px;
-    text-align: center;
-
-    color: white;
-    background-color: blue;
-    border-radius: 6px;
-    border: 0;
-
-    float: bottom;
-
-}
-
-#post_cancel{
-
-    font-size: 1.5em;
-    width: auto;
-    height: auto;
-    line-height: 28px;
-    text-align: center;
-
-    color: white;
-    background-color: blue;
-    border-radius: 6px;
-    border: 0;
-
-    float: bottom;
-
+    background-color: white;
+    color: black;
+    border-style: outset;
 }
 
 .buttons{
@@ -225,7 +216,12 @@ body {
   text-align: center;
 
   color: white;
-  background-color: #545b62;
+  background-color: #6DA2D9;
+  box-shadow: 0 0 0 1px #6698cb inset,
+  0 0 0 2px rgba(255,255,255,0.15) inset,
+  0 8px 0 0 rgba(110, 164, 219, .7),
+  0 8px 0 1px rgba(0,0,0,.4),
+  0 8px 8px 1px rgba(0,0,0,0.5);
   border-radius: 6px;
   border: 0;
 
@@ -241,11 +237,11 @@ body {
     line-height: 28px;
     text-align: center;
 
-    color: white;
-    background-color: #3CD8FF;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 0;
+    color: black;
+    /*background-color: #4e555b;*/
+    /*border-top-left-radius: 5px;*/
+    /*border-bottom-right-radius: 5px;*/
+    /*border: 0;*/
 
 }
 
@@ -276,6 +272,19 @@ body {
     height: 100%;
     opacity: 0;
     cursor: pointer;
+}
+
+.postbuttons{
+    color: black;
+    padding: 15px 25px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.21);
+    border-bottom-color: rgba(0,0,0,0.34);
+    text-shadow:0 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset,
+    0 2px 0 -1px rgba(0,0,0,0.13),
+    0 3px 0 -1px rgba(0,0,0,0.08),
+    0 3px 13px -1px rgba(0,0,0,0.21);
 }
 
   .pic{

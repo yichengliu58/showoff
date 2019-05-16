@@ -492,8 +492,8 @@ function showCurrentStory(story, n){
 
     // set relevant labels and images
     uname.innerText = username;
-    eventDate.innerText = date;
-    eventName.innerText = event;
+    eventDate.innerText = "-" + date;
+    eventName.innerText = "#" + event;
     eventLocation.innerText = lat + lng;
     storyText.innerText = text;
 
@@ -572,7 +572,9 @@ function socketOn() {
         }
 
         for (var i = 0; i < msg.length; i++) {
+            console.log("ooo " + i);
             eventlist[i] = {
+
                 name: msg[i].name, datetime: msg[i].datetime,
                 location: msg[i].location
             };
@@ -770,6 +772,24 @@ function show_map(position) {
             getCoordinate1();
         });
     }
+
+    google.maps.event.addListener(map1, 'click', function (event) {
+        placeMarker(event.latLng);
+    });
+}
+
+function placeMarker(location) {
+    var marker = new google.maps.Marker({
+        position: location,
+
+        map: map1,
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+        content: "There is no event here."
+    });
+
+    infowindow.open(map1, marker);
 }
 
 /**
@@ -794,9 +814,9 @@ function getCoordinate1() {
     var longitudeValue1 = document.getElementById("longitude");
     latitudeValue1.innerText = lat_search;
     longitudeValue1.innerText = lng_search;
-    console.log("lat" + latitudeValue1.innerText);
-    console.log("lat" + longitudeValue1.innerText);
-    alert('You have selected a location. Click "Go" to search.');
+    // console.log("lat" + latitudeValue1.innerText);
+    // console.log("lat" + longitudeValue1.innerText);
+    alert('You have selected an event. Click "Go" to search stories about it~ ');
 }
 
 var searchstories = [];
