@@ -57,7 +57,14 @@ The server receives and returns data to clients, it also operates with database.
 The server is a little bit simple for implementing a product-level website. It lacks some functions that might be useful in a real product environment, such as verifying a user’s email and helping a user to find password. The server is also insufficient in performance, there should be some cache layers between back-end logic code and database, such as redis, to increase the response speed of requests.  
   
 ## MongoDB  
-not implemented yet.  
+### Challenges
+The biggest challenge of using MongoDB is how to write some functions to do search and insert operation. It’s quite common to write one single function for each kind of operation, such as insertion and search. Another difficulty is to initialise the DB correctly, only if the DB is initialised at the startup of system can make later operations go well.
+### Solution
+We use MongoClient library to implement DB operations. First of all we need to connect the DB when system starts up, it is done using “connect” function in MongoClient. The function is called in app.js and will be called each time the website starts up. MongoClient also supports reading and writing DB, we’ve written some utility functions that wrap up read and write operation, some functions are for reading one specified data record, some are used for reading more data into an JSON array. The result is put into arrays that makes it easy for front-end codes to parse.
+### Requirements
+Database must be able to store any valid data uploaded, and respond data that client requires. There is no need to create collections definitions in advance since MongoDB will automatically create collections that don’t exist. There must be collections to store users info, stories info and events info.
+### Limitations
+The biggest limitations of our MongoDB implementation is performance, we provide some methods to return all stories records of which results may be large, if the server’s load is high, this may cause performance to decrease.
   
 ## Quality of Web solution  
 ### Challenges  
