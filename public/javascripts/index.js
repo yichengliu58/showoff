@@ -826,7 +826,7 @@ function handle_error(error){
  * get the relevant coordinates
  */
 function getCoordinate1() {
-    // set loactions to hidden labels
+    /*set locations to hidden labels*/
     var latitudeValue1 = document.getElementById("latitude");
     var longitudeValue1 = document.getElementById("longitude");
     latitudeValue1.innerText = lat_search;
