@@ -57,7 +57,14 @@ The server receives and returns data to clients, it also operates with database.
 The server is a little bit simple for implementing a product-level website. It lacks some functions that might be useful in a real product environment, such as verifying a user’s email and helping a user to find password. The server is also insufficient in performance, there should be some cache layers between back-end logic code and database, such as redis, to increase the response speed of requests.  
   
 ## MongoDB  
-not implemented yet.  
+### Challenges
+The biggest challenge of using MongoDB is how to write some functions to do search and insert operation. It’s quite common to write one single function for each kind of operation, such as insertion and search. Another difficulty is to initialise the DB correctly, only if the DB is initialised at the startup of system can make later operations go well.
+### Solution
+We use MongoClient library to implement DB operations. First of all we need to connect the DB when system starts up, it is done using “connect” function in MongoClient. The function is called in app.js and will be called each time the website starts up. MongoClient also supports reading and writing DB, we’ve written some utility functions that wrap up read and write operation, some functions are for reading one specified data record, some are used for reading more data into an JSON array. The result is put into arrays that makes it easy for front-end codes to parse.
+### Requirements
+Database must be able to store any valid data uploaded, and respond data that client requires. There is no need to create collections definitions in advance since MongoDB will automatically create collections that don’t exist. There must be collections to store users info, stories info and events info.
+### Limitations
+The biggest limitations of our MongoDB implementation is performance, we provide some methods to return all stories records of which results may be large, if the server’s load is high, this may cause performance to decrease.
   
 ## Quality of Web solution  
 ### Challenges  
@@ -89,12 +96,16 @@ None so far.
 Progressive website techniques are useful, with the power to continue working when offline, it will provide a more user-friendly web services for users. It’s also a trend that more and more people like using light-weighted programming language as Nodejs to develop web service, which consumes less time and provide hight performance.  
 # Division of work  
 All the members of the group contributed equally to the assignment solution. The solution was designed jointly and then each member lead the implementation of one specific part of the code, its associated documentation and contributed to the writing of the final report. In particular:  
-   * Yicheng Liu is in charge of the development of Nodejs server and back-end logic  
+   * Yicheng Liu is in charge of the development of Nodejs server, mongodb and back-end logic  
    * Mali Jin is responsible for applying PWA and IndexedDB in to front-end logic  
    * Hao Qian is responsible for design and implementation of Responsive web pages, google maps and front-end logic  
 /The final document was jointly edited./  
   
 # Extra Information  
- * A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc. * Because Mongodb has not been implemented and deployed yet, so for now (temporally) data uploaded will be stored in server’s memory. Codes are well structured to leave some interfaces for later modification of database.   * Locations will be required when users use the map to find an event, there will be a notification from the browser to ask users’ permission.  
+ * A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
+ * There is no need to create data tables in database in advance, the only thing is to make sure 
+ mongodb is running before starting the whole system.
+ * Locations will be required when users use the map to find an event, there will be a notification from the browser to ask users’ permission.
+ * A user guide is provided, make sure to read it before using  
   
 # Bibliography
