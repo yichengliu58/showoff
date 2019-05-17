@@ -96,12 +96,16 @@ None so far.
 Progressive website techniques are useful, with the power to continue working when offline, it will provide a more user-friendly web services for users. It’s also a trend that more and more people like using light-weighted programming language as Nodejs to develop web service, which consumes less time and provide hight performance.  
 # Division of work  
 All the members of the group contributed equally to the assignment solution. The solution was designed jointly and then each member lead the implementation of one specific part of the code, its associated documentation and contributed to the writing of the final report. In particular:  
-   * Yicheng Liu is in charge of the development of Nodejs server and back-end logic  
+   * Yicheng Liu is in charge of the development of Nodejs server, mongodb and back-end logic  
    * Mali Jin is responsible for applying PWA and IndexedDB in to front-end logic  
    * Hao Qian is responsible for design and implementation of Responsive web pages, google maps and front-end logic  
 /The final document was jointly edited./  
   
 # Extra Information  
- * A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc. * Because Mongodb has not been implemented and deployed yet, so for now (temporally) data uploaded will be stored in server’s memory. Codes are well structured to leave some interfaces for later modification of database.   * Locations will be required when users use the map to find an event, there will be a notification from the browser to ask users’ permission.  
+ * A  package.json file is provided in the project, all the dependencies are listed there. ‘npm install’ should be run before starting the website. Some main frame/library used in the project are: Bootstrap, socket.io, express, jquery, etc.
+ * There is no need to create data tables in database in advance, the only thing is to make sure 
+ mongodb is running before starting the whole system.
+ * Locations will be required when users use the map to find an event, there will be a notification from the browser to ask users’ permission.
+ * A user guide is provided, make sure to read it before using  
   
 # Bibliography
