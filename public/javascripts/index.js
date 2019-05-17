@@ -569,6 +569,7 @@ var eventlist = [];
 function socketOn() {
     socket = io();
 
+    // send request and receive all events
     socket.emit('get all events', '*');
     socket.on('get all events', function(msg) {
         if (msg === null) {
@@ -595,6 +596,7 @@ function socketOn() {
         }
     });
 
+    // send request and receive all stories
     socket.emit('get all stories', "*");
 
     socket.on('get all stories', function (msg) {
@@ -721,9 +723,10 @@ function show_map(position) {
 
     };
 
-    // display on relevant widgets
+    // display on relevant frame
     map1 = new google.maps.Map(document.getElementById("map"), myOptions);
 
+    // add a marker for current location
     marker1 = new google.maps.Marker({
 
         position: latlng,
@@ -731,32 +734,36 @@ function show_map(position) {
         map: map1
     });
 
+    // add an infowindow for current location
     infowindow1 = new google.maps.InfoWindow({
         content: "You are here."
     });
 
     infowindow1.open(map1, marker1);
 
+    // add markers for all events
     var positions = [];
-
     var events = eventlist;
     var event_name = [];
     var event_latitude = [];
     var event_longitude = [];
     var event_latlng = [];
 
+    // get event names and locations
     for (var i = 0; i < events.length; i++) {
         event_name[i] = events[i].name;
         event_latitude[i] = events[i].location.la;
         event_longitude[i] = events[i].location.lo;
     }
 
+    // insert locations to an array
     for (var i = 0; i < event_name.length; i++) {
 
         event_latlng = new google.maps.LatLng(event_latitude[i], event_longitude[i]);
         positions.push(event_latlng);
     }
 
+    // add markers using the location array
     for (var i = 0; i < positions.length; i++) {
 
         marker1 = new google.maps.Marker({
@@ -765,12 +772,14 @@ function show_map(position) {
             map: map1
         });
 
+        // add info-windows for every marker
         var eventname = new google.maps.InfoWindow({
             content: "event name: " + event_name[i]
         });
 
         eventname.open(map1, marker1);
 
+        // add event listeners for each marker
         google.maps.event.addListener(marker1, 'click', function (event) {
             lat_search = event.latLng.lat();
             lng_search = event.latLng.lng();
@@ -778,11 +787,13 @@ function show_map(position) {
         });
     }
 
+    // add event listener when users click other locations
     google.maps.event.addListener(map1, 'click', function (event) {
         placeMarker(event.latLng);
     });
 }
 
+// generate a marker to tell users
 function placeMarker(location) {
     var marker = new google.maps.Marker({
         position: location,
@@ -815,13 +826,12 @@ function handle_error(error){
  * get the relevant coordinates
  */
 function getCoordinate1() {
+    // set loactions to hidden labels
     var latitudeValue1 = document.getElementById("latitude");
     var longitudeValue1 = document.getElementById("longitude");
     latitudeValue1.innerText = lat_search;
     longitudeValue1.innerText = lng_search;
-    // console.log("lat" + latitudeValue1.innerText);
-    // console.log("lat" + longitudeValue1.innerText);
-    alert('You have selected a location. Click "Go" to search stories about it~ ');
+    alert('You have selected a location. Click "Go" to search stories close to it~ ');
 }
 
 var searchstories = [];
